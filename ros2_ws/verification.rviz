@@ -1,0 +1,157 @@
+Panels:
+  - Class: rviz_common/Displays
+    Name: Displays
+  - Class: rviz_common/Views
+    Name: Views
+Visualization Manager:
+  Class: ""
+  Global Options:
+    Background Color: 48; 48; 48
+    Fixed Frame: map
+    Frame Rate: 30
+  Displays:
+    - Class: rviz_default_plugins/Grid
+      Name: Grid
+      Enabled: true
+      Plane Cell Count: 40
+      Cell Size: 1
+
+    - Class: rviz_default_plugins/TF
+      Name: TF (Phase 2)
+      Enabled: true
+      Show Names: true
+      Show Axes: true
+      Marker Scale: 0.5
+
+    - Class: rviz_default_plugins/Image
+      Name: Stereo Left (Phase 2)
+      Enabled: true
+      Topic:
+        Value: /stereo/left/image_mono8
+        Durability Policy: Volatile
+
+    - Class: rviz_default_plugins/Image
+      Name: Stereo Right (Phase 2)
+      Enabled: false
+      Topic:
+        Value: /stereo/right/image_mono8
+        Durability Policy: Volatile
+
+    - Class: rviz_default_plugins/PointCloud2
+      Name: Depth PointCloud (Phase 2)
+      Enabled: true
+      Topic:
+        Value: /depth_camera/points
+        Durability Policy: Volatile
+      Style: Points
+      Size (Pixels): 3
+      Color Transformer: AxisColor
+
+    - Class: rviz_default_plugins/Odometry
+      Name: Ground Truth Odom (Phase 3/6/7 -- map frame)
+      Enabled: true
+      Topic:
+        Value: /ground_truth/odom
+        Durability Policy: Volatile
+      Shape:
+        Value: Arrow
+      Keep: 1000
+      Position Tolerance: 0.05
+      Angle Tolerance: 0.05
+      Angle Color: 255; 25; 0
+      Shaft Color: 25; 255; 0
+
+    - Class: rviz_default_plugins/Odometry
+      Name: cuVSLAM Odom (Phase 3 -- needs Fixed Frame=odom, see notes)
+      Enabled: false
+      Topic:
+        Value: /visual_slam/tracking/odometry
+        Durability Policy: Volatile
+      Shape:
+        Value: Arrow
+      Keep: 1000
+      Shaft Color: 0; 170; 255
+
+    - Class: rviz_default_plugins/Path
+      Name: cuVSLAM SLAM Path (Phase 3 -- needs Fixed Frame=odom)
+      Enabled: false
+      Topic:
+        Value: /visual_slam/tracking/slam_path
+        Durability Policy: Volatile
+      Color: 0; 170; 255
+      Line Style: Lines
+      Line Width: 0.03
+
+    - Class: rviz_default_plugins/PointCloud2
+      Name: cuVSLAM Feature Cloud (Phase 3 -- needs Fixed Frame=odom)
+      Enabled: false
+      Topic:
+        Value: /visual_slam/vis/observations_cloud
+        Durability Policy: Volatile
+      Style: Flat Squares
+      Size (Pixels): 4
+      Color: 255; 255; 0
+
+    # Disabled: nvblox_rviz_plugin's Mesh renderer crashes rviz2 the instant
+    # it receives real mesh data in this environment -- "Unable to locate
+    # geometry program called rviz/glsl150/box.geom" (Ogre::ItemIdentityException,
+    # confirmed reproducible in isolation, unrelated to any other display).
+    # A missing/unregistered Ogre media resource in this rviz2/plugin build,
+    # not a config issue. Phase 5's ESDF PointCloud2 display below is the
+    # working fallback for visual verification until this is fixed upstream.
+    - Class: nvblox_rviz_plugin/NvbloxMesh
+      Name: nvblox Mesh (Phase 5, BROKEN -- see comment, do not enable)
+      Enabled: false
+      Topic:
+        Value: /nvblox_node/mesh
+        Durability Policy: Volatile
+
+    - Class: rviz_default_plugins/PointCloud2
+      # /nvblox_node/static_esdf_pointcloud is structurally dead in our
+      # required esdf_mode=3d config (nvblox_node.cpp gates its only
+      # publish call site behind esdf_mode==k2D) -- confirmed via source,
+      # not a subscriber/QoS issue. esdf_recorder.py bridges the ESDF
+      # service (the only live 3D-mode data path) to this topic instead.
+      Name: nvblox ESDF PointCloud (Phase 5, via esdf_recorder bridge)
+      Enabled: true
+      Topic:
+        Value: /esdf_recorder/pointcloud
+        Durability Policy: Volatile
+      Style: Points
+      Size (Pixels): 4
+      Color Transformer: Intensity
+      Channel Name: intensity
+
+    - Class: rviz_default_plugins/Marker
+      Name: Fast-Planner Travel Traj (Phase 7)
+      Enabled: true
+      Topic:
+        Value: /planning/travel_traj
+        Durability Policy: Volatile
+
+    - Class: rviz_default_plugins/Marker
+      Name: Fast-Planner B-spline Trajectory (Phase 7)
+      Enabled: true
+      Topic:
+        Value: /planning_vis/trajectory
+        Durability Policy: Volatile
+
+    - Class: rviz_default_plugins/Marker
+      Name: Fast-Planner PositionCmd Vis (Phase 7)
+      Enabled: true
+      Topic:
+        Value: /planning/position_cmd_vis
+        Durability Policy: Volatile
+
+    - Class: rviz_default_plugins/Marker
+      Name: Fast-Planner Topo Path (Phase 7, optional)
+      Enabled: false
+      Topic:
+        Value: /planning_vis/topo_path
+        Durability Policy: Volatile
+
+Window Geometry:
+  Height: 1000
+  Width: 1600
+  Displays:
+    collapsed: false

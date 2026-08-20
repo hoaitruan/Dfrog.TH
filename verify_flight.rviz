@@ -1,0 +1,174 @@
+Panels:
+  - Class: rviz_common/Displays
+    Help Height: 0
+    Name: Displays
+    Property Tree Widget:
+      Expanded: ~
+      Splitter Ratio: 0.5
+    Tree Height: 700
+Visualization Manager:
+  Class: ""
+  Displays:
+    - Class: rviz_default_plugins/Grid
+      Enabled: true
+      Name: Grid Floor
+      Reference Frame: map
+      Plane: XY
+      Plane Cell Count: 30
+      Cell Size: 1
+      Line Style:
+        Value: Lines
+        Line Width: 0.03
+      Color: 160; 160; 160
+      Alpha: 0.5
+      Offset:
+        X: 0
+        Y: 0
+        Z: 0
+      Value: true
+    - Class: rviz_default_plugins/MarkerArray
+      Enabled: true
+      Name: A/B Points
+      Namespaces: {}
+      Topic:
+        Depth: 5
+        Durability Policy: Volatile
+        Filter size: 10
+        History Policy: Keep Last
+        Reliability Policy: Reliable
+        Value: /ab_markers
+      Value: true
+    - Class: rviz_default_plugins/Odometry
+      Enabled: true
+      Name: Drone Path (real, /ground_truth/odom)
+      Topic:
+        Depth: 5
+        Durability Policy: Volatile
+        Filter size: 10
+        History Policy: Keep Last
+        Reliability Policy: Best Effort
+        Value: /ground_truth/odom
+      Position Tolerance: 0.05
+      Angle Tolerance: 0.1
+      Keep: 2000
+      Shape:
+        Value: Axes
+        Axes Length: 0.15
+        Axes Radius: 0.02
+      Covariance:
+        Position:
+          Value: false
+        Orientation:
+          Value: false
+      Value: true
+    - Class: rviz_default_plugins/Marker
+      Enabled: true
+      Name: Predicted Path (planned, /planning_vis/trajectory)
+      Namespaces: {}
+      Topic:
+        Depth: 5
+        Durability Policy: Volatile
+        Filter size: 10
+        History Policy: Keep Last
+        Reliability Policy: Reliable
+        Value: /planning_vis/trajectory
+      Value: true
+    - Class: nvblox_rviz_plugin/NvbloxMesh
+      Enabled: true
+      Name: Obstacles
+      Topic:
+        Depth: 5
+        Durability Policy: Volatile
+        Filter size: 10
+        History Policy: Keep Last
+        Reliability Policy: Reliable
+        Value: /nvblox_node/mesh
+      Value: true
+    - Class: rviz_default_plugins/PointCloud2
+      Enabled: true
+      Name: CONFIRMED OBSTACLE (camera-verified, /sdf_map/confirmed_obstacle)
+      Topic:
+        Depth: 5
+        Durability Policy: Volatile
+        Filter size: 10
+        History Policy: Keep Last
+        Reliability Policy: Reliable
+        Value: /sdf_map/confirmed_obstacle
+      Style: Boxes
+      Size (m): 0.12
+      Color Transformer: FlatColor
+      Color: 255; 140; 0
+      Alpha: 1
+      Value: true
+    - Class: rviz_default_plugins/PointCloud2
+      Enabled: false
+      Name: Occupied-or-unobserved, raw (/sdf_map/occupancy_inflate)
+      Topic:
+        Depth: 5
+        Durability Policy: Volatile
+        Filter size: 10
+        History Policy: Keep Last
+        Reliability Policy: Reliable
+        Value: /sdf_map/occupancy_inflate
+      Style: Flat Squares
+      Size (Pixels): 4
+      Color Transformer: FlatColor
+      Color: 220; 40; 40
+      Alpha: 1
+      Value: false
+    - Class: rviz_default_plugins/PointCloud2
+      Enabled: true
+      Name: Unknown/Unobserved frontier (/sdf_map/unknown)
+      Topic:
+        Depth: 5
+        Durability Policy: Volatile
+        Filter size: 10
+        History Policy: Keep Last
+        Reliability Policy: Reliable
+        Value: /sdf_map/unknown
+      Style: Flat Squares
+      Size (Pixels): 3
+      Color Transformer: FlatColor
+      Color: 160; 160; 160
+      Alpha: 0.1
+      Value: true
+  Enabled: true
+  Global Options:
+    Background Color: 20; 22; 26
+    Fixed Frame: map
+    Frame Rate: 30
+  Name: root
+  Tools:
+    - Class: rviz_default_plugins/Interact
+      Hide Inactive Objects: true
+    - Class: rviz_default_plugins/MoveCamera
+    - Class: rviz_default_plugins/Select
+  Value: true
+  Views:
+    Current:
+      Class: rviz_default_plugins/Orbit
+      Distance: 18
+      Enable Stereo Rendering:
+        Stereo Eye Separation: 0.06
+        Stereo Focal Distance: 1
+        Swap Stereo Eyes: false
+        Value: false
+      Focal Point:
+        X: 0
+        Y: 4
+        Z: 2
+      Focal Shape Fixed Size: true
+      Focal Shape Size: 0.05
+      Invert Z Axis: false
+      Name: Current View
+      Near Clip Distance: 0.01
+      Pitch: 0.6
+      Target Frame: <Fixed Frame>
+      Value: Orbit (rviz)
+      Yaw: 0.9
+    Saved: ~
+Window Geometry:
+  Height: 1000
+  Width: 1200
+  X: 60
+  Y: 60

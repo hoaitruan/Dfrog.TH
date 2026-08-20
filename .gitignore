@@ -1,0 +1,27 @@
+# Vendored / upstream projects - available independently, not our work
+/PX4-Autopilot/
+/Micro-XRCE-DDS-Agent/
+/isaac_ros_assets/
+/src/isaac_ros_common/
+/ros2_ws/src/isaac_ros_nvblox/
+/ros2_ws/src/px4_msgs/
+/ros2_ws/src/px4_ros_com/
+/ros2_ws/src/ros_gz/
+
+# Colcon build output (regenerable)
+/ros2_ws/build/
+/ros2_ws/install/
+/ros2_ws/log/
+
+# Recorded bags and ad-hoc debug/session logs (not source)
+/ros2_ws/rosbags/
+/ros2_ws/run_logs/
+/ros2_ws/run_logs_flight1_backup_*/
+/ros2_ws/*.log
+
+# Python
+__pycache__/
+*.pyc
+
+# Editor / OS cruft
+.DS_Store
