@@ -709,7 +709,7 @@ html { scroll-behavior: smooth; }
       <p class="dek">A record of every fix, flight, and open question in getting an autonomous multicopter from a point A to a point B it cannot see yet, using nothing but a stereo camera and an IMU.</p>
       <div class="meta">
         <span><b>Target hardware</b> Jetson Orin Nano 8GB · RealSense D435i · Pixhawk 6X</span>
-        <span><b>As of</b> 2026-08-20</span>
+        <span><b>As of</b> 2026-08-28</span>
         <span><b>Stack</b> cuVSLAM → EKF2 → nvblox → Fast-Planner → PX4</span>
       </div>
       <div class="stats">
@@ -733,6 +733,10 @@ html { scroll-behavior: smooth; }
       </div>
 
       <p>Two constraints shape everything below. First, the <b style="color:var(--ink)">occlusion theorem</b>: a goal sitting behind an obstacle is unobservable at the moment the mission is triggered, which makes receding-horizon planning — plan to the frontier of what's actually been seen, fly, observe more, replan — mandatory rather than a nicety. Second, <b style="color:var(--ink)">controllable safety</b>: on real hardware, a drone that loses control is not a failed test run, it's broken hardware or an injury, so the kill path (graceful and emergency) and the killswitch envelope get the same engineering attention as the flight stack itself.</p>
+
+      <div class="callout good">
+        <p><strong>Audited 2026-08-28:</strong> this document previously overstated how GPS-free the current setup is — it read as though the destination architecture (above) were what every flight actually flew on. It wasn't. Checked directly against the running code (the airframe file's <code>EKF2_EV_CTRL 0</code>, <code>ground_truth_tf.py</code>'s own docstring, <code>ARCHITECTURE.md</code>'s Milestone split) and corrected in §00, §34, and §40 to say plainly: every flight in this record flew on PX4's GPS-fused pose, by deliberate design, not on cuVSLAM. No system or code behavior changed — this was a documentation correction only.</p>
+      </div>
     </section>
 
     <section id="status">
