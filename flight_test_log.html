@@ -572,6 +572,19 @@ blockquote {
 .callout p { margin: 0; max-width: none; }
 .callout p + p { margin-top: 0.5rem; }
 
+.footnote {
+  margin: 0.7rem 0 0;
+  padding: 0.7rem 0.9rem;
+  border-left: 2px solid var(--accent);
+  background: var(--surface-2);
+  font-size: 0.86rem;
+  color: var(--ink-3);
+  font-family: 'IBM Plex Sans Condensed', sans-serif;
+  line-height: 1.5;
+  max-width: none;
+}
+.footnote b { color: var(--ink-2); }
+
 /* ---------- open issues ---------- */
 
 .issues { display: flex; flex-direction: column; gap: 1.1rem; margin-top: 1.5rem; }
@@ -1311,6 +1324,7 @@ html { scroll-behavior: smooth; }
           <div class="entry-body">
             <h4>What happened</h4>
             <p>The vehicle climbed, planned once successfully, and then sat parked barely past the start point for 44 minutes straight, completely safe, never progressing. 126 executor stalls logged over that window — roughly one every 15-20 seconds on average, though sometimes back-to-back every 2-4 seconds.</p>
+            <p class="footnote"><b>Audited 2026-08-28:</b> the surviving log for this exact window (<code>fast_planner_relaunch.log</code>, the FSM's last transition into <code>EXEC_TRAJ</code> to end of file) shows <b>336</b> <code>EXECUTOR STALL</code> warnings, not 126 — every one of them after that last transition, consistent with the livelock story itself, just a higher raw count than what was recorded live at the time. No alternate counting rule (a duration cutoff, deduplication by second, etc.) was found that reconciles the two numbers. The 126 figure is left here as originally recorded rather than silently replaced; treat the log's 336 as the more trustworthy count if the exact number matters.</p>
             <h4>Root cause: the stall guard's own success condition, working against itself</h4>
             <p>The §23 executor-stall guard returns immediately, every time it fires, before the FSM's normal switch-statement logic — the code that would otherwise notice "this trajectory is finished, time to replan toward the real goal" — ever gets to run. Under light load that's fine: stalls are rare, so plenty of ticks fall through to the real logic between them. Under sustained load, if stalls recur faster than the guard's own hold-and-cooldown cycle can clear, the FSM can get stuck ping-ponging between "stall detected, hold" and "next tick, still stalled, hold again" indefinitely — a genuine livelock. Confirmed directly in the FSM's own transition log: <code>WAIT_TARGET → GEN_NEW_TRAJ → EXEC_TRAJ</code> once, then nothing for 44 minutes.</p>
             <p>A full container restart (clearing 77 accumulated zombie processes and dropping host load from 10+ to 3-5) helped, but wasn't sufficient on its own — a follow-up re-test still hit the same pattern at a merely moderate load of 3-5, plateauing after making some real progress instead of none. The livelock's trigger threshold is lower than "heavily loaded"; even "somewhat loaded" is enough.</p>
@@ -1379,6 +1393,7 @@ html { scroll-behavior: smooth; }
             <p>The next re-arm, launched from wherever the previous flight happened to land (at B, not A, since the vehicle was never respawned), silently began from the wrong start point — the bridge captures "home" at ARM TIME relative to wherever the vehicle physically is, not a fixed world origin. Confirmed in the log: <code>home_ned=(7.9998, 0.0097, 0.0101)</code> instead of the intended <code>(0,0,0)</code>, making that "flight" a trivial no-op hovering at the already-reached goal. Not a code bug — a real operational rule for anyone re-flying without a full world reset in between: a landed-in-place drone is not a drone back at A.</p>
             <h4>The livelock, again, on a fresh reset</h4>
             <p>A subsequent flight, launched from a genuinely fresh <code>run.sh</code> bring-up with a confirmed true-origin spawn (0.02m from origin), still hit the same §28 livelock — 385 executor stalls, completely parked, over roughly 10 minutes, while host load climbed back into the 6-9 range (partly <code>run.sh</code> relaunching the Gazebo GUI again, killed again with the same effect as before, partly the host simply being busier at this later hour). Landed safely rather than left parked indefinitely.</p>
+            <p class="footnote"><b>Audited 2026-08-28:</b> the log whose time window should contain this specific flight (<code>fast_planner_opt.log</code>) instead shows continuous, healthy replanning for its entire span — an FSM transition every few seconds throughout, no extended stuck period — and only 95 stalls total across the whole file. It does not corroborate a 385-stall livelock. Most likely explanation, given this project's established pattern of relaunches reusing the same default log filename: this attempt's actual log was overwritten by a later relaunch before it could be saved off distinctly, and 385 was recorded correctly from the live terminal at the time but the file backing it no longer exists. Left as originally recorded; treat it as observed-but-not-independently-verifiable rather than confirmed.</p>
             <div class="callout bad">
               <p><strong>The honest read:</strong> a full reset does not reliably prevent the livelock — it only happens to help when it lands during a quieter load window. Tonight produced one clean, fast, stall-free flight and one fully-stuck one, on the <em>same</em> code, straddling a load swing on the same host. That's the clearest evidence yet that §29's reverted multi-threaded fix — not further resets, not further load-shedding — is the actual next step, not an optional one.</p>
             </div>
@@ -1556,7 +1571,7 @@ html { scroll-behavior: smooth; }
           <div class="issue-bar"></div>
           <div class="issue-body">
             <div class="issue-top"><h3>Executor livelock under sustained load — fix attempted, reverted</h3><span class="pill accent">Open — safe, not fast</span></div>
-            <p>§28 found the worst-case form of §24's "safe but slow" limitation directly: under sustained load, the §23 stall guard can return early on every single tick faster than its own hold-and-cooldown cycle clears, permanently preventing the FSM from ever reaching the logic that would replan toward the real goal — 44 minutes parked barely past the start, completely safe, zero progress. §29 tried the real fix (a <code>MultiThreadedExecutor</code> splitting control and map work onto separate callback groups) — it eliminated the livelock outright (0 stalls in the next test flight) but exposed an unsynchronized read/write race on <code>SDFMap</code>'s buffers that made the kinodynamic search fail almost every attempt, including trivial hops in open space. Reverted the same night rather than ship a race condition on flight-safety code. §31 then produced the clearest evidence yet that a reset alone isn't the fix: the <em>same</em> post-optimization code reached B in 4.32s with zero stalls on one flight, then fully livelocked (385 stalls, ~10 minutes parked) on the very next one, the only difference being host load at the time.</p>
+            <p>§28 found the worst-case form of §24's "safe but slow" limitation directly: under sustained load, the §23 stall guard can return early on every single tick faster than its own hold-and-cooldown cycle clears, permanently preventing the FSM from ever reaching the logic that would replan toward the real goal — 44 minutes parked barely past the start, completely safe, zero progress. §29 tried the real fix (a <code>MultiThreadedExecutor</code> splitting control and map work onto separate callback groups) — it eliminated the livelock outright (0 stalls in the next test flight) but exposed an unsynchronized read/write race on <code>SDFMap</code>'s buffers that made the kinodynamic search fail almost every attempt, including trivial hops in open space. Reverted the same night rather than ship a race condition on flight-safety code. §31 then produced the clearest evidence yet that a reset alone isn't the fix: the <em>same</em> post-optimization code reached B in 4.32s with zero stalls on one flight, then fully livelocked (385 stalls, ~10 minutes parked) on the very next one, the only difference being host load at the time. <em>(Both raw stall counts — 126 and 385 — were recorded live at the time but don't match the logs that survived on disk; see the audit footnotes in §28/§31.)</em></p>
             <div class="fix"><b>Real next step:</b> the multi-threaded executor split is the right direction and is already wired up (callback groups in place, inert under the current single-threaded revert) — it needs proper synchronization on <code>SDFMap</code>'s shared buffers (a double-buffer swap or an explicit lock around the read/write path) designed and tested deliberately, not attempted live mid-flight.</div>
           </div>
         </div>
@@ -1623,20 +1638,21 @@ html { scroll-behavior: smooth; }
             <tr><td class="label">SDF map visualization timer</td><td>50ms → 500ms</td><td><code>vis_timer_</code>, the larger of the two §24 fixes</td></tr>
             <tr><td class="label">Stall-frequency reduction, §24 combined</td><td>≈60%</td><td>Comparable-window measurement, not a full fix</td></tr>
             <tr><td class="label">Odom-staleness guard threshold</td><td>0.5s receipt age</td><td><code>triggerTrackingDivergenceHold()</code> (§27)</td></tr>
-            <tr><td class="label">Livelock duration observed</td><td>44 min parked, 0 progress</td><td>Single flight, §28</td></tr>
+            <tr><td class="label">Livelock duration observed</td><td>44 min parked, 0 progress (126 stalls logged live)†</td><td>Single flight, §28</td></tr>
             <tr><td class="label">Container restart: zombies cleared</td><td>77 → 2</td><td>Confirmed via <code>docker restart</code> (§28)</td></tr>
             <tr><td class="label">Container restart: load average</td><td>10+ → 3-5</td><td>Same host, before/after (§28)</td></tr>
             <tr><td class="label">Multi-threaded executor test</td><td>0 stalls, search fails almost every attempt</td><td>Tried &amp; reverted same night (§29)</td></tr>
             <tr><td class="label">Corridor fetch, after address-hoist</td><td>184–232ms → 104–120ms</td><td>≈40–45% reduction, measured (§30)</td></tr>
             <tr><td class="label">Vis publishers with zero real consumers</td><td>2 of 5 (<code>/sdf_map/occupancy</code>, <code>/sdf_map/esdf</code>)</td><td>Now skipped unconditionally when unwatched (§30)</td></tr>
             <tr><td class="label">Clean post-reset flight time</td><td>4.32s, 0 stalls, 0 breaches</td><td>goalflight31, 0.56m pillar_03 clearance (§31)</td></tr>
-            <tr><td class="label">Livelocked post-reset flight</td><td>385 stalls, ~10 min parked</td><td>goalflight33, same code, higher load (§31)</td></tr>
+            <tr><td class="label">Livelocked post-reset flight</td><td>385 stalls† , ~10 min parked</td><td>goalflight33, same code, higher load (§31)</td></tr>
             <tr><td class="label">Stale-FSM crash breach altitude</td><td>4.49m</td><td>goalflight34, both guards correctly refused to act (§32)</td></tr>
             <tr><td class="label">Clean flight, full-restart rule applied</td><td>5.36s, 27 stalls, 0 breaches, 0.83m clearance</td><td>goalflight35 (§33)</td></tr>
             <tr><td class="label">Clean flight, Gazebo GUI left open</td><td>2.15s, 15 stalls, 0 breaches, 1.15m clearance</td><td>goalflight36, fastest of the engagement (§33)</td></tr>
           </tbody>
         </table>
       </div>
+      <p class="footnote">† Audited 2026-08-28: these two stall counts (126 and 385) were recorded live at the time but don't match the raw logs that survived on disk for their respective time windows (336 and 95/no-livelock-visible, respectively). Left as originally recorded rather than silently replaced — see the audit footnotes in §28 and §31 for the full comparison.</p>
 
       <h4 style="font-family:'IBM Plex Sans Condensed',sans-serif;font-size:0.85rem;letter-spacing:0.04em;text-transform:uppercase;color:var(--ink-3);margin:2rem 0 0.5rem;">Glossary</h4>
       <dl class="glossary">
