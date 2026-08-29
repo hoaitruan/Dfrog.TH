@@ -651,73 +651,78 @@ html { scroll-behavior: smooth; }
     <div class="nav-mark"><span class="glyph">§</span><span class="label">Flight-Test Log</span></div>
     <div class="nav-group-label">Orientation</div>
     <ol>
-      <li><a href="#overview"><span class="n">00</span>Project overview</a></li>
-      <li><a href="#status"><span class="n">01</span>Status at a glance</a></li>
+      <li><a href="#overview"><span class="n">00</span>Introduction</a></li>
+      <li><a href="#status"><span class="n">01</span>Executive Summary</a></li>
     </ol>
-    <div class="nav-group-label">Milestone 1 build-out</div>
+    <div class="nav-group-label">Part I — System Architecture</div>
     <ol>
-      <li><a href="#e-m1"><span class="n">02</span>Milestone 1 baseline</a></li>
-      <li><a href="#e-killpath"><span class="n">03</span>Kill path</a></li>
-      <li><a href="#e-occlusion"><span class="n">04</span>Occlusion theorem</a></li>
-      <li><a href="#e-startexempt"><span class="n">05</span>Start-state exemption</a></li>
-      <li><a href="#e-goalsub"><span class="n">06</span>Goal-substitution gate</a></li>
-      <li><a href="#e-rh1"><span class="n">07</span>Receding-horizon, pt. 1</a></li>
-      <li><a href="#e-rh2"><span class="n">08</span>Receding-horizon, pt. 2</a></li>
-      <li><a href="#e-bug2"><span class="n">09</span>Bug #2 — empty-spline crash</a></li>
+      <li><a href="#m-perception"><span class="n">02</span>Perception: the VIO path, and what's actually flying today</a></li>
+      <li><a href="#m-mapping"><span class="n">03</span>Mapping: depth images to a safety field</a></li>
+      <li><a href="#m-search"><span class="n">04</span>Search: the kinodynamic planner</a></li>
+      <li><a href="#m-trajectory"><span class="n">05</span>Trajectory: splines and optimization</a></li>
+      <li><a href="#m-execution"><span class="n">06</span>Execution: the FSM and the frontier</a></li>
+      <li><a href="#m-safety"><span class="n">07</span>Control and the safety stack</a></li>
     </ol>
-    <div class="nav-group-label">Chronological record</div>
+    <div class="nav-group-label">Part II — Phase 1: Foundation</div>
     <ol>
-      <li><a href="#e-auto"><span class="n">10</span>Auto-mode check</a></li>
-      <li><a href="#e-loi1"><span class="n">11</span>Lỗi 1 — replan storm</a></li>
-      <li><a href="#e-loi2"><span class="n">12</span>Lỗi 2 — start-state</a></li>
-      <li><a href="#e-verify1"><span class="n">13</span>Verify flight #1</a></li>
-      <li><a href="#e-cutoff"><span class="n">14</span>Cutoff hardening</a></li>
-      <li><a href="#e-loi3"><span class="n">15</span>Lỗi 3 + Parts B/C</a></li>
-      <li><a href="#e-watchdog"><span class="n">16</span>Watchdog flight</a></li>
-      <li><a href="#e-thrust"><span class="n">17</span>Thrust-coupling read</a></li>
+      <li><a href="#e-m1"><span class="n">08</span>Milestone 1 baseline</a></li>
+      <li><a href="#e-killpath"><span class="n">09</span>Kill path</a></li>
+      <li><a href="#e-occlusion"><span class="n">10</span>Occlusion theorem</a></li>
+      <li><a href="#e-startexempt"><span class="n">11</span>Start-state exemption</a></li>
+      <li><a href="#e-goalsub"><span class="n">12</span>Goal-substitution gate</a></li>
+      <li><a href="#e-rh1"><span class="n">13</span>Receding-horizon, pt. 1</a></li>
+      <li><a href="#e-rh2"><span class="n">14</span>Receding-horizon, pt. 2</a></li>
+      <li><a href="#e-bug2"><span class="n">15</span>Bug #2 — empty-spline crash</a></li>
     </ol>
-    <div class="nav-group-label">Reaching B</div>
+    <div class="nav-group-label">Phase 2: Hardening</div>
     <ol>
-      <li><a href="#e-thrustbudget"><span class="n">18</span>Combined thrust-vector budget</a></li>
-      <li><a href="#e-reframe"><span class="n">19</span>The reframe — it was a collision</a></li>
-      <li><a href="#e-frontierfan"><span class="n">20</span>Single-ray frontier, found &amp; fanned</a></li>
+      <li><a href="#e-auto"><span class="n">16</span>Auto-mode check</a></li>
+      <li><a href="#e-loi1"><span class="n">17</span>Lỗi 1 — replan storm</a></li>
+      <li><a href="#e-loi2"><span class="n">18</span>Lỗi 2 — start-state</a></li>
+      <li><a href="#e-verify1"><span class="n">19</span>Verify flight #1</a></li>
+      <li><a href="#e-cutoff"><span class="n">20</span>Cutoff hardening</a></li>
+      <li><a href="#e-loi3"><span class="n">21</span>Lỗi 3 + Parts B/C</a></li>
+      <li><a href="#e-watchdog"><span class="n">22</span>Watchdog flight</a></li>
+      <li><a href="#e-thrust"><span class="n">23</span>Thrust-coupling read</a></li>
     </ol>
-    <div class="nav-group-label">Proving it, and what that broke</div>
+    <div class="nav-group-label">Phase 3: Reaching B</div>
     <ol>
-      <li><a href="#e-visfix"><span class="n">21</span>Obstacle visualization, for real</a></li>
-      <li><a href="#e-hysteresis"><span class="n">22</span>Frontier hysteresis — two bugs</a></li>
-      <li><a href="#e-stall"><span class="n">23</span>The executor-stall discovery</a></li>
-      <li><a href="#e-perf"><span class="n">24</span>Performance: two load fixes</a></li>
+      <li><a href="#e-thrustbudget"><span class="n">24</span>Combined thrust-vector budget</a></li>
+      <li><a href="#e-reframe"><span class="n">25</span>The reframe — it was a collision</a></li>
+      <li><a href="#e-frontierfan"><span class="n">26</span>Single-ray frontier, found &amp; fanned</a></li>
     </ol>
-    <div class="nav-group-label">Tonight's re-test</div>
+    <div class="nav-group-label">Phase 4: Proving It</div>
     <ol>
-      <li><a href="#e-odomstale"><span class="n">27</span>The odom-staleness crashes</a></li>
-      <li><a href="#e-livelock"><span class="n">28</span>The livelock, under real load</a></li>
-      <li><a href="#e-mtexecutor"><span class="n">29</span>Multi-threading, tried &amp; reverted</a></li>
-      <li><a href="#e-jetsonopt"><span class="n">30</span>Optimizing for the Jetson, not just this box</a></li>
-      <li><a href="#e-proofwall"><span class="n">31</span>Proof, then the same wall again</a></li>
-      <li><a href="#e-staleFSM"><span class="n">32</span>The stale-FSM crash</a></li>
-      <li><a href="#e-twomoreB"><span class="n">33</span>Two more clean B's, GUI and all</a></li>
+      <li><a href="#e-visfix"><span class="n">27</span>Obstacle visualization, for real</a></li>
+      <li><a href="#e-hysteresis"><span class="n">28</span>Frontier hysteresis — two bugs</a></li>
+      <li><a href="#e-stall"><span class="n">29</span>The executor-stall discovery</a></li>
+      <li><a href="#e-perf"><span class="n">30</span>Performance: two load fixes</a></li>
     </ol>
-    <div class="nav-group-label">How the system actually works</div>
+    <div class="nav-group-label">Phase 5: Final Verification</div>
     <ol>
-      <li><a href="#m-perception"><span class="n">34</span>Perception: the VIO path, and what's actually flying today</a></li>
-      <li><a href="#m-mapping"><span class="n">35</span>Mapping: depth images to a safety field</a></li>
-      <li><a href="#m-search"><span class="n">36</span>Search: the kinodynamic planner</a></li>
-      <li><a href="#m-trajectory"><span class="n">37</span>Trajectory: splines and optimization</a></li>
-      <li><a href="#m-execution"><span class="n">38</span>Execution: the FSM and the frontier</a></li>
-      <li><a href="#m-safety"><span class="n">39</span>Control and the safety stack</a></li>
+      <li><a href="#e-odomstale"><span class="n">31</span>The odom-staleness crashes</a></li>
+      <li><a href="#e-livelock"><span class="n">32</span>The livelock, under real load</a></li>
+      <li><a href="#e-mtexecutor"><span class="n">33</span>Multi-threading, tried &amp; reverted</a></li>
+      <li><a href="#e-jetsonopt"><span class="n">34</span>Optimizing for the Jetson, not just this box</a></li>
+      <li><a href="#e-proofwall"><span class="n">35</span>Proof, then the same wall again</a></li>
+      <li><a href="#e-staleFSM"><span class="n">36</span>The stale-FSM crash</a></li>
+      <li><a href="#e-twomoreB"><span class="n">37</span>Two more clean B's, GUI and all</a></li>
     </ol>
-    <div class="nav-group-label">Forward</div>
+    <div class="nav-group-label">Part III — Discussion &amp; Conclusion</div>
     <ol>
-      <li><a href="#issues"><span class="n">40</span>Open issues</a></li>
-      <li><a href="#reference"><span class="n">41</span>Reference</a></li>
+      <li><a href="#discussion-audit"><span class="n">38</span>Discussion: auditing the record</a></li>
+      <li><a href="#issues"><span class="n">39</span>Open issues &amp; future work</a></li>
+      <li><a href="#conclusion"><span class="n">40</span>Conclusion</a></li>
+    </ol>
+    <div class="nav-group-label">Reference</div>
+    <ol>
+      <li><a href="#reference"><span class="n">41</span>Reference &amp; glossary</a></li>
     </ol>
   </nav>
 
   <main>
     <div class="masthead">
-      <div class="eyebrow">Simulation-only · PX4 SITL &amp; Gazebo · not yet flown on hardware</div>
+      <div class="eyebrow">Capstone Report · Simulation-only · PX4 SITL &amp; Gazebo · not yet flown on hardware</div>
       <h1>GPS-Free Navigation: Flight-Test Log</h1>
       <p class="dek">A record of every fix, flight, and open question in getting an autonomous multicopter from a point A to a point B it cannot see yet, using nothing but a stereo camera and an IMU.</p>
       <div class="meta">
@@ -734,11 +739,11 @@ html { scroll-behavior: smooth; }
     </div>
 
     <section id="overview">
-      <div class="section-head"><span class="idx">00</span><h2>What this drone is supposed to do</h2></div>
-      <p class="section-intro">Fly point A to point B with no GPS, self-localizing and mapping from camera and inertial data alone. That's the destination architecture below, and the code for all of it exists and runs. <b style="color:var(--ink)">It is not, however, what any flight documented in this record actually flew on</b> — every flight so far has PX4's own GPS-fused pose feeding control, mapping, and planning, deliberately, as a Milestone-1 stepping stone (§02, §34). cuVSLAM runs the whole time in parallel, tracked and logged, but not yet wired into the loop that matters.</p>
+      <div class="section-head"><span class="idx">00</span><h2>Introduction — what this drone is supposed to do</h2></div>
+      <p class="section-intro">Fly point A to point B with no GPS, self-localizing and mapping from camera and inertial data alone. That's the destination architecture below, and the code for all of it exists and runs. <b style="color:var(--ink)">It is not, however, what any flight documented in this record actually flew on</b> — every flight so far has PX4's own GPS-fused pose feeding control, mapping, and planning, deliberately, as a Milestone-1 stepping stone (§08, §02). cuVSLAM runs the whole time in parallel, tracked and logged, but not yet wired into the loop that matters.</p>
 
       <div class="pipeline">
-        <div class="pnode"><div class="tier">Localization</div><div class="name">cuVSLAM</div><div class="desc">Stereo IR + IMU → 6-DOF pose. Destination path: feeds EKF2 as external vision, no GPS anywhere. Current status: runs standalone, tracked but not fused (<code>EKF2_EV_CTRL 0</code>) — see §34.</div></div>
+        <div class="pnode"><div class="tier">Localization</div><div class="name">cuVSLAM</div><div class="desc">Stereo IR + IMU → 6-DOF pose. Destination path: feeds EKF2 as external vision, no GPS anywhere. Current status: runs standalone, tracked but not fused (<code>EKF2_EV_CTRL 0</code>) — see §02.</div></div>
         <div class="pnode"><div class="tier">Estimation</div><div class="name">EKF2</div><div class="desc">PX4's own estimator. Destination path: fuses cuVSLAM's vision pose. Currently fuses GPS instead — same estimator, different aiding source.</div></div>
         <div class="pnode"><div class="tier">Mapping</div><div class="name">nvblox</div><div class="desc">Depth + pose → an ESDF (distance field). Raw material for avoidance, not avoidance itself.</div></div>
         <div class="pnode"><div class="tier">Planning</div><div class="name">Fast-Planner</div><div class="desc">Consumes the ESDF via <code>get_esdf_and_gradient</code>, produces a collision-free trajectory.</div></div>
@@ -748,24 +753,23 @@ html { scroll-behavior: smooth; }
       <p>Two constraints shape everything below. First, the <b style="color:var(--ink)">occlusion theorem</b>: a goal sitting behind an obstacle is unobservable at the moment the mission is triggered, which makes receding-horizon planning — plan to the frontier of what's actually been seen, fly, observe more, replan — mandatory rather than a nicety. Second, <b style="color:var(--ink)">controllable safety</b>: on real hardware, a drone that loses control is not a failed test run, it's broken hardware or an injury, so the kill path (graceful and emergency) and the killswitch envelope get the same engineering attention as the flight stack itself.</p>
 
       <div class="callout good">
-        <p><strong>Audited 2026-08-28:</strong> this document previously overstated how GPS-free the current setup is — it read as though the destination architecture (above) were what every flight actually flew on. It wasn't. Checked directly against the running code (the airframe file's <code>EKF2_EV_CTRL 0</code>, <code>ground_truth_tf.py</code>'s own docstring, <code>ARCHITECTURE.md</code>'s Milestone split) and corrected in §00, §34, and §40 to say plainly: every flight in this record flew on PX4's GPS-fused pose, by deliberate design, not on cuVSLAM. No system or code behavior changed — this was a documentation correction only.</p>
+        <p><strong>Audited 2026-08-28:</strong> this document previously overstated how GPS-free the current setup is — it read as though the destination architecture (above) were what every flight actually flew on. It wasn't. Checked directly against the running code (the airframe file's <code>EKF2_EV_CTRL 0</code>, <code>ground_truth_tf.py</code>'s own docstring, <code>ARCHITECTURE.md</code>'s Milestone split) and corrected in §00, §02, and §39 to say plainly: every flight in this record flew on PX4's GPS-fused pose, by deliberate design, not on cuVSLAM. No system or code behavior changed — this was a documentation correction only.</p>
       </div>
     </section>
-
     <section id="status">
-      <div class="section-head"><span class="idx">01</span><h2>Status at a glance</h2></div>
+      <div class="section-head"><span class="idx">01</span><h2>Executive Summary — status at a glance</h2></div>
       <p class="section-intro">Everything below this point is detail. This is the summary a reader can stop at.</p>
       <div class="status-grid">
         <div class="status-col solid">
           <h3><span class="dot good"></span>Solid</h3>
           <ul>
             <li>B reached, with the real 8-pillar obstacle ring between start and goal, ten separate times across the second half of this record — the fastest at 2.15s, with Gazebo's own GUI left running the whole time — not a one-off, a repeatable outcome.</li>
-            <li>The thrust-authority limit found in §17 is closed: a combined thrust-vector budget (search pruning, an exact closed-form reallocation ratio, and an optimizer cost term, all sharing one physically-derived 12.5&nbsp;m·s⁻² ceiling) replaced independent per-axis limits that were letting trajectories ask for more than the airframe could give.</li>
+            <li>The thrust-authority limit found in §23 is closed: a combined thrust-vector budget (search pruning, an exact closed-form reallocation ratio, and an optimizer cost term, all sharing one physically-derived 12.5&nbsp;m·s⁻² ceiling) replaced independent per-axis limits that were letting trajectories ask for more than the airframe could give.</li>
             <li>Obstacle detection is now provable, not inferred: a dedicated camera-verified signal (observed <em>and</em> occupied, not merely "not yet seen") renders as a tight cluster exactly where the real pillar is, growing live as the drone approaches it.</li>
             <li>The planner's single-ray blind spot — the actual reason B kept going unreached — found and fixed: a fan of candidate detour angles now tried whenever the straight line to the goal is blocked.</li>
             <li>An executor-stall guard closes a real, load-triggered crash mechanism: validated across 200+ genuine multi-second stalls with zero crashes since.</li>
-            <li>An odom-staleness guard (§27) closes a second, distinct crash mechanism — a stalled position-data source could pin a safety hold to a phantom location; caught it happening live twice, fixed, then watched it correctly refuse to act on stale data the next time the same underlying stall recurred.</li>
-            <li>Two real, measured cost reductions (§30) target the actual Jetson deployment, not just tonight's dev box: unwatched visualization publishers now skip their work entirely (2 of 5 had zero real consumers, ever), and the corridor ESDF fetch — the single most expensive required callback in the system — dropped 40–45% (184–232ms → 104–120ms) from a correctness-preserving algebraic hoist.</li>
+            <li>An odom-staleness guard (§31) closes a second, distinct crash mechanism — a stalled position-data source could pin a safety hold to a phantom location; caught it happening live twice, fixed, then watched it correctly refuse to act on stale data the next time the same underlying stall recurred.</li>
+            <li>Two real, measured cost reductions (§34) target the actual Jetson deployment, not just tonight's dev box: unwatched visualization publishers now skip their work entirely (2 of 5 had zero real consumers, ever), and the corridor ESDF fetch — the single most expensive required callback in the system — dropped 40–45% (184–232ms → 104–120ms) from a correctness-preserving algebraic hoist.</li>
             <li>Killswitch envelope: four independent bounds, 12–55ms breach-to-disarm latency, all four confirmed firing live, including twice as the sole reason a real divergence didn't become a real crash.</li>
             <li>EKF2 confirmed accurate to ≤0.27m against raw Gazebo ground truth during controlled flight — the estimate was never the problem.</li>
           </ul>
@@ -773,9 +777,9 @@ html { scroll-behavior: smooth; }
         <div class="status-col blocked">
           <h3><span class="dot bad"></span>Known limitation</h3>
           <ul>
-            <li>Flights are safe under every load condition tested, but under sustained contention they can fully livelock — parked safely, but making zero progress, for as long as the load persists (44 minutes observed in one case, §28). This is the worst-case form of the "safe but slow" limitation, not a separate problem.</li>
+            <li>Flights are safe under every load condition tested, but under sustained contention they can fully livelock — parked safely, but making zero progress, for as long as the load persists (44 minutes observed in one case, §32). This is the worst-case form of the "safe but slow" limitation, not a separate problem.</li>
             <li>Root cause is architectural: the node is single-threaded, so the same guard that keeps every individual stall safe can, under sustained load, return early on every tick faster than it clears — starving the FSM's own replan-trigger logic indefinitely. A full container restart measurably helps (load 10+ → 3-5, zombies 77 → 2) but isn't sufficient on its own; the livelock recurred at merely moderate load on the very next re-test.</li>
-            <li>The structural fix — a multi-threaded executor splitting control and map work onto separate threads — was built and tested the same night (§29). It eliminated the livelock outright, but exposed an unsynchronized read/write race on the map's shared buffers that broke path search almost entirely. Reverted rather than ship a race condition on flight-safety code; the real fix needs proper synchronization added deliberately, not live.</li>
+            <li>The structural fix — a multi-threaded executor splitting control and map work onto separate threads — was built and tested the same night (§33). It eliminated the livelock outright, but exposed an unsynchronized read/write race on the map's shared buffers that broke path search almost entirely. Reverted rather than ship a race condition on flight-safety code; the real fix needs proper synchronization added deliberately, not live.</li>
           </ul>
         </div>
         <div class="status-col open">
@@ -789,15 +793,129 @@ html { scroll-behavior: smooth; }
         </div>
       </div>
     </section>
-
-    <section id="chronicle-head" style="padding-bottom:0; border-bottom:none;">
-      <div class="section-head"><span class="idx">02–09</span><h2>Milestone 1 build-out</h2></div>
-      <p class="section-intro">The foundational arc, before the point where this record's detail gets granular. Grounded in what's directly verifiable — code comments and log evidence that survived, cited where the account is a summary rather than a full trace.</p>
+    <section id="mechanism-head" style="padding-bottom:0; border-bottom:none;">
+      <div class="section-head"><span class="idx">02–07</span><h2>Part I — System Architecture</h2></div>
+      <p class="section-intro">Before the chronicle of what broke and what got fixed: what the system actually is. Six pieces, in the order data flows through them — camera and IMU in, a rotor command out. Written for a reader who wants the mechanism first and the incident history second.</p>
     </section>
-
+    <section id="m-perception" style="padding-top:0;">
+      <div class="entry">
+        <div class="entry-mark">§02<span class="when">Reference</span></div>
+        <div>
+          <div class="entry-title-row"><h3>Perception: the VIO path, and what's actually flying today</h3><span class="pill neutral">Mechanism</span></div>
+          <p class="lede">Everything downstream — the map, the plan, the control loop — is only as good as knowing where the drone actually is. The architecture below is designed to get that from a camera and an IMU alone. Every flight in this record so far got it from GPS instead — deliberately, and that's the first thing to understand about this section, not a footnote at the bottom of it.</p>
+          <div class="entry-body">
+            <h4>Stereo visual-inertial odometry (cuVSLAM)</h4>
+            <p>Two cameras (a fixed-baseline stereo pair) and an IMU feed cuVSLAM, an Isaac ROS GPU-accelerated VIO front end. Each frame, it tracks a set of visual features across the stereo pair and across time — the stereo baseline gives per-feature depth by triangulation, and tracking the same features frame-to-frame gives the camera's own motion. That visual estimate is tightly coupled with the IMU: the IMU is cheap and fast (hundreds of Hz) but drifts badly on its own; the camera is accurate but comparatively slow and can fail on textureless or fast-moving scenes. Fusing them gives a 6-DOF pose estimate that's both high-rate and drift-resistant — this is the GPS substitute the architecture is built around, and it's GPU work specifically so it can run in real time on the Jetson's own accelerators rather than starving its CPU cores. It runs, continuously, on every flight in this record. It just isn't what any of those flights flew on (below).</p>
+            <h4>EKF2 — PX4's own state estimator, and what it's actually fusing right now</h4>
+            <p>PX4 runs its own extended Kalman filter (EKF2) onboard. It predicts state forward continuously from raw IMU integration (fast, cheap, drifts alone) and corrects that prediction with an external position fix (slower, but bounds the drift). The architecture is built to supply that fix from cuVSLAM (<code>EKF2_EV_CTRL</code> nonzero, external vision). <b style="color:var(--ink)">As configured for every flight in this record, it's supplied by GPS instead</b> (<code>EKF2_EV_CTRL 0</code>, set in the airframe file, <code>4022_gz_x500_depth_stereo</code>) — the exact same EKF2, the exact same downstream consumers, just a different aiding source feeding it. This isn't a display-only or map-centering substitution: it's the actual estimate PX4's own position/velocity controllers fly on, published as <code>/fmu/out/vehicle_odometry</code> and republished as <code>/ground_truth/odom</code> (§03) for nvblox's camera pose and Fast-Planner's <code>sdf_map</code> frame alike. GPS is genuinely load-bearing for control, mapping, and planning right now, not just one of the three.</p>
+            <h4>Why, and what closes it</h4>
+            <p><code>EKF2_EV_CTRL 0</code> wasn't the original plan — it was forced by a real incident (a Phase 6 flight test where cuVSLAM's tracking drifted ~55m from the Gazebo-confirmed position under GPU contention with nvblox's concurrent CUDA context, corrupting EKF2's fused estimate badly enough to cause a genuine runaway, stopped only by killing the node). <code>ARCHITECTURE.md</code> then formalized staying on GPS as a deliberate Milestone-1 choice, not just a leftover workaround: with pose held constant and known-reliable, a Milestone-1 failure has exactly one possible cause (the new nvblox/ESDF wiring), not two entangled ones. cuVSLAM's own accuracy is still real and separately measured — ≤0.27m against raw Gazebo truth during controlled flight (Reference table) — it just isn't the thing in the loop. Re-enabling <code>EKF2_EV_CTRL</code> and root-causing the GPU-contention drift is Milestone 2, not started (Open issues).</p>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section id="m-mapping">
+      <div class="entry">
+        <div class="entry-mark">§03<span class="when">Reference</span></div>
+        <div>
+          <div class="entry-title-row"><h3>Mapping: depth images to a safety field</h3><span class="pill neutral">Mechanism</span></div>
+          <p class="lede">The planner never looks at a depth image directly. Everything it knows about the world comes through one number per voxel: distance to the nearest obstacle.</p>
+          <div class="entry-body">
+            <h4>Depth fusion (nvblox)</h4>
+            <p>The D435i's depth stream (in SITL, Gazebo's simulated depth camera) feeds nvblox, which fuses each depth image into a voxelized <b style="color:var(--ink)">TSDF</b> — a truncated signed distance field. For every pixel with a valid depth reading, nvblox walks the ray from the camera out to that measured surface and updates a running signed-distance estimate in every voxel within a narrow band around the surface (positive in front of it, negative behind, zero at the surface itself) — the same integration scheme real-time depth-fusion systems have used since KinectFusion, GPU-accelerated so it can keep up with a live camera feed. Averaging many rays over time is what makes the fused surface far more stable than any single noisy depth frame. nvblox additionally propagates a full <b style="color:var(--ink)">ESDF</b> (a genuine distance-to-nearest-obstacle value at every voxel, not just the narrow near-surface band the TSDF tracks) out from that fused surface — that ESDF is the actual product this project consumes.</p>
+            <h4>How Fast-Planner pulls from it</h4>
+            <p><code>SDFMap</code> never subscribes to raw depth or does its own raycasting — that code path exists in the source but is intentionally dead (see §25/§03's own comments in <code>sdf_map.cpp</code>). Instead it holds an async service client against <code>/nvblox_node/get_esdf_and_gradient</code> and pulls on two independent timers: a <b style="color:var(--ink)">near tier</b> (0.25s, ~226,981 voxels, close-range avoidance depends on this one being fresh) and a slower <b style="color:var(--ink)">corridor tier</b> (4.0s as of §30, ~2,146,689 voxels, longer-range look-ahead). Async, not blocking — a blocking call on a single-threaded executor would deadlock the node against its own thread.</p>
+            <h4>The resolution mismatch, and why min-pooling</h4>
+            <p>nvblox's own voxels (0.05m) are finer than Fast-Planner's grid (0.1m) — a real 2× mismatch, confirmed live rather than assumed. Each response is pooled down: for every destination voxel, <code>onEsdfResponse()</code> looks at the <code>pool_factor³</code> (2×2×2 = 8) source voxels it covers and keeps the <em>minimum</em> signed distance among them, not an average or nearest-sample. Minimum is the conservative choice for a safety field — it never overstates clearance, so a destination voxel straddling an obstacle edge reads as closer to that obstacle than a softer statistic would suggest. (§34 hoisted the redundant address arithmetic out of this exact loop — same result, ~40-45% less time to compute it.)</p>
+            <h4>Unknown space is occupied, not free</h4>
+            <p>Every voxel starts (and stays, until actually observed) marked occupied — a deliberate policy flip made after a real incident where "unknown = free" let a trajectory fly straight through a real, simply-not-yet-seen obstacle. "Never plan through space not confirmed free" is the general rule every trajectory-<em>generating</em> code path obeys (the search's pruning, the frontier's ray march, the optimizer's cost term). The one narrow, deliberate exception is <code>checkTrajCollision</code>'s watchdog on an <em>already-committed</em> trajectory, which requires actual observation before flagging new danger — specifically to avoid re-triggering the earlier false-collision-storm bug (Lỗi 1) on an already-in-flight path. It's a narrow carve-out for one already-safe case, not a general "unknown is fine" policy.</p>
+            <h4>Where the map actually lives</h4>
+            <p>Every visualization publisher (and, until §27's fix, every real avoidance-relevant buffer index) is bounded by <code>local_bound_min_</code>/<code>local_bound_max_</code> — a moving 3D voxel-index window recentered on the drone's live position (<code>camera_pos_ ± local_update_range_</code>) every time the map actually updates. For the whole engagement before §27, nothing ever set this outside its C++ zero-default, so every map display was rendering one fixed, meaningless corner voxel regardless of where the drone actually was — a real bug, not a display quirk, fixed by recentering it inside <code>onEsdfResponse()</code>.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section id="m-search">
+      <div class="entry">
+        <div class="entry-mark">§04<span class="when">Reference</span></div>
+        <div>
+          <div class="entry-title-row"><h3>Search: the kinodynamic planner</h3><span class="pill neutral">Mechanism</span></div>
+          <p class="lede">The map says where it's safe to be. The search's job is finding a path there the airframe can actually fly, not just a geometrically clear one.</p>
+          <div class="entry-body">
+            <h4>Motion-primitive expansion, not a geometric graph</h4>
+            <p>A plain shortest-path search over free-space cells would happily hand back a trajectory with instantaneous direction changes — geometrically valid, physically impossible for a quadrotor to track. Fast-Planner's <code>kinodynamic_astar</code> instead expands the search from the vehicle's actual current state (position, velocity, acceleration) forward using discretized acceleration primitives integrated over a short time step — every expanded node is a state the vehicle could actually reach by commanding some feasible acceleration and coasting. The search explores outward from there, biased toward the goal by a standard admissible heuristic, exactly like A* over cells but with the state itself carrying real physics.</p>
+            <h4>Two independent prunes, not one</h4>
+            <p>Every candidate primitive is checked against two separate bounds before it's ever expanded further: <b style="color:var(--ink)">collision</b> (<code>evaluateCoarseEDT</code> → <code>sdf_map_->getDistance()</code> — reject anything that passes too close to an occupied or still-unknown voxel) and, since §24, <b style="color:var(--ink)">thrust authority</b> (reject any primitive whose combined <code>‖a_cmd + g·ẑ‖</code> exceeds the airframe's real, telemetry-measured ceiling of 12.5 m·s⁻²). Before §24 these were independent per-axis velocity/acceleration caps that could jointly ask for more thrust than the airframe could ever deliver, no matter how each looked in isolation — the combined check is what actually matches the physics of a single shared rotor budget.</p>
+            <h4>Output</h4>
+            <p>A coarse, discrete-time sequence of position/velocity/acceleration waypoints — dynamically plausible, provably collision-clear against the map as currently known, but not yet smooth. That's what gets handed to the optimizer next.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section id="m-trajectory">
+      <div class="entry">
+        <div class="entry-mark">§05<span class="when">Reference</span></div>
+        <div>
+          <div class="entry-title-row"><h3>Trajectory: splines and optimization</h3><span class="pill neutral">Mechanism</span></div>
+          <p class="lede">The search finds a feasible route. The optimizer turns it into something the flight controller can actually track smoothly.</p>
+          <div class="entry-body">
+            <h4>Why a B-spline</h4>
+            <p>A uniform B-spline represents the whole trajectory with a small number of control points, and — critically — it's smooth by construction: position, velocity, and acceleration are just successive derivatives of the same underlying curve (<code>velocity_traj_ = position_traj_.getDerivative()</code>, and again for acceleration). Moving one control point reshapes the curve locally and smoothly rather than introducing a kink, which is exactly the property an optimizer needs to be able to refine a rough initial guess into something flyable without fighting discontinuities at every step.</p>
+            <h4>What the optimizer actually minimizes</h4>
+            <p><code>bspline_optimizer</code> takes the search's coarse output as its starting guess and adjusts control points to minimize a weighted sum of costs: smoothness (penalize sharp curvature), collision (an ESDF-gradient term that pushes points away from nearby obstacles — the same distance field the search used, now driving a continuous gradient rather than a hard prune), dynamical feasibility (stay under velocity/acceleration bounds), and — since §24 — the same combined thrust-vector term the search prunes on, now expressed as a smooth, analytically-differentiable cost rather than a hard reject, so the continuous optimizer can't quietly reshape the search's already-thrust-valid output back past the limit.</p>
+            <h4>Reallocating time when a bound is still violated</h4>
+            <p>If the optimized spline still exceeds a dynamical bound afterward, <code>reallocateTime()</code> stretches the time allocated between the offending control points — effectively "take this segment slower" — via an exact closed-form quadratic solve (replacing an earlier approximation that measurably under-stretched, since it assumed a pure per-axis acceleration term with no fixed gravity-compensation offset). Each reallocation pass is capped per-interval by <code>limit_ratio_</code> (1.1 → 1.3 after §24 — the single change that actually broke a persistent-rejection stall, more than the exact-math fix itself), and the whole reallocate-and-recheck loop is capped at 8 iterations (raised from 3), with an explicit reject-and-hold safety return if it's still infeasible after that — the planner refuses to hand back and fly a trajectory it can't make work, rather than committing to something marginal.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section id="m-execution">
+      <div class="entry">
+        <div class="entry-mark">§06<span class="when">Reference</span></div>
+        <div>
+          <div class="entry-title-row"><h3>Execution: the FSM and the frontier</h3><span class="pill neutral">Mechanism</span></div>
+          <p class="lede">A finished trajectory doesn't fly itself. Something has to decide when to trust it, when to replan, and — because the goal can be behind an obstacle at trigger time — what to actually aim at along the way.</p>
+          <div class="entry-body">
+            <h4>The state machine</h4>
+            <p><code>KinoReplanFSM</code> cycles through <code>INIT → WAIT_TARGET → GEN_NEW_TRAJ → EXEC_TRAJ</code>, with <code>REPLAN_TRAJ</code> re-entered whenever the currently-executing trajectory nears its own end (<code>no_replan_thresh_</code>/<code>replan_thresh_</code>) or gets explicitly retriggered. <code>execFSMCallback()</code>, on a 10ms timer, is the heartbeat that drives every transition; <code>checkCollisionCallback()</code>, on its own 50ms timer, runs independently alongside it watching for danger regardless of what state the FSM is in.</p>
+            <h4>The receding-horizon frontier — why the target isn't always the real goal</h4>
+            <p>The occlusion theorem this whole architecture is built around: a goal behind an obstacle is genuinely unobservable at the moment a mission is triggered, so committing straight to it isn't possible even in principle. <code>computeFrontier()</code> substitutes the true mission goal with whatever's actually reachable and confirmed-free right now — a straight ray-march toward the goal, falling back to a fan of yaw-rotated candidate rays (±15/30/45/60°) whenever that direct line is blocked well short of the goal (§26 — the fix that produced this engagement's first successful B-reach). Hysteresis (§28) persists the previously-chosen detour as an <em>angle offset from the current goal line</em>, not an absolute world direction, specifically so it can't run away the way an absolute-vector version did (goalflight16) — every candidate, including the persisted one, stays structurally capped at the current distance to the real goal.</p>
+            <h4>Two watchdogs, doing different jobs</h4>
+            <p>Lỗi 2's check fires only at a replan boundary: if the spline's own open-loop belief has drifted more than 0.75m from real odometry by the time a new plan is about to start, the start state is re-grounded to reality before planning from it. Lỗi 3's watchdog runs continuously, every 50ms, specifically because a replan boundary can be seconds away — at the incident's own measured divergence rate, real danger builds well within one replan cycle. Its response is a deliberate hold, not a forward replan: a uniform B-spline whose control points are all equal (mathematically constant everywhere), pinned to real odometry — structurally incapable of commanding new motion, which is the whole point when tracking itself is what's failing.</p>
+            <h4>Two guards added this session, both inside the same watchdog path</h4>
+            <p>The executor-stall guard (§29) checks the wall-clock gap since the FSM's own last tick — if the single thread it runs on was descheduled for multiple seconds, it forces a hold rather than trusting a belief that's been running open-loop that whole time. The odom-staleness guard (§31, §36) checks something adjacent but different: whether the position reading being used to build that hold is itself still fresh, since the odom <em>source</em> can independently stall under the same load. Both guards can correctly decline to act — and did, in §36 — which is why the operational discipline of restarting the full planner pair between flights (not carrying a compromised belief across attempts) matters as much as the code itself.</p>
+            <h4>traj_server — a deliberate second process</h4>
+            <p>Fast-Planner publishes its trajectory as a compact B-spline (control points, not a dense path). A separate process, <code>traj_server</code>, subscribes to that, evaluates it at the current wall-clock time on every tick, and publishes a dense <code>PositionCommand</code> for the bridge to consume. Splitting this out means a slow or stalled planning cycle doesn't have to also own the job of continuously re-evaluating and republishing a trajectory that hasn't actually changed — real separation of concerns, and (as §31 found) a real place a stale/duplicate instance can hide if a reset doesn't kill every child process explicitly.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section id="m-safety">
+      <div class="entry">
+        <div class="entry-mark">§07<span class="when">Reference</span></div>
+        <div>
+          <div class="entry-title-row"><h3>Control and the safety stack</h3><span class="pill neutral">Mechanism</span></div>
+          <p class="lede">Four independent layers sit between "the planner believes something" and "the vehicle does something dangerous." Tonight is a real demonstration of why that stacking matters — individual layers had real bugs, and none of them became a real disaster alone.</p>
+          <div class="entry-body">
+            <h4>The bridge — the only thing that talks to PX4</h4>
+            <p><code>fast_planner_bridge</code> subscribes to <code>traj_server</code>'s dense <code>PositionCommand</code> and republishes it as PX4 offboard <code>TrajectorySetpoint</code> messages — continuously, at a rate PX4's own offboard mode requires to stay engaged (offboard has its own internal loss-of-setpoint timeout independent of anything this project added). It owns the arm/climb/follow/land state machine described throughout this record: capture home at arm time, climb straight up to hover before ever trusting the planner's own output, hand off to <code>/planning/pos_cmd</code> only once that climb is confirmed complete, and on a clean stop, request <code>AUTO.LAND</code> and wait for a real confirmed disarm rather than just stopping setpoints and hoping.</p>
+            <h4>PX4 itself</h4>
+            <p>PX4's own cascaded controllers (position → velocity → attitude → rate) turn whatever setpoint it receives into actual rotor commands, mixed down individually per motor — in SITL, those commands drive Gazebo's physics plugin directly; on real hardware they'd drive real ESCs. This project never bypasses or replaces any of that — everything upstream only ever hands PX4 a setpoint through its normal, supported offboard interface.</p>
+            <h4>The killswitch — deliberately outside all of it</h4>
+            <p><code>hard_killswitch.py</code> is a fully separate process that subscribes directly to PX4's own telemetry (not the planner's internal belief about where the vehicle is) and independently checks four bounds every tick: altitude ceiling (8.0m), ground-strike floor (−0.5m), horizontal range (15.0m), and descent rate (1.5 m/s, gated above 1.0m altitude so normal landing descent doesn't trip it). A breach triggers a two-stage response — SIGKILL the bridge first (so no new setpoints can possibly follow), then a direct force-disarm — with the whole breach-to-confirmed-disarm sequence measured at 12-55ms across every real trigger this engagement has produced. It's a separate process specifically so it can't share fate with anything upstream that might itself be stalled, buggy, or compromised — exactly the property that mattered on every real incident this record documents.</p>
+            <h4>Why the stack, not any one layer, is the actual safety story</h4>
+            <p>Search-time pruning and the optimizer's cost terms keep most trajectories safe before they're ever committed to. The FSM's two watchdogs catch divergence between what's commanded and what's real, continuously, without waiting for a replan boundary. Tonight added two more internal guards specifically for data the FSM can no longer trust (a stalled executor, a stalled odom source) — and even when those guards correctly declined to act (§36), the killswitch — reading PX4's own ground truth, sharing no code path with anything that had stalled — was still there. None of these layers is individually sufficient; that's the design, not a gap.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section id="chronicle-head" style="padding-bottom:0; border-bottom:none;">
+      <div class="section-head"><span class="idx">08–15</span><h2>Part II — Development History · Phase 1: Foundation</h2></div>
+      <p class="section-intro">With the design above established, this is the record of building and hardening it: every fix, flight, and open question, in the order it actually happened. Phase 1 is the foundational arc, before the point where this record's detail gets granular — grounded in what's directly verifiable, code comments and log evidence that survived, cited where the account is a summary rather than a full trace.</p>
+    </section>
     <section id="e-m1" style="padding-top:0;">
       <div class="entry">
-        <div class="entry-mark">§02<span class="when">Earlier engagement</span></div>
+        <div class="entry-mark">§08<span class="when">Earlier engagement</span></div>
         <div>
           <div class="entry-title-row"><h3>Milestone 1 baseline</h3><span class="pill neutral">Foundation</span></div>
           <p class="lede">GPS kept deliberately, as a stepping stone for isolating every other bug before removing it.</p>
@@ -807,10 +925,9 @@ html { scroll-behavior: smooth; }
         </div>
       </div>
     </section>
-
     <section id="e-killpath">
       <div class="entry">
-        <div class="entry-mark">§03<span class="when">Earlier engagement</span></div>
+        <div class="entry-mark">§09<span class="when">Earlier engagement</span></div>
         <div>
           <div class="entry-title-row"><h3>Kill path — graceful and emergency</h3><span class="pill good">Verified</span></div>
           <p class="lede">Two tiers, built after a real runaway made the gap between them concrete.</p>
@@ -826,10 +943,9 @@ html { scroll-behavior: smooth; }
         </div>
       </div>
     </section>
-
     <section id="e-occlusion">
       <div class="entry">
-        <div class="entry-mark">§04<span class="when">Earlier engagement</span></div>
+        <div class="entry-mark">§10<span class="when">Earlier engagement</span></div>
         <div>
           <div class="entry-title-row"><h3>Obstacle-avoidance flights &amp; the occlusion theorem</h3><span class="pill neutral">Foundation</span></div>
           <p class="lede">A flight series against real obstacles, and the proof that made receding-horizon planning non-negotiable.</p>
@@ -840,10 +956,9 @@ html { scroll-behavior: smooth; }
         </div>
       </div>
     </section>
-
     <section id="e-startexempt">
       <div class="entry">
-        <div class="entry-mark">§05<span class="when">Earlier engagement</span></div>
+        <div class="entry-mark">§11<span class="when">Earlier engagement</span></div>
         <div>
           <div class="entry-title-row"><h3>Start-state exemption</h3><span class="pill good">Fixed &amp; verified</span></div>
           <p class="lede">The camera's own near-field blind spot was being read as "confirmed empty," when it was really "never looked."</p>
@@ -856,10 +971,9 @@ html { scroll-behavior: smooth; }
         </div>
       </div>
     </section>
-
     <section id="e-goalsub">
       <div class="entry">
-        <div class="entry-mark">§06<span class="when">Earlier engagement</span></div>
+        <div class="entry-mark">§12<span class="when">Earlier engagement</span></div>
         <div>
           <div class="entry-title-row"><h3>Goal-substitution gate</h3><span class="pill good">Fixed &amp; verified</span></div>
           <p class="lede">A flight that stopped 2.02m short of its real goal — because the planner quietly decided to fly somewhere else instead.</p>
@@ -872,10 +986,9 @@ html { scroll-behavior: smooth; }
         </div>
       </div>
     </section>
-
     <section id="e-rh1">
       <div class="entry">
-        <div class="entry-mark">§07<span class="when">Earlier engagement</span></div>
+        <div class="entry-mark">§13<span class="when">Earlier engagement</span></div>
         <div>
           <div class="entry-title-row"><h3>Receding-horizon, part 1 — observed-gated distance</h3><span class="pill good">Implemented</span></div>
           <p class="lede">The one check everything else in the receding-horizon logic is built on top of.</p>
@@ -885,10 +998,9 @@ html { scroll-behavior: smooth; }
         </div>
       </div>
     </section>
-
     <section id="e-rh2">
       <div class="entry">
-        <div class="entry-mark">§08<span class="when">Earlier engagement</span></div>
+        <div class="entry-mark">§14<span class="when">Earlier engagement</span></div>
         <div>
           <div class="entry-title-row"><h3>Receding-horizon, part 2 — frontier ray-march</h3><span class="pill good">Implemented &amp; proven</span></div>
           <p class="lede">The actual mechanism: plan to what's been seen, not to what's wanted.</p>
@@ -901,10 +1013,9 @@ html { scroll-behavior: smooth; }
         </div>
       </div>
     </section>
-
     <section id="e-bug2">
       <div class="entry">
-        <div class="entry-mark">§09<span class="when">Earlier engagement</span></div>
+        <div class="entry-mark">§15<span class="when">Earlier engagement</span></div>
         <div>
           <div class="entry-title-row"><h3>Bug #2 — the empty-spline crash</h3><span class="pill good">Fixed &amp; verified</span></div>
           <p class="lede">A real SIGABRT, traced to a state transition that was never supposed to be reachable.</p>
@@ -917,15 +1028,13 @@ html { scroll-behavior: smooth; }
         </div>
       </div>
     </section>
-
     <section id="chronicle-head-2" style="padding-bottom:0; border-bottom:none;">
-      <div class="section-head"><span class="idx">10–17</span><h2>The chronological record</h2></div>
+      <div class="section-head"><span class="idx">16–23</span><h2>Phase 2: Hardening</h2></div>
       <p class="section-intro">From here on, the detail gets granular — every entry follows the same shape: what triggered it, the root cause once found, the fix, and how it was verified. Order matters; each entry's fix is a precondition the next one builds on.</p>
     </section>
-
     <section id="e-auto" style="padding-top:0;">
       <div class="entry">
-        <div class="entry-mark">§10<span class="when">Session start</span></div>
+        <div class="entry-mark">§16<span class="when">Session start</span></div>
         <div>
           <div class="entry-title-row"><h3>Auto-mode safety check</h3><span class="pill good">Resolved</span></div>
           <p class="lede">Before any arming work began, confirming the harness would actually stop and ask before doing anything irreversible.</p>
@@ -938,10 +1047,9 @@ html { scroll-behavior: smooth; }
         </div>
       </div>
     </section>
-
     <section id="e-loi1">
       <div class="entry">
-        <div class="entry-mark">§11<span class="when">Prior session</span></div>
+        <div class="entry-mark">§17<span class="when">Prior session</span></div>
         <div>
           <div class="entry-title-row"><h3>Lỗi 1 — the replan storm</h3><span class="pill good">Fixed &amp; verified</span></div>
           <p class="lede">A collision check that couldn't tell "confirmed blocked" from "never observed."</p>
@@ -957,10 +1065,9 @@ html { scroll-behavior: smooth; }
         </div>
       </div>
     </section>
-
     <section id="e-loi2">
       <div class="entry">
-        <div class="entry-mark">§12<span class="when">Prior session</span></div>
+        <div class="entry-mark">§18<span class="when">Prior session</span></div>
         <div>
           <div class="entry-title-row"><h3>Lỗi 2 — open-loop start-state drift</h3><span class="pill good">Fixed &amp; verified</span></div>
           <p class="lede">The planner's belief about its own position, unchecked against reality for an entire replan cycle.</p>
@@ -981,10 +1088,9 @@ html { scroll-behavior: smooth; }
         </div>
       </div>
     </section>
-
     <section id="e-verify1">
       <div class="entry">
-        <div class="entry-mark">§13<span class="when">Prior session</span></div>
+        <div class="entry-mark">§19<span class="when">Prior session</span></div>
         <div>
           <div class="entry-title-row"><h3>Verify flight #1 — Lỗi 1 + Lỗi 2</h3><span class="pill accent">Partial pass — new gap found</span></div>
           <p class="lede">The planner fixes worked exactly as designed. The airframe underneath them didn't.</p>
@@ -1002,10 +1108,9 @@ html { scroll-behavior: smooth; }
         </div>
       </div>
     </section>
-
     <section id="e-cutoff">
       <div class="entry">
-        <div class="entry-mark">§14<span class="when">This session</span></div>
+        <div class="entry-mark">§20<span class="when">This session</span></div>
         <div>
           <div class="entry-title-row"><h3>Cutoff hardening — the descent-rate guard</h3><span class="pill good">Fixed &amp; verified</span></div>
           <p class="lede">The ground-strike floor caught the fall, but only after it was already happening.</p>
@@ -1032,10 +1137,9 @@ html { scroll-behavior: smooth; }
         </div>
       </div>
     </section>
-
     <section id="e-loi3">
       <div class="entry">
-        <div class="entry-mark">§15<span class="when">This session</span></div>
+        <div class="entry-mark">§21<span class="when">This session</span></div>
         <div>
           <div class="entry-title-row"><h3>Lỗi 3 — the tracking-divergence watchdog</h3><span class="pill bad">Implemented — has a live bug</span></div>
           <p class="lede">Three parts built together: watch continuously between replans, ask the airframe for less, and get an independent truth signal to check the estimator against.</p>
@@ -1063,10 +1167,9 @@ html { scroll-behavior: smooth; }
         </div>
       </div>
     </section>
-
     <section id="e-watchdog">
       <div class="entry">
-        <div class="entry-mark">§16<span class="when">This session</span></div>
+        <div class="entry-mark">§22<span class="when">This session</span></div>
         <div>
           <div class="entry-title-row"><h3>Watchdog verify flight</h3><span class="pill bad">Crashed — real backstop worked</span></div>
           <p class="lede">The good news and the bad news arrived one second apart.</p>
@@ -1092,10 +1195,9 @@ html { scroll-behavior: smooth; }
         </div>
       </div>
     </section>
-
     <section id="e-thrust">
       <div class="entry">
-        <div class="entry-mark">§17<span class="when">This session</span></div>
+        <div class="entry-mark">§23<span class="when">This session</span></div>
         <div>
           <div class="entry-title-row"><h3>Thrust-coupling analysis</h3><span class="pill good">Confirmed — thrust saturated at the event</span></div>
           <p class="lede">Offline analysis, no flight — testing whether horizontal aggression is what's stealing vertical thrust. Two passes: an inferred first pass from position logs, then a direct pass against PX4's own recorded telemetry that turned out to settle it.</p>
@@ -1130,18 +1232,16 @@ html { scroll-behavior: smooth; }
         </div>
       </div>
     </section>
-
     <section id="chronicle-head-3" style="padding-bottom:0; border-bottom:none;">
-      <div class="section-head"><span class="idx">18–20</span><h2>Reaching B</h2></div>
+      <div class="section-head"><span class="idx">24–26</span><h2>Phase 3: Reaching B</h2></div>
       <p class="section-intro">Three fixes, in the order they had to happen, that took the drone from "diagnosed why it can't get there" to actually arriving — repeatedly, with a real obstacle ring in the way.</p>
     </section>
-
     <section id="e-thrustbudget" style="padding-top:0;">
       <div class="entry">
-        <div class="entry-mark">§18<span class="when">This session</span></div>
+        <div class="entry-mark">§24<span class="when">This session</span></div>
         <div>
           <div class="entry-title-row"><h3>Combined thrust-vector budget</h3><span class="pill good">Implemented &amp; verified</span></div>
-          <p class="lede">§17 diagnosed a real physical ceiling. This is what it took to actually plan inside it — and the fix that turned out not to be the fix, honestly reported.</p>
+          <p class="lede">§23 diagnosed a real physical ceiling. This is what it took to actually plan inside it — and the fix that turned out not to be the fix, honestly reported.</p>
           <div class="entry-body">
             <h4>The physics</h4>
             <p>The planner's existing limits were independent per-axis bounds on velocity and acceleration — nothing coupled the horizontal command to how much thrust was left over for vertical. The real constraint a quadrotor faces is a single combined budget: required specific thrust equals commanded acceleration plus gravity compensation, and the airframe only has so much of it — <code>‖a_cmd + g·ẑ‖ ≤ thrust_ceiling</code>. The ceiling itself came from real telemetry, not a guess: <code>hover_thrust_estimate</code> measured ≈0.7465 for this exact airframe, giving max specific thrust = g / hover_thrust ≈ 13.14&nbsp;m·s⁻² (thrust-to-weight ≈1.34) — a 20% margin below that became <code>thrust_accel_limit_ = 12.5&nbsp;m·s⁻²</code>.</p>
@@ -1158,16 +1258,15 @@ html { scroll-behavior: smooth; }
         </div>
       </div>
     </section>
-
     <section id="e-reframe">
       <div class="entry">
-        <div class="entry-mark">§19<span class="when">This session</span></div>
+        <div class="entry-mark">§25<span class="when">This session</span></div>
         <div>
           <div class="entry-title-row"><h3>The reframe — it was a collision, not thrust coupling</h3><span class="pill accent">Root cause corrected</span></div>
           <p class="lede">One sentence, watching the simulator directly, overturned an afternoon's worth of careful telemetry analysis.</p>
           <div class="entry-body">
             <h4>What had been built, and why it was wrong</h4>
-            <p>Several subsequent crashes were being explained the same way §17 explained the first one: thrust saturation, attitude instability, a control-authority problem. Real telemetry evidence had been marshalled for it each time. Then, watching the same flights happen live in Gazebo rather than through telemetry alone: <em>"All I see is the drone didn't see the obstacle and crashed into it."</em> Re-reading <code>position_log.csv</code> for the exact same flight the thrust-coupling account had been built from showed a trajectory heading straight at a real obstacle — pillar_03, at world coordinates (0, 2.5, 5), sitting directly on the line between the spawn point and B — with an abrupt kinematic reversal right at its inflated boundary. That's a collision signature, not a control-authority one, and it had been sitting in the same data the whole time.</p>
+            <p>Several subsequent crashes were being explained the same way §23 explained the first one: thrust saturation, attitude instability, a control-authority problem. Real telemetry evidence had been marshalled for it each time. Then, watching the same flights happen live in Gazebo rather than through telemetry alone: <em>"All I see is the drone didn't see the obstacle and crashed into it."</em> Re-reading <code>position_log.csv</code> for the exact same flight the thrust-coupling account had been built from showed a trajectory heading straight at a real obstacle — pillar_03, at world coordinates (0, 2.5, 5), sitting directly on the line between the spawn point and B — with an abrupt kinematic reversal right at its inflated boundary. That's a collision signature, not a control-authority one, and it had been sitting in the same data the whole time.</p>
             <h4>Settling it properly, not just visually</h4>
             <p>A live diagnostic was added to <code>checkCollisionCallback</code> — logging, every 50ms, whether pillar_03 specifically was observed, its live ESDF distance, and the vehicle's real distance to it — to answer the actual open question: was the obstacle unobserved (the occlusion theorem working as designed) or observed-and-ignored (a real avoidance gap)?</p>
             <div class="data-line">
@@ -1180,13 +1279,12 @@ html { scroll-behavior: smooth; }
         </div>
       </div>
     </section>
-
     <section id="e-frontierfan">
       <div class="entry">
-        <div class="entry-mark">§20<span class="when">This session</span></div>
+        <div class="entry-mark">§26<span class="when">This session</span></div>
         <div>
           <div class="entry-title-row"><h3>Single-ray frontier, found &amp; fanned</h3><span class="pill good">Fixed &amp; verified — three consecutive B's</span></div>
-          <p class="lede">The receding-horizon frontier (§08) was never wrong about <em>whether</em> to advance. It only ever tried one direction.</p>
+          <p class="lede">The receding-horizon frontier (§14) was never wrong about <em>whether</em> to advance. It only ever tried one direction.</p>
           <div class="entry-body">
             <h4>Root cause</h4>
             <p><code>computeFrontier()</code> ray-marched a single straight line from the vehicle directly toward the mission goal, stopping at the first point that wasn't confirmed observed-and-free. Fine when nothing sits on that line. Pillar_03 sits exactly on it — origin to (0, 8, 5) passes directly through (0, 2.5, 5) — so the ray was blocked at nearly the same distance on every single replan cycle. The search was handed a target hugging the obstacle's near face, cycle after cycle, with nothing in the target itself ever suggesting a detour existed.</p>
@@ -1198,15 +1296,13 @@ html { scroll-behavior: smooth; }
         </div>
       </div>
     </section>
-
     <section id="chronicle-head-4" style="padding-bottom:0; border-bottom:none;">
-      <div class="section-head"><span class="idx">21–24</span><h2>Proving it, and what that broke</h2></div>
+      <div class="section-head"><span class="idx">27–30</span><h2>Phase 4: Proving it, and what that broke</h2></div>
       <p class="section-intro">Getting to B reliably raised a fair question from outside the planner entirely: prove it. Building that proof surfaced two more real bugs — one in the fix just above, one that had nothing to do with obstacles at all.</p>
     </section>
-
     <section id="e-visfix" style="padding-top:0;">
       <div class="entry">
-        <div class="entry-mark">§21<span class="when">This session</span></div>
+        <div class="entry-mark">§27<span class="when">This session</span></div>
         <div>
           <div class="entry-title-row"><h3>Obstacle visualization, for real</h3><span class="pill good">Fixed &amp; verified</span></div>
           <p class="lede">"I need to prove to my colleagues the drone sees the obstacle and avoids it." That request found a bug that had been silently broken since the map source changed.</p>
@@ -1224,13 +1320,12 @@ html { scroll-behavior: smooth; }
         </div>
       </div>
     </section>
-
     <section id="e-hysteresis">
       <div class="entry">
-        <div class="entry-mark">§22<span class="when">This session</span></div>
+        <div class="entry-mark">§28<span class="when">This session</span></div>
         <div>
           <div class="entry-title-row"><h3>Frontier hysteresis — two bugs, caught in sequence</h3><span class="pill good">Fixed &amp; verified</span></div>
-          <p class="lede">The fan in §20 fixed the collisions. It also, on its own, turned out to be capable of two entirely new failure modes — both found live, both fixed the same session.</p>
+          <p class="lede">The fan in §26 fixed the collisions. It also, on its own, turned out to be capable of two entirely new failure modes — both found live, both fixed the same session.</p>
           <div class="entry-body">
             <h4>Bug one — the flip</h4>
             <p>The fan re-evaluates every candidate from scratch on every cycle, with no memory of what it chose last time. Two replan cycles seven seconds apart, with real forward progress between them, picked frontier targets 5.8m apart in x — a full reversal from a left-side detour to a right-side one, because the map had updated just enough to nudge which candidate's clearance edged out the other by a hair. The FSM commanded that reversal as a real setpoint change; the vehicle couldn't track it and lost altitude control.</p>
@@ -1246,10 +1341,9 @@ html { scroll-behavior: smooth; }
         </div>
       </div>
     </section>
-
     <section id="e-stall">
       <div class="entry">
-        <div class="entry-mark">§23<span class="when">This session</span></div>
+        <div class="entry-mark">§29<span class="when">This session</span></div>
         <div>
           <div class="entry-title-row"><h3>The executor-stall discovery</h3><span class="pill bad">Real crash mechanism found</span></div>
           <p class="lede">A crash that looked, from a distance, like more of the same collision pattern. It wasn't near any obstacle at all.</p>
@@ -1257,8 +1351,8 @@ html { scroll-behavior: smooth; }
             <h4>What the raw log showed</h4>
             <p>A flight crashed with a signature seen twice before and dismissed as recoverable transients: the commanded target barely moving while the real vehicle's position jumped and altitude collapsed. This time it happened at a position roughly 1.7m from the origin — nowhere near pillar_03, before the vehicle had even reached the obstacle ring. The raw console log across the crash window showed a 4-second stretch with <em>zero</em> log lines from the planner node — not one slow callback, a complete blackout.</p>
             <h4>Root cause</h4>
-            <p><code>fast_planner_node</code> is single-threaded (<code>rclcpp::spin()</code> — every timer, every callback, on one thread). Under real system load, the process itself was getting descheduled for multi-second stretches. During the gap, the commanded spline kept advancing in wall-clock time — its position is evaluated as <code>t_cur = now() − start_time_</code>, regardless of whether anything actually ticked — while the real vehicle didn't move. By the time processing resumed, the existing re-ground safety check (§12) correctly caught a 3.36m divergence and snapped the belief back to reality — but the "catch-up" trajectory computed immediately after was itself built from an already-compromised situation, and roughly 2.3 seconds later real divergence hit 8.877m: the vehicle was already on the ground.</p>
-            <p>This reframes the two earlier "recoverable transient" events (§22) as the same mechanism, observed twice more — one recovered by luck of timing, one didn't.</p>
+            <p><code>fast_planner_node</code> is single-threaded (<code>rclcpp::spin()</code> — every timer, every callback, on one thread). Under real system load, the process itself was getting descheduled for multi-second stretches. During the gap, the commanded spline kept advancing in wall-clock time — its position is evaluated as <code>t_cur = now() − start_time_</code>, regardless of whether anything actually ticked — while the real vehicle didn't move. By the time processing resumed, the existing re-ground safety check (§18) correctly caught a 3.36m divergence and snapped the belief back to reality — but the "catch-up" trajectory computed immediately after was itself built from an already-compromised situation, and roughly 2.3 seconds later real divergence hit 8.877m: the vehicle was already on the ground.</p>
+            <p>This reframes the two earlier "recoverable transient" events (§28) as the same mechanism, observed twice more — one recovered by luck of timing, one didn't.</p>
             <h4>Fix</h4>
             <p>An executor-stall guard at the top of the FSM's own tick: if the wall-clock gap since the last tick exceeds 0.3s (30× the nominal 10ms period — comfortably clear of ordinary jitter, small next to the multi-second blackouts that actually caused damage), immediately publish a hold pinned to real odometry before trusting anything the stale open-loop belief would compute — instead of waiting for a position-divergence symptom to grow large enough to trip the existing watchdog after the fact.</p>
             <div class="callout good">
@@ -1268,10 +1362,9 @@ html { scroll-behavior: smooth; }
         </div>
       </div>
     </section>
-
     <section id="e-perf">
       <div class="entry">
-        <div class="entry-mark">§24<span class="when">This session</span></div>
+        <div class="entry-mark">§30<span class="when">This session</span></div>
         <div>
           <div class="entry-title-row"><h3>Performance: two load fixes</h3><span class="pill accent">Applied — meaningful, not complete</span></div>
           <p class="lede">The stall guard made every stall safe. It did nothing to make stalls less frequent — that took finding what was actually eating the one thread everything shares.</p>
@@ -1279,22 +1372,20 @@ html { scroll-behavior: smooth; }
             <h4>Fix one — slow the far-field map fetch</h4>
             <p>The corridor-tier ESDF fetch (long-range look-ahead, not what immediate avoidance depends on) processes roughly 2.1M voxels synchronously on the same single thread, every cycle — the single most expensive periodic thing the node does, at 200–232ms even at its fastest observed. Its period was stretched from 1.5s to 4.0s; the near tier, which close-range avoidance actually depends on, was left untouched at its own faster cadence.</p>
             <h4>Fix two — the bigger one, and self-inflicted</h4>
-            <p>The obstacle-visualization fix in §21 made <code>local_bound_min_</code>/<code>local_bound_max_</code> track the drone for real, which was necessary and correct — and had a cost nobody had priced yet: before that fix, the four full-volume visualization publish loops were a no-op, stuck iterating one voxel. After it, at the real local-update range, they cover roughly 1.09M voxels each — run four times, every 50ms, forever, on the exact same thread as flight control. Slowed the visualization timer from 50ms to 500ms: a debug point cloud has no use for flight-control-rate refreshes, and 2Hz is already more than the eye follows for this kind of display.</p>
+            <p>The obstacle-visualization fix in §27 made <code>local_bound_min_</code>/<code>local_bound_max_</code> track the drone for real, which was necessary and correct — and had a cost nobody had priced yet: before that fix, the four full-volume visualization publish loops were a no-op, stuck iterating one voxel. After it, at the real local-update range, they cover roughly 1.09M voxels each — run four times, every 50ms, forever, on the exact same thread as flight control. Slowed the visualization timer from 50ms to 500ms: a debug point cloud has no use for flight-control-rate refreshes, and 2Hz is already more than the eye follows for this kind of display.</p>
             <h4>Result, honestly qualified</h4>
             <p>Stall frequency dropped by roughly 60% in comparable windows — a real, measured improvement, not a full fix. Some of what remains is outside this project's reach entirely: an unrelated host process (a cloud-storage sync client) was caught independently spiking to 125% CPU mid-session. Flights stay safe under every load condition tested; under sustained contention they're slow rather than fast, which is the accepted, disclosed trade documented in Status at a glance, not a hidden risk.</p>
           </div>
         </div>
       </div>
     </section>
-
     <section id="chronicle-head-5" style="padding-bottom:0; border-bottom:none;">
-      <div class="section-head"><span class="idx">27–29</span><h2>Tonight's re-test</h2></div>
+      <div class="section-head"><span class="idx">31–37</span><h2>Phase 5: Tonight's re-test</h2></div>
       <p class="section-intro">A live re-verification of everything above, run to demonstrate it for a colleague. It surfaced two more real bugs — both found the hard way, both resolved the same night — and one structural attempt that didn't survive contact with real concurrency.</p>
     </section>
-
     <section id="e-odomstale" style="padding-top:0;">
       <div class="entry">
-        <div class="entry-mark">§27<span class="when">This session</span></div>
+        <div class="entry-mark">§31<span class="when">This session</span></div>
         <div>
           <div class="entry-title-row"><h3>The odom-staleness crashes</h3><span class="pill good">Fixed &amp; verified</span></div>
           <p class="lede">Two crashes in a row, both at the exact same instant — the climb-to-follow handoff — neither one an obstacle collision.</p>
@@ -1304,7 +1395,7 @@ html { scroll-behavior: smooth; }
             <h4>Root cause</h4>
             <p><code>triggerTrackingDivergenceHold()</code> — the Lỗi 3 watchdog's safety hold, and the executor-stall guard's own fallback — pins its hold trajectory to <code>odom_pos_</code> unconditionally, trusting it as "real position, right now." Nothing tracked how OLD that reading was. The odom SOURCE (<code>ground_truth_tf</code>) can itself get starved under the same host-load pressure the stall guard exists to handle; when it does, <code>odom_pos_</code> keeps holding whatever position was last received — in this case, a reading from ~6 seconds earlier, still near the ground from partway through the climb. The hold pinned to that phantom position, and everything downstream treated it as ground truth.</p>
             <h4>Fix</h4>
-            <p>Track wall-clock receipt time in <code>odometryCallback()</code>. Before <code>triggerTrackingDivergenceHold()</code> commits to <code>odom_pos_</code>, check its age against a 0.5s staleness limit — if it's too old, skip publishing entirely rather than guess, leaving whatever trajectory is already active untouched. A close relative of the executor-stall guard (§23): don't act on a reading you can no longer vouch for.</p>
+            <p>Track wall-clock receipt time in <code>odometryCallback()</code>. Before <code>triggerTrackingDivergenceHold()</code> commits to <code>odom_pos_</code>, check its age against a 0.5s staleness limit — if it's too old, skip publishing entirely rather than guess, leaving whatever trajectory is already active untouched. A close relative of the executor-stall guard (§29): don't act on a reading you can no longer vouch for.</p>
             <div class="callout good">
               <p><strong>Verified live, in the log:</strong> the very next re-test hit the identical stall pattern the odom source has always been vulnerable to — and this time, instead of pinning to a phantom position, it logged <code>ODOM STALENESS GUARD: skipping tracking-divergence hold -- last odom received 4.456s ago</code> and did nothing, correctly. The vehicle held safely at altitude instead of crashing a third time.</p>
             </div>
@@ -1314,10 +1405,9 @@ html { scroll-behavior: smooth; }
         </div>
       </div>
     </section>
-
     <section id="e-livelock">
       <div class="entry">
-        <div class="entry-mark">§28<span class="when">This session</span></div>
+        <div class="entry-mark">§32<span class="when">This session</span></div>
         <div>
           <div class="entry-title-row"><h3>The livelock, under real load</h3><span class="pill bad">Root cause found, not yet closed</span></div>
           <p class="lede">With the crash fixed, the next re-test didn't crash — it just never went anywhere.</p>
@@ -1326,42 +1416,40 @@ html { scroll-behavior: smooth; }
             <p>The vehicle climbed, planned once successfully, and then sat parked barely past the start point for 44 minutes straight, completely safe, never progressing. 126 executor stalls logged over that window — roughly one every 15-20 seconds on average, though sometimes back-to-back every 2-4 seconds.</p>
             <p class="footnote"><b>Audited 2026-08-28:</b> the surviving log for this exact window (<code>fast_planner_relaunch.log</code>, the FSM's last transition into <code>EXEC_TRAJ</code> to end of file) shows <b>336</b> <code>EXECUTOR STALL</code> warnings, not 126 — every one of them after that last transition, consistent with the livelock story itself, just a higher raw count than what was recorded live at the time. No alternate counting rule (a duration cutoff, deduplication by second, etc.) was found that reconciles the two numbers. The 126 figure is left here as originally recorded rather than silently replaced; treat the log's 336 as the more trustworthy count if the exact number matters.</p>
             <h4>Root cause: the stall guard's own success condition, working against itself</h4>
-            <p>The §23 executor-stall guard returns immediately, every time it fires, before the FSM's normal switch-statement logic — the code that would otherwise notice "this trajectory is finished, time to replan toward the real goal" — ever gets to run. Under light load that's fine: stalls are rare, so plenty of ticks fall through to the real logic between them. Under sustained load, if stalls recur faster than the guard's own hold-and-cooldown cycle can clear, the FSM can get stuck ping-ponging between "stall detected, hold" and "next tick, still stalled, hold again" indefinitely — a genuine livelock. Confirmed directly in the FSM's own transition log: <code>WAIT_TARGET → GEN_NEW_TRAJ → EXEC_TRAJ</code> once, then nothing for 44 minutes.</p>
+            <p>The §29 executor-stall guard returns immediately, every time it fires, before the FSM's normal switch-statement logic — the code that would otherwise notice "this trajectory is finished, time to replan toward the real goal" — ever gets to run. Under light load that's fine: stalls are rare, so plenty of ticks fall through to the real logic between them. Under sustained load, if stalls recur faster than the guard's own hold-and-cooldown cycle can clear, the FSM can get stuck ping-ponging between "stall detected, hold" and "next tick, still stalled, hold again" indefinitely — a genuine livelock. Confirmed directly in the FSM's own transition log: <code>WAIT_TARGET → GEN_NEW_TRAJ → EXEC_TRAJ</code> once, then nothing for 44 minutes.</p>
             <p>A full container restart (clearing 77 accumulated zombie processes and dropping host load from 10+ to 3-5) helped, but wasn't sufficient on its own — a follow-up re-test still hit the same pattern at a merely moderate load of 3-5, plateauing after making some real progress instead of none. The livelock's trigger threshold is lower than "heavily loaded"; even "somewhat loaded" is enough.</p>
             <div class="callout bad">
-              <p><strong>Not a regression, and not fixed by a restart:</strong> this is the same "safe but slow under load" limitation documented in §24 and Status at a glance, just observed for the first time in its most severe form — full livelock rather than partial slowdown. The fix isn't operational (restart, close the GUI); it's architectural. See §29.</p>
+              <p><strong>Not a regression, and not fixed by a restart:</strong> this is the same "safe but slow under load" limitation documented in §30 and Status at a glance, just observed for the first time in its most severe form — full livelock rather than partial slowdown. The fix isn't operational (restart, close the GUI); it's architectural. See §33.</p>
             </div>
           </div>
         </div>
       </div>
     </section>
-
     <section id="e-mtexecutor">
       <div class="entry">
-        <div class="entry-mark">§29<span class="when">This session</span></div>
+        <div class="entry-mark">§33<span class="when">This session</span></div>
         <div>
           <div class="entry-title-row"><h3>Multi-threading, tried &amp; reverted</h3><span class="pill accent">Attempted, found a worse bug, reverted</span></div>
-          <p class="lede">The structural fix for §28 — and an honest account of why it isn't in place tonight.</p>
+          <p class="lede">The structural fix for §32 — and an honest account of why it isn't in place tonight.</p>
           <div class="entry-body">
             <h4>The change</h4>
-            <p><code>fast_planner_node</code> ran <code>rclcpp::spin(node)</code> — a single-threaded executor — since the very first line of this project. Every timer and subscription, control and map alike, serialized on one thread by construction; that's the root architectural cause behind both the executor-stall pattern (§23) and the livelock it can produce (§28). The fix: split flight-control work (<code>exec_timer_</code>, <code>safety_timer_</code>, odom/waypoint subscriptions) and map work (<code>vis_timer_</code>, the two ESDF fetch timers, the nvblox service client) into two separate ROS callback groups, and run them under a <code>MultiThreadedExecutor</code> instead — so heavy map population can no longer block the 10ms control tick, regardless of host load.</p>
+            <p><code>fast_planner_node</code> ran <code>rclcpp::spin(node)</code> — a single-threaded executor — since the very first line of this project. Every timer and subscription, control and map alike, serialized on one thread by construction; that's the root architectural cause behind both the executor-stall pattern (§29) and the livelock it can produce (§32). The fix: split flight-control work (<code>exec_timer_</code>, <code>safety_timer_</code>, odom/waypoint subscriptions) and map work (<code>vis_timer_</code>, the two ESDF fetch timers, the nvblox service client) into two separate ROS callback groups, and run them under a <code>MultiThreadedExecutor</code> instead — so heavy map population can no longer block the 10ms control tick, regardless of host load.</p>
             <h4>It worked, for what it targeted</h4>
-            <p>The very next test flight logged <strong>zero</strong> executor stalls, versus 100+ in the flight before it. The specific failure mode in §23/§28 was gone.</p>
+            <p>The very next test flight logged <strong>zero</strong> executor stalls, versus 100+ in the flight before it. The specific failure mode in §29/§32 was gone.</p>
             <h4>It also broke something new</h4>
             <p>The kinodynamic search started failing almost every attempt — including a trivial ~0.3m hop in completely open space, nowhere near any obstacle (logged: <code>start=(0.06,0.28,5) → goal=(0.06,0.58,5)</code>, <code>kinodynamic search fail!</code>, repeatedly). Root cause: <code>SDFMap</code>'s buffers are plain vectors, written in-place by the map thread with no synchronization against concurrent reads from the now-separate search thread. Fixed-size, no reallocation, so this can't crash the process — but it can hand the search a read caught mid-update, e.g. a just-recentered <code>local_bound_</code> region whose voxels haven't been refilled yet, defaulting back to "occupied" under the project's own unknown→occupied policy at exactly the moment the search reads them.</p>
             <div class="callout bad">
               <p><strong>Reverted the same night.</strong> A search that fails almost every attempt is a worse failure than a livelock that at least holds safely — nothing would ever fly, even under zero load. This is a genuine, newly-introduced concurrency bug, not something to leave running on flight-safety-relevant code while iterating live under time pressure. Reverted <code>fast_planner_node.cpp</code> back to the single-threaded executor; the two callback groups are left wired up elsewhere (inert, harmless, under a single-threaded executor) so a future attempt with proper synchronization around <code>SDFMap</code>'s buffers doesn't have to redo that plumbing.</p>
             </div>
             <h4>What this means going forward</h4>
-            <p>The livelock in §28 is still open. Closing it for real needs the multi-threaded executor <em>plus</em> real synchronization on the shared map state — a double-buffer swap or an explicit lock around the read/write path — designed and tested deliberately, not attempted live in the middle of a demo flight.</p>
+            <p>The livelock in §32 is still open. Closing it for real needs the multi-threaded executor <em>plus</em> real synchronization on the shared map state — a double-buffer swap or an explicit lock around the read/write path — designed and tested deliberately, not attempted live in the middle of a demo flight.</p>
           </div>
         </div>
       </div>
     </section>
-
     <section id="e-jetsonopt">
       <div class="entry">
-        <div class="entry-mark">§30<span class="when">This session</span></div>
+        <div class="entry-mark">§34<span class="when">This session</span></div>
         <div>
           <div class="entry-title-row"><h3>Optimizing for the Jetson, not just this box</h3><span class="pill good">Applied &amp; verified</span></div>
           <p class="lede">A pointed reminder: this dev box is more powerful than the Jetson Orin Nano the real drone will fly on. If it's straining here, it needs to be cheaper, not just less contended.</p>
@@ -1371,62 +1459,59 @@ html { scroll-behavior: smooth; }
             <h4>Fix two — stop recomputing the same address three times</h4>
             <p>The corridor ESDF fetch's inner min-pooling loop rebuilt the flat array address <code>sx*ny*nz + sy*nz + sz</code> from scratch on every single (ix,iy,iz) triple, even though the <code>sx*ny*nz</code> and <code>sy*nz</code> terms don't change until their own loop variable changes. Hoisted both to the loop level they're actually invariant at — a pure algebraic restatement, not a behavior change (<code>sx*ny*nz + sy*nz + sz</code> is exactly <code>sx_off + sy_off + sz</code> for every voxel). This is the single most expensive required — non-visualization — callback in the whole system, run against ~2.1M destination voxels on the corridor tier alone; a per-Jetson-core FP/integer throughput deficit hits this one harder than almost anything else in the pipeline.</p>
             <div class="callout good">
-              <p><strong>Measured, not assumed:</strong> corridor-fetch callback time dropped from 184–232ms (the last documented baseline, §24) to <strong>104–120ms</strong> — roughly a 40–45% reduction — from the address hoist alone, verified against live <code>DEBUG_TIMING</code> log output on this same dev box. Correctness verified separately via the existing debug-query mechanism: a known point returned the same sane, correct <code>isObserved</code>/<code>distance_buffer_all_</code>/<code>getInflateOccupancy</code> values before and after.</p>
+              <p><strong>Measured, not assumed:</strong> corridor-fetch callback time dropped from 184–232ms (the last documented baseline, §30) to <strong>104–120ms</strong> — roughly a 40–45% reduction — from the address hoist alone, verified against live <code>DEBUG_TIMING</code> log output on this same dev box. Correctness verified separately via the existing debug-query mechanism: a known point returned the same sane, correct <code>isObserved</code>/<code>distance_buffer_all_</code>/<code>getInflateOccupancy</code> values before and after.</p>
             </div>
             <h4>What this doesn't claim</h4>
-            <p>Neither fix touches the livelock in §28/§29 directly — reducing map-population cost doesn't add concurrency, so a sufficiently loaded single thread can still starve. What it does do: lowers the total work competing for that one thread in the first place, which is the more foundational lever, and one that helps unconditionally, on this box tonight and on the actual target hardware later, independent of whichever executor model eventually wins.</p>
+            <p>Neither fix touches the livelock in §32/§33 directly — reducing map-population cost doesn't add concurrency, so a sufficiently loaded single thread can still starve. What it does do: lowers the total work competing for that one thread in the first place, which is the more foundational lever, and one that helps unconditionally, on this box tonight and on the actual target hardware later, independent of whichever executor model eventually wins.</p>
           </div>
         </div>
       </div>
     </section>
-
     <section id="e-proofwall">
       <div class="entry">
-        <div class="entry-mark">§31<span class="when">This session</span></div>
+        <div class="entry-mark">§35<span class="when">This session</span></div>
         <div>
           <div class="entry-title-row"><h3>Proof, then the same wall again</h3><span class="pill accent">Mixed — real proof, real recurrence</span></div>
           <p class="lede">One flight settled the question of whether tonight's fixes actually work. The next one settled the question of whether a restart alone is enough. Different answers.</p>
           <div class="entry-body">
             <h4>The clean proof</h4>
-            <p>After the full reset in §29/§30's aftermath, the very next flight reached B in <strong>4.32 seconds</strong> — zero executor stalls, zero killswitch breaches, 0.56m clearance past pillar_03, landed itself gently right at the goal. This is the cleanest flight of the whole engagement, and it's running the odom-staleness fix, both Jetson-motivated optimizations, and the reverted-but-still-present callback-group plumbing all at once — direct evidence none of tonight's changes broke anything, on top of proving the core capability itself is intact.</p>
+            <p>After the full reset in §33/§34's aftermath, the very next flight reached B in <strong>4.32 seconds</strong> — zero executor stalls, zero killswitch breaches, 0.56m clearance past pillar_03, landed itself gently right at the goal. This is the cleanest flight of the whole engagement, and it's running the odom-staleness fix, both Jetson-motivated optimizations, and the reverted-but-still-present callback-group plumbing all at once — direct evidence none of tonight's changes broke anything, on top of proving the core capability itself is intact.</p>
             <h4>A real operational gotcha, caught by inspection</h4>
             <p>The next re-arm, launched from wherever the previous flight happened to land (at B, not A, since the vehicle was never respawned), silently began from the wrong start point — the bridge captures "home" at ARM TIME relative to wherever the vehicle physically is, not a fixed world origin. Confirmed in the log: <code>home_ned=(7.9998, 0.0097, 0.0101)</code> instead of the intended <code>(0,0,0)</code>, making that "flight" a trivial no-op hovering at the already-reached goal. Not a code bug — a real operational rule for anyone re-flying without a full world reset in between: a landed-in-place drone is not a drone back at A.</p>
             <h4>The livelock, again, on a fresh reset</h4>
-            <p>A subsequent flight, launched from a genuinely fresh <code>run.sh</code> bring-up with a confirmed true-origin spawn (0.02m from origin), still hit the same §28 livelock — 385 executor stalls, completely parked, over roughly 10 minutes, while host load climbed back into the 6-9 range (partly <code>run.sh</code> relaunching the Gazebo GUI again, killed again with the same effect as before, partly the host simply being busier at this later hour). Landed safely rather than left parked indefinitely.</p>
+            <p>A subsequent flight, launched from a genuinely fresh <code>run.sh</code> bring-up with a confirmed true-origin spawn (0.02m from origin), still hit the same §32 livelock — 385 executor stalls, completely parked, over roughly 10 minutes, while host load climbed back into the 6-9 range (partly <code>run.sh</code> relaunching the Gazebo GUI again, killed again with the same effect as before, partly the host simply being busier at this later hour). Landed safely rather than left parked indefinitely.</p>
             <p class="footnote"><b>Audited 2026-08-28:</b> the log whose time window should contain this specific flight (<code>fast_planner_opt.log</code>) instead shows continuous, healthy replanning for its entire span — an FSM transition every few seconds throughout, no extended stuck period — and only 95 stalls total across the whole file. It does not corroborate a 385-stall livelock. Most likely explanation, given this project's established pattern of relaunches reusing the same default log filename: this attempt's actual log was overwritten by a later relaunch before it could be saved off distinctly, and 385 was recorded correctly from the live terminal at the time but the file backing it no longer exists. Left as originally recorded; treat it as observed-but-not-independently-verifiable rather than confirmed.</p>
             <div class="callout bad">
-              <p><strong>The honest read:</strong> a full reset does not reliably prevent the livelock — it only happens to help when it lands during a quieter load window. Tonight produced one clean, fast, stall-free flight and one fully-stuck one, on the <em>same</em> code, straddling a load swing on the same host. That's the clearest evidence yet that §29's reverted multi-threaded fix — not further resets, not further load-shedding — is the actual next step, not an optional one.</p>
+              <p><strong>The honest read:</strong> a full reset does not reliably prevent the livelock — it only happens to help when it lands during a quieter load window. Tonight produced one clean, fast, stall-free flight and one fully-stuck one, on the <em>same</em> code, straddling a load swing on the same host. That's the clearest evidence yet that §33's reverted multi-threaded fix — not further resets, not further load-shedding — is the actual next step, not an optional one.</p>
             </div>
           </div>
         </div>
       </div>
     </section>
-
     <section id="e-staleFSM">
       <div class="entry">
-        <div class="entry-mark">§32<span class="when">This session</span></div>
+        <div class="entry-mark">§36<span class="when">This session</span></div>
         <div>
           <div class="entry-title-row"><h3>The stale-FSM crash — both guards worked, and it still wasn't enough</h3><span class="pill accent">New lesson, real operational fix</span></div>
           <p class="lede">A re-arm launched from a long-lived <code>fast_planner_node</code> instance — one that had already lived through an earlier flight's livelock — produced a genuine force-disarm, even with both of tonight's safety guards firing exactly as designed.</p>
           <div class="entry-body">
             <h4>What the log actually shows</h4>
-            <p>Right at the climb-to-follow handoff, the killswitch caught a real descent-rate breach and force-disarmed at 4.49m altitude. But this time, both guards had already been intervening correctly: the executor-stall guard logged repeated 0.5-1.0s gaps, and every single time it tried to hold, the §27 odom-staleness guard correctly refused, logging <code>ODOM STALENESS GUARD: skipping ... can't trust it as 'real, right now'</code>. Meanwhile <code>checkCollisionCallback</code>'s own Lỗi 3 watchdog independently measured real tracking divergence climbing past 3.6m and tried to intervene too — and got the same correct refusal.</p>
+            <p>Right at the climb-to-follow handoff, the killswitch caught a real descent-rate breach and force-disarmed at 4.49m altitude. But this time, both guards had already been intervening correctly: the executor-stall guard logged repeated 0.5-1.0s gaps, and every single time it tried to hold, the §31 odom-staleness guard correctly refused, logging <code>ODOM STALENESS GUARD: skipping ... can't trust it as 'real, right now'</code>. Meanwhile <code>checkCollisionCallback</code>'s own Lỗi 3 watchdog independently measured real tracking divergence climbing past 3.6m and tried to intervene too — and got the same correct refusal.</p>
             <h4>The actual cause: nothing was left to correct a genuinely stale reference</h4>
-            <p>The FSM's own "commanded" position — <code>position_traj_.evaluateDeBoorT(t_cur)</code> — stayed frozen at an altitude of 1.11m the entire time, while the real vehicle climbed normally past 4m. That frozen value didn't belong to this flight at all: <code>fast_planner_node</code> had been running continuously since <em>before</em> §31's livelocked flight, and only the bridge/killswitch/logger had been restarted between attempts. Both guards did exactly their job — refusing to trust data they couldn't vouch for — but with no fresh replan able to land in the gaps between stalls, nothing was left to correct a genuinely stale internal belief except the killswitch, the outermost, PX4-telemetry-reading layer, which is exactly what it's for.</p>
+            <p>The FSM's own "commanded" position — <code>position_traj_.evaluateDeBoorT(t_cur)</code> — stayed frozen at an altitude of 1.11m the entire time, while the real vehicle climbed normally past 4m. That frozen value didn't belong to this flight at all: <code>fast_planner_node</code> had been running continuously since <em>before</em> §35's livelocked flight, and only the bridge/killswitch/logger had been restarted between attempts. Both guards did exactly their job — refusing to trust data they couldn't vouch for — but with no fresh replan able to land in the gaps between stalls, nothing was left to correct a genuinely stale internal belief except the killswitch, the outermost, PX4-telemetry-reading layer, which is exactly what it's for.</p>
             <div class="callout good">
-              <p><strong>The real fix is operational, not code:</strong> restart the <em>full</em> planner pair (<code>fast_planner_node</code> + <code>traj_server</code>) between attempts, not just the bridge and killswitch — a long-lived planner instance that already sat through one livelock is a compromised starting point for the next flight, even with every downstream guard working correctly. Every clean flight since (§33) has followed this rule.</p>
+              <p><strong>The real fix is operational, not code:</strong> restart the <em>full</em> planner pair (<code>fast_planner_node</code> + <code>traj_server</code>) between attempts, not just the bridge and killswitch — a long-lived planner instance that already sat through one livelock is a compromised starting point for the next flight, even with every downstream guard working correctly. Every clean flight since (§37) has followed this rule.</p>
             </div>
           </div>
         </div>
       </div>
     </section>
-
     <section id="e-twomoreB">
       <div class="entry">
-        <div class="entry-mark">§33<span class="when">This session</span></div>
+        <div class="entry-mark">§37<span class="when">This session</span></div>
         <div>
           <div class="entry-title-row"><h3>Two more clean B's, GUI and all</h3><span class="pill good">Verified, demo-ready</span></div>
-          <p class="lede">With the full-restart rule from §32 applied consistently, the next two flights were both clean — the second one with Gazebo's own GUI left running the whole time, at the user's request, specifically to watch it happen live.</p>
+          <p class="lede">With the full-restart rule from §36 applied consistently, the next two flights were both clean — the second one with Gazebo's own GUI left running the whole time, at the user's request, specifically to watch it happen live.</p>
           <div class="entry-body">
             <h4>Flight one — the discipline pays off</h4>
             <p>A genuinely fresh <code>run.sh</code> bring-up (full planner pair included, true-origin spawn confirmed at 0.02m), RViz2 and the A/B markers relaunched after both were found to have quietly died during the night's resets. Reached B in <strong>5.36s</strong> — 27 stalls along the way, all recovered cleanly, zero killswitch breaches, 0.83m clearance past pillar_03.</p>
@@ -1439,139 +1524,26 @@ html { scroll-behavior: smooth; }
         </div>
       </div>
     </section>
-
-    <section id="mechanism-head" style="padding-bottom:0; border-bottom:none;">
-      <div class="section-head"><span class="idx">34–39</span><h2>How the system actually works</h2></div>
-      <p class="section-intro">Everything above is what happened and when. This is what's actually running underneath it — six pieces, in the order data flows through them: camera and IMU in, a rotor command out. Written for a colleague who wants the mechanism, not just the incident log.</p>
-    </section>
-
-    <section id="m-perception" style="padding-top:0;">
-      <div class="entry">
-        <div class="entry-mark">§34<span class="when">Reference</span></div>
-        <div>
-          <div class="entry-title-row"><h3>Perception: the VIO path, and what's actually flying today</h3><span class="pill neutral">Mechanism</span></div>
-          <p class="lede">Everything downstream — the map, the plan, the control loop — is only as good as knowing where the drone actually is. The architecture below is designed to get that from a camera and an IMU alone. Every flight in this record so far got it from GPS instead — deliberately, and that's the first thing to understand about this section, not a footnote at the bottom of it.</p>
-          <div class="entry-body">
-            <h4>Stereo visual-inertial odometry (cuVSLAM)</h4>
-            <p>Two cameras (a fixed-baseline stereo pair) and an IMU feed cuVSLAM, an Isaac ROS GPU-accelerated VIO front end. Each frame, it tracks a set of visual features across the stereo pair and across time — the stereo baseline gives per-feature depth by triangulation, and tracking the same features frame-to-frame gives the camera's own motion. That visual estimate is tightly coupled with the IMU: the IMU is cheap and fast (hundreds of Hz) but drifts badly on its own; the camera is accurate but comparatively slow and can fail on textureless or fast-moving scenes. Fusing them gives a 6-DOF pose estimate that's both high-rate and drift-resistant — this is the GPS substitute the architecture is built around, and it's GPU work specifically so it can run in real time on the Jetson's own accelerators rather than starving its CPU cores. It runs, continuously, on every flight in this record. It just isn't what any of those flights flew on (below).</p>
-            <h4>EKF2 — PX4's own state estimator, and what it's actually fusing right now</h4>
-            <p>PX4 runs its own extended Kalman filter (EKF2) onboard. It predicts state forward continuously from raw IMU integration (fast, cheap, drifts alone) and corrects that prediction with an external position fix (slower, but bounds the drift). The architecture is built to supply that fix from cuVSLAM (<code>EKF2_EV_CTRL</code> nonzero, external vision). <b style="color:var(--ink)">As configured for every flight in this record, it's supplied by GPS instead</b> (<code>EKF2_EV_CTRL 0</code>, set in the airframe file, <code>4022_gz_x500_depth_stereo</code>) — the exact same EKF2, the exact same downstream consumers, just a different aiding source feeding it. This isn't a display-only or map-centering substitution: it's the actual estimate PX4's own position/velocity controllers fly on, published as <code>/fmu/out/vehicle_odometry</code> and republished as <code>/ground_truth/odom</code> (§35) for nvblox's camera pose and Fast-Planner's <code>sdf_map</code> frame alike. GPS is genuinely load-bearing for control, mapping, and planning right now, not just one of the three.</p>
-            <h4>Why, and what closes it</h4>
-            <p><code>EKF2_EV_CTRL 0</code> wasn't the original plan — it was forced by a real incident (a Phase 6 flight test where cuVSLAM's tracking drifted ~55m from the Gazebo-confirmed position under GPU contention with nvblox's concurrent CUDA context, corrupting EKF2's fused estimate badly enough to cause a genuine runaway, stopped only by killing the node). <code>ARCHITECTURE.md</code> then formalized staying on GPS as a deliberate Milestone-1 choice, not just a leftover workaround: with pose held constant and known-reliable, a Milestone-1 failure has exactly one possible cause (the new nvblox/ESDF wiring), not two entangled ones. cuVSLAM's own accuracy is still real and separately measured — ≤0.27m against raw Gazebo truth during controlled flight (Reference table) — it just isn't the thing in the loop. Re-enabling <code>EKF2_EV_CTRL</code> and root-causing the GPU-contention drift is Milestone 2, not started (Open issues).</p>
-          </div>
-        </div>
+    <section id="discussion-audit">
+      <div class="section-head"><span class="idx">38</span><h2>Discussion — auditing the record</h2></div>
+      <p class="section-intro">Two passes through this document, checking it against the actual running system and the raw logs rather than trusting its own prose, found real gaps. Both are recorded here plainly rather than folded silently into the sections they correct — a report that hides its own corrections is worth less than one that shows its work.</p>
+      <div class="callout good">
+        <p><strong>The GPS-free framing overstated reality.</strong> The document read as though every flight flew on the destination architecture (cuVSLAM → EKF2, no GPS). Checked directly against the running code — the airframe file's <code>EKF2_EV_CTRL 0</code>, <code>ground_truth_tf.py</code>'s own docstring, <code>ARCHITECTURE.md</code>'s Milestone split — every flight in this record actually flew on PX4's GPS-fused pose, by deliberate Milestone-1 design, not on cuVSLAM. Corrected throughout §00, §02, and §39. The underlying engineering was never in question — only how the report described it.</p>
       </div>
-    </section>
-
-    <section id="m-mapping">
-      <div class="entry">
-        <div class="entry-mark">§35<span class="when">Reference</span></div>
-        <div>
-          <div class="entry-title-row"><h3>Mapping: depth images to a safety field</h3><span class="pill neutral">Mechanism</span></div>
-          <p class="lede">The planner never looks at a depth image directly. Everything it knows about the world comes through one number per voxel: distance to the nearest obstacle.</p>
-          <div class="entry-body">
-            <h4>Depth fusion (nvblox)</h4>
-            <p>The D435i's depth stream (in SITL, Gazebo's simulated depth camera) feeds nvblox, which fuses each depth image into a voxelized <b style="color:var(--ink)">TSDF</b> — a truncated signed distance field. For every pixel with a valid depth reading, nvblox walks the ray from the camera out to that measured surface and updates a running signed-distance estimate in every voxel within a narrow band around the surface (positive in front of it, negative behind, zero at the surface itself) — the same integration scheme real-time depth-fusion systems have used since KinectFusion, GPU-accelerated so it can keep up with a live camera feed. Averaging many rays over time is what makes the fused surface far more stable than any single noisy depth frame. nvblox additionally propagates a full <b style="color:var(--ink)">ESDF</b> (a genuine distance-to-nearest-obstacle value at every voxel, not just the narrow near-surface band the TSDF tracks) out from that fused surface — that ESDF is the actual product this project consumes.</p>
-            <h4>How Fast-Planner pulls from it</h4>
-            <p><code>SDFMap</code> never subscribes to raw depth or does its own raycasting — that code path exists in the source but is intentionally dead (see §19/§35's own comments in <code>sdf_map.cpp</code>). Instead it holds an async service client against <code>/nvblox_node/get_esdf_and_gradient</code> and pulls on two independent timers: a <b style="color:var(--ink)">near tier</b> (0.25s, ~226,981 voxels, close-range avoidance depends on this one being fresh) and a slower <b style="color:var(--ink)">corridor tier</b> (4.0s as of §24, ~2,146,689 voxels, longer-range look-ahead). Async, not blocking — a blocking call on a single-threaded executor would deadlock the node against its own thread.</p>
-            <h4>The resolution mismatch, and why min-pooling</h4>
-            <p>nvblox's own voxels (0.05m) are finer than Fast-Planner's grid (0.1m) — a real 2× mismatch, confirmed live rather than assumed. Each response is pooled down: for every destination voxel, <code>onEsdfResponse()</code> looks at the <code>pool_factor³</code> (2×2×2 = 8) source voxels it covers and keeps the <em>minimum</em> signed distance among them, not an average or nearest-sample. Minimum is the conservative choice for a safety field — it never overstates clearance, so a destination voxel straddling an obstacle edge reads as closer to that obstacle than a softer statistic would suggest. (§30 hoisted the redundant address arithmetic out of this exact loop — same result, ~40-45% less time to compute it.)</p>
-            <h4>Unknown space is occupied, not free</h4>
-            <p>Every voxel starts (and stays, until actually observed) marked occupied — a deliberate policy flip made after a real incident where "unknown = free" let a trajectory fly straight through a real, simply-not-yet-seen obstacle. "Never plan through space not confirmed free" is the general rule every trajectory-<em>generating</em> code path obeys (the search's pruning, the frontier's ray march, the optimizer's cost term). The one narrow, deliberate exception is <code>checkTrajCollision</code>'s watchdog on an <em>already-committed</em> trajectory, which requires actual observation before flagging new danger — specifically to avoid re-triggering the earlier false-collision-storm bug (Lỗi 1) on an already-in-flight path. It's a narrow carve-out for one already-safe case, not a general "unknown is fine" policy.</p>
-            <h4>Where the map actually lives</h4>
-            <p>Every visualization publisher (and, until §21's fix, every real avoidance-relevant buffer index) is bounded by <code>local_bound_min_</code>/<code>local_bound_max_</code> — a moving 3D voxel-index window recentered on the drone's live position (<code>camera_pos_ ± local_update_range_</code>) every time the map actually updates. For the whole engagement before §21, nothing ever set this outside its C++ zero-default, so every map display was rendering one fixed, meaningless corner voxel regardless of where the drone actually was — a real bug, not a display quirk, fixed by recentering it inside <code>onEsdfResponse()</code>.</p>
-          </div>
-        </div>
+      <div class="callout good">
+        <p><strong>Two stall counts don't match their own logs.</strong> §32's "126 executor stalls" and §35's "385 executor stalls" were both recorded live at the time, but the raw logs that survived on disk for those exact windows show different numbers — 336 for the first, and for the second, a log that shows no extended stuck period at all. Most likely explanation: this project's established pattern of relaunches reusing the same default log filename overwrote the specific attempt's log before it was saved off distinctly. Left as originally recorded rather than replaced with a guess, with the discrepancy footnoted in place at both entries and in the Reference table.</p>
       </div>
+      <p>Neither audit changed anything about how the system behaves — both are documentation corrections, not code changes. What they do show: real-time figures written down during a live session are only as durable as the artifact that backs them. The operational lesson, not yet applied but worth stating plainly: copy or rename a log immediately after the event it documents, before the next relaunch can overwrite it — the same discipline this record already applies to killing child processes during a reset (§31) should extend to preserving their output, too.</p>
     </section>
-
-    <section id="m-search">
-      <div class="entry">
-        <div class="entry-mark">§36<span class="when">Reference</span></div>
-        <div>
-          <div class="entry-title-row"><h3>Search: the kinodynamic planner</h3><span class="pill neutral">Mechanism</span></div>
-          <p class="lede">The map says where it's safe to be. The search's job is finding a path there the airframe can actually fly, not just a geometrically clear one.</p>
-          <div class="entry-body">
-            <h4>Motion-primitive expansion, not a geometric graph</h4>
-            <p>A plain shortest-path search over free-space cells would happily hand back a trajectory with instantaneous direction changes — geometrically valid, physically impossible for a quadrotor to track. Fast-Planner's <code>kinodynamic_astar</code> instead expands the search from the vehicle's actual current state (position, velocity, acceleration) forward using discretized acceleration primitives integrated over a short time step — every expanded node is a state the vehicle could actually reach by commanding some feasible acceleration and coasting. The search explores outward from there, biased toward the goal by a standard admissible heuristic, exactly like A* over cells but with the state itself carrying real physics.</p>
-            <h4>Two independent prunes, not one</h4>
-            <p>Every candidate primitive is checked against two separate bounds before it's ever expanded further: <b style="color:var(--ink)">collision</b> (<code>evaluateCoarseEDT</code> → <code>sdf_map_->getDistance()</code> — reject anything that passes too close to an occupied or still-unknown voxel) and, since §18, <b style="color:var(--ink)">thrust authority</b> (reject any primitive whose combined <code>‖a_cmd + g·ẑ‖</code> exceeds the airframe's real, telemetry-measured ceiling of 12.5 m·s⁻²). Before §18 these were independent per-axis velocity/acceleration caps that could jointly ask for more thrust than the airframe could ever deliver, no matter how each looked in isolation — the combined check is what actually matches the physics of a single shared rotor budget.</p>
-            <h4>Output</h4>
-            <p>A coarse, discrete-time sequence of position/velocity/acceleration waypoints — dynamically plausible, provably collision-clear against the map as currently known, but not yet smooth. That's what gets handed to the optimizer next.</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section id="m-trajectory">
-      <div class="entry">
-        <div class="entry-mark">§37<span class="when">Reference</span></div>
-        <div>
-          <div class="entry-title-row"><h3>Trajectory: splines and optimization</h3><span class="pill neutral">Mechanism</span></div>
-          <p class="lede">The search finds a feasible route. The optimizer turns it into something the flight controller can actually track smoothly.</p>
-          <div class="entry-body">
-            <h4>Why a B-spline</h4>
-            <p>A uniform B-spline represents the whole trajectory with a small number of control points, and — critically — it's smooth by construction: position, velocity, and acceleration are just successive derivatives of the same underlying curve (<code>velocity_traj_ = position_traj_.getDerivative()</code>, and again for acceleration). Moving one control point reshapes the curve locally and smoothly rather than introducing a kink, which is exactly the property an optimizer needs to be able to refine a rough initial guess into something flyable without fighting discontinuities at every step.</p>
-            <h4>What the optimizer actually minimizes</h4>
-            <p><code>bspline_optimizer</code> takes the search's coarse output as its starting guess and adjusts control points to minimize a weighted sum of costs: smoothness (penalize sharp curvature), collision (an ESDF-gradient term that pushes points away from nearby obstacles — the same distance field the search used, now driving a continuous gradient rather than a hard prune), dynamical feasibility (stay under velocity/acceleration bounds), and — since §18 — the same combined thrust-vector term the search prunes on, now expressed as a smooth, analytically-differentiable cost rather than a hard reject, so the continuous optimizer can't quietly reshape the search's already-thrust-valid output back past the limit.</p>
-            <h4>Reallocating time when a bound is still violated</h4>
-            <p>If the optimized spline still exceeds a dynamical bound afterward, <code>reallocateTime()</code> stretches the time allocated between the offending control points — effectively "take this segment slower" — via an exact closed-form quadratic solve (replacing an earlier approximation that measurably under-stretched, since it assumed a pure per-axis acceleration term with no fixed gravity-compensation offset). Each reallocation pass is capped per-interval by <code>limit_ratio_</code> (1.1 → 1.3 after §18 — the single change that actually broke a persistent-rejection stall, more than the exact-math fix itself), and the whole reallocate-and-recheck loop is capped at 8 iterations (raised from 3), with an explicit reject-and-hold safety return if it's still infeasible after that — the planner refuses to hand back and fly a trajectory it can't make work, rather than committing to something marginal.</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section id="m-execution">
-      <div class="entry">
-        <div class="entry-mark">§38<span class="when">Reference</span></div>
-        <div>
-          <div class="entry-title-row"><h3>Execution: the FSM and the frontier</h3><span class="pill neutral">Mechanism</span></div>
-          <p class="lede">A finished trajectory doesn't fly itself. Something has to decide when to trust it, when to replan, and — because the goal can be behind an obstacle at trigger time — what to actually aim at along the way.</p>
-          <div class="entry-body">
-            <h4>The state machine</h4>
-            <p><code>KinoReplanFSM</code> cycles through <code>INIT → WAIT_TARGET → GEN_NEW_TRAJ → EXEC_TRAJ</code>, with <code>REPLAN_TRAJ</code> re-entered whenever the currently-executing trajectory nears its own end (<code>no_replan_thresh_</code>/<code>replan_thresh_</code>) or gets explicitly retriggered. <code>execFSMCallback()</code>, on a 10ms timer, is the heartbeat that drives every transition; <code>checkCollisionCallback()</code>, on its own 50ms timer, runs independently alongside it watching for danger regardless of what state the FSM is in.</p>
-            <h4>The receding-horizon frontier — why the target isn't always the real goal</h4>
-            <p>The occlusion theorem this whole architecture is built around: a goal behind an obstacle is genuinely unobservable at the moment a mission is triggered, so committing straight to it isn't possible even in principle. <code>computeFrontier()</code> substitutes the true mission goal with whatever's actually reachable and confirmed-free right now — a straight ray-march toward the goal, falling back to a fan of yaw-rotated candidate rays (±15/30/45/60°) whenever that direct line is blocked well short of the goal (§20 — the fix that produced this engagement's first successful B-reach). Hysteresis (§22) persists the previously-chosen detour as an <em>angle offset from the current goal line</em>, not an absolute world direction, specifically so it can't run away the way an absolute-vector version did (goalflight16) — every candidate, including the persisted one, stays structurally capped at the current distance to the real goal.</p>
-            <h4>Two watchdogs, doing different jobs</h4>
-            <p>Lỗi 2's check fires only at a replan boundary: if the spline's own open-loop belief has drifted more than 0.75m from real odometry by the time a new plan is about to start, the start state is re-grounded to reality before planning from it. Lỗi 3's watchdog runs continuously, every 50ms, specifically because a replan boundary can be seconds away — at the incident's own measured divergence rate, real danger builds well within one replan cycle. Its response is a deliberate hold, not a forward replan: a uniform B-spline whose control points are all equal (mathematically constant everywhere), pinned to real odometry — structurally incapable of commanding new motion, which is the whole point when tracking itself is what's failing.</p>
-            <h4>Two guards added this session, both inside the same watchdog path</h4>
-            <p>The executor-stall guard (§23) checks the wall-clock gap since the FSM's own last tick — if the single thread it runs on was descheduled for multiple seconds, it forces a hold rather than trusting a belief that's been running open-loop that whole time. The odom-staleness guard (§27, §32) checks something adjacent but different: whether the position reading being used to build that hold is itself still fresh, since the odom <em>source</em> can independently stall under the same load. Both guards can correctly decline to act — and did, in §32 — which is why the operational discipline of restarting the full planner pair between flights (not carrying a compromised belief across attempts) matters as much as the code itself.</p>
-            <h4>traj_server — a deliberate second process</h4>
-            <p>Fast-Planner publishes its trajectory as a compact B-spline (control points, not a dense path). A separate process, <code>traj_server</code>, subscribes to that, evaluates it at the current wall-clock time on every tick, and publishes a dense <code>PositionCommand</code> for the bridge to consume. Splitting this out means a slow or stalled planning cycle doesn't have to also own the job of continuously re-evaluating and republishing a trajectory that hasn't actually changed — real separation of concerns, and (as §27 found) a real place a stale/duplicate instance can hide if a reset doesn't kill every child process explicitly.</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section id="m-safety">
-      <div class="entry">
-        <div class="entry-mark">§39<span class="when">Reference</span></div>
-        <div>
-          <div class="entry-title-row"><h3>Control and the safety stack</h3><span class="pill neutral">Mechanism</span></div>
-          <p class="lede">Four independent layers sit between "the planner believes something" and "the vehicle does something dangerous." Tonight is a real demonstration of why that stacking matters — individual layers had real bugs, and none of them became a real disaster alone.</p>
-          <div class="entry-body">
-            <h4>The bridge — the only thing that talks to PX4</h4>
-            <p><code>fast_planner_bridge</code> subscribes to <code>traj_server</code>'s dense <code>PositionCommand</code> and republishes it as PX4 offboard <code>TrajectorySetpoint</code> messages — continuously, at a rate PX4's own offboard mode requires to stay engaged (offboard has its own internal loss-of-setpoint timeout independent of anything this project added). It owns the arm/climb/follow/land state machine described throughout this record: capture home at arm time, climb straight up to hover before ever trusting the planner's own output, hand off to <code>/planning/pos_cmd</code> only once that climb is confirmed complete, and on a clean stop, request <code>AUTO.LAND</code> and wait for a real confirmed disarm rather than just stopping setpoints and hoping.</p>
-            <h4>PX4 itself</h4>
-            <p>PX4's own cascaded controllers (position → velocity → attitude → rate) turn whatever setpoint it receives into actual rotor commands, mixed down individually per motor — in SITL, those commands drive Gazebo's physics plugin directly; on real hardware they'd drive real ESCs. This project never bypasses or replaces any of that — everything upstream only ever hands PX4 a setpoint through its normal, supported offboard interface.</p>
-            <h4>The killswitch — deliberately outside all of it</h4>
-            <p><code>hard_killswitch.py</code> is a fully separate process that subscribes directly to PX4's own telemetry (not the planner's internal belief about where the vehicle is) and independently checks four bounds every tick: altitude ceiling (8.0m), ground-strike floor (−0.5m), horizontal range (15.0m), and descent rate (1.5 m/s, gated above 1.0m altitude so normal landing descent doesn't trip it). A breach triggers a two-stage response — SIGKILL the bridge first (so no new setpoints can possibly follow), then a direct force-disarm — with the whole breach-to-confirmed-disarm sequence measured at 12-55ms across every real trigger this engagement has produced. It's a separate process specifically so it can't share fate with anything upstream that might itself be stalled, buggy, or compromised — exactly the property that mattered on every real incident this record documents.</p>
-            <h4>Why the stack, not any one layer, is the actual safety story</h4>
-            <p>Search-time pruning and the optimizer's cost terms keep most trajectories safe before they're ever committed to. The FSM's two watchdogs catch divergence between what's commanded and what's real, continuously, without waiting for a replan boundary. Tonight added two more internal guards specifically for data the FSM can no longer trust (a stalled executor, a stalled odom source) — and even when those guards correctly declined to act (§32), the killswitch — reading PX4's own ground truth, sharing no code path with anything that had stalled — was still there. None of these layers is individually sufficient; that's the design, not a gap.</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
     <section id="issues">
-      <div class="section-head"><span class="idx">40</span><h2>Open issues &amp; matters requiring resolution</h2></div>
+      <div class="section-head"><span class="idx">39</span><h2>Open issues &amp; matters requiring resolution</h2></div>
       <p class="section-intro">What an incoming reader should act on next, roughly in the order it should be acted on.</p>
       <div class="issues">
         <div class="issue critical">
           <div class="issue-bar"></div>
           <div class="issue-body">
             <div class="issue-top"><h3>Executor livelock under sustained load — fix attempted, reverted</h3><span class="pill accent">Open — safe, not fast</span></div>
-            <p>§28 found the worst-case form of §24's "safe but slow" limitation directly: under sustained load, the §23 stall guard can return early on every single tick faster than its own hold-and-cooldown cycle clears, permanently preventing the FSM from ever reaching the logic that would replan toward the real goal — 44 minutes parked barely past the start, completely safe, zero progress. §29 tried the real fix (a <code>MultiThreadedExecutor</code> splitting control and map work onto separate callback groups) — it eliminated the livelock outright (0 stalls in the next test flight) but exposed an unsynchronized read/write race on <code>SDFMap</code>'s buffers that made the kinodynamic search fail almost every attempt, including trivial hops in open space. Reverted the same night rather than ship a race condition on flight-safety code. §31 then produced the clearest evidence yet that a reset alone isn't the fix: the <em>same</em> post-optimization code reached B in 4.32s with zero stalls on one flight, then fully livelocked (385 stalls, ~10 minutes parked) on the very next one, the only difference being host load at the time. <em>(Both raw stall counts — 126 and 385 — were recorded live at the time but don't match the logs that survived on disk; see the audit footnotes in §28/§31.)</em></p>
+            <p>§32 found the worst-case form of §30's "safe but slow" limitation directly: under sustained load, the §29 stall guard can return early on every single tick faster than its own hold-and-cooldown cycle clears, permanently preventing the FSM from ever reaching the logic that would replan toward the real goal — 44 minutes parked barely past the start, completely safe, zero progress. §33 tried the real fix (a <code>MultiThreadedExecutor</code> splitting control and map work onto separate callback groups) — it eliminated the livelock outright (0 stalls in the next test flight) but exposed an unsynchronized read/write race on <code>SDFMap</code>'s buffers that made the kinodynamic search fail almost every attempt, including trivial hops in open space. Reverted the same night rather than ship a race condition on flight-safety code. §35 then produced the clearest evidence yet that a reset alone isn't the fix: the <em>same</em> post-optimization code reached B in 4.32s with zero stalls on one flight, then fully livelocked (385 stalls, ~10 minutes parked) on the very next one, the only difference being host load at the time. <em>(Both raw stall counts — 126 and 385 — were recorded live at the time but don't match the logs that survived on disk; see the audit footnotes in §32/§35.)</em></p>
             <div class="fix"><b>Real next step:</b> the multi-threaded executor split is the right direction and is already wired up (callback groups in place, inert under the current single-threaded revert) — it needs proper synchronization on <code>SDFMap</code>'s shared buffers (a double-buffer swap or an explicit lock around the read/write path) designed and tested deliberately, not attempted live mid-flight.</div>
           </div>
         </div>
@@ -1593,21 +1565,27 @@ html { scroll-behavior: smooth; }
           <div class="issue-bar"></div>
           <div class="issue-body">
             <div class="issue-top"><h3>Milestone 2 and Isaac ROS 3.2 on Jetson</h3><span class="pill neutral">Deferred</span></div>
-            <p>cuVSLAM driving control instead of GPS is the actual destination architecture, and is entirely deferred — every flight in this record, including all ten B-reaches, flew on PX4's GPS-fused EKF2 estimate instead (§02, §34), by deliberate Milestone-1 design; a historical GPU-contention drift issue is the open reason cuVSLAM isn't driving control yet. Isaac ROS release-3.2 setup on the real Orin Nano (4.x dropped Orin Nano support; <code>run_dev.sh</code> needs patching for no PVA/DLA) hasn't started. No hardware flight has happened yet — every result in this document is SITL.</p>
+            <p>cuVSLAM driving control instead of GPS is the actual destination architecture, and is entirely deferred — every flight in this record, including all ten B-reaches, flew on PX4's GPS-fused EKF2 estimate instead (§08, §02), by deliberate Milestone-1 design; a historical GPU-contention drift issue is the open reason cuVSLAM isn't driving control yet. Isaac ROS release-3.2 setup on the real Orin Nano (4.x dropped Orin Nano support; <code>run_dev.sh</code> needs patching for no PVA/DLA) hasn't started. No hardware flight has happened yet — every result in this document is SITL.</p>
           </div>
         </div>
         <div class="issue fixed">
           <div class="issue-bar"></div>
           <div class="issue-body">
             <div class="issue-top"><h3>Resolved this window, kept here for the record</h3><span class="pill good">Closed</span></div>
-            <p><b style="color:var(--ink)">Lỗi 3's crash bug</b> — the clock-type fix held; the watchdog and its §23 stall-guard successor have since completed 200+ real holds with zero crashes. <b style="color:var(--ink)">Speed-vs-dip</b> — superseded, not separately re-tested: the combined thrust-vector budget (§18) closed the underlying thrust-authority question directly. <b style="color:var(--ink)">Off-axis frontier</b> — was untested at the last writing; now proven repeatedly (§20, §22) with a real obstacle in the way, including a live 0.75m near-miss the vehicle recovered from unassisted. <b style="color:var(--ink)">Odom-staleness crash</b> (§27) — a stale-position read from a stalled odom source could pin a safety hold to a phantom location; fixed with a receipt-age check, verified live the same night the bug was found. <b style="color:var(--ink)">Duplicate <code>traj_server</code> race</b> (§27) — an incomplete process reset left two publishers racing on the same command topic; fixed by killing every child process explicitly during a reset, not just the launch wrapper. <b style="color:var(--ink)">Wrong start point</b> (§31) — re-arming a landed-in-place vehicle silently starts the next mission from wherever it landed, not A; not a code bug, an operational rule now documented (see Home capture, Reference). <b style="color:var(--ink)">A/B markers and killswitch-armed process hygiene</b> — both quietly died during tonight's resets and were caught and relaunched live. <b style="color:var(--ink)">Stale-FSM crash</b> (§32) — a long-lived <code>fast_planner_node</code> instance carried a frozen internal belief across flights; both safety guards correctly refused to act on it, but nothing else was left to correct it. Fixed operationally: restart the full planner pair between attempts, not just the bridge.</p>
+            <p><b style="color:var(--ink)">Lỗi 3's crash bug</b> — the clock-type fix held; the watchdog and its §29 stall-guard successor have since completed 200+ real holds with zero crashes. <b style="color:var(--ink)">Speed-vs-dip</b> — superseded, not separately re-tested: the combined thrust-vector budget (§24) closed the underlying thrust-authority question directly. <b style="color:var(--ink)">Off-axis frontier</b> — was untested at the last writing; now proven repeatedly (§26, §28) with a real obstacle in the way, including a live 0.75m near-miss the vehicle recovered from unassisted. <b style="color:var(--ink)">Odom-staleness crash</b> (§31) — a stale-position read from a stalled odom source could pin a safety hold to a phantom location; fixed with a receipt-age check, verified live the same night the bug was found. <b style="color:var(--ink)">Duplicate <code>traj_server</code> race</b> (§31) — an incomplete process reset left two publishers racing on the same command topic; fixed by killing every child process explicitly during a reset, not just the launch wrapper. <b style="color:var(--ink)">Wrong start point</b> (§35) — re-arming a landed-in-place vehicle silently starts the next mission from wherever it landed, not A; not a code bug, an operational rule now documented (see Home capture, Reference). <b style="color:var(--ink)">A/B markers and killswitch-armed process hygiene</b> — both quietly died during tonight's resets and were caught and relaunched live. <b style="color:var(--ink)">Stale-FSM crash</b> (§36) — a long-lived <code>fast_planner_node</code> instance carried a frozen internal belief across flights; both safety guards correctly refused to act on it, but nothing else was left to correct it. Fixed operationally: restart the full planner pair between attempts, not just the bridge.</p>
           </div>
         </div>
       </div>
     </section>
-
+    <section id="conclusion">
+      <div class="section-head"><span class="idx">40</span><h2>Conclusion</h2></div>
+      <p class="section-intro">Where this leaves the project, stated plainly.</p>
+      <p>The core navigation capability is proven, repeatedly, in simulation: a multicopter reaches a goal 8m away with a real obstacle ring directly in its path, ten separate times across this record, using nothing but a depth camera's ESDF and a kinodynamic planner to find its way around what it can't yet see — currently flying on PX4's GPS-fused pose as a deliberate Milestone-1 stand-in for the vision estimate that will eventually replace it. The receding-horizon frontier this required, the combined thrust-vector budget that made the resulting trajectories flyable, and the four-layer safety stack that caught every real divergence this record produced — including twice as the sole reason a real problem didn't become a real crash — are all implemented, tested under genuine load, and documented down to the mechanism level in Part I.</p>
+      <p>What isn't proven yet is the harder half of the original mission statement. Milestone 2 — cuVSLAM actually driving control, GPS removed for real — hasn't started; the GPU-contention drift that forced the fallback to GPS in the first place is still unsolved, not just deferred. The executor livelock is understood architecturally (§32) but not closed: the fix that would close it (a multi-threaded executor with real synchronization on the shared map state) was built, found a worse bug, and was reverted the same night, leaving "safe but occasionally stuck" as the honest current ceiling rather than "reliably fast." And nothing in this document has flown on real hardware — every result, every number, every fix is SITL.</p>
+      <p>None of that is hidden in the sections above, and it isn't hidden here either. The next real step is narrow and specific, not a vague "more testing": add proper synchronization to <code>SDFMap</code>'s shared buffers and re-attempt the multi-threaded executor deliberately, then re-open Milestone 2 once that foundation is solid. Everything else documented in Open Issues (§39) is either already mitigated, already scoped as future work on the actual Jetson hardware, or — per the discussion above — a documentation lesson about keeping the record as honest as the system it describes.</p>
+    </section>
     <section id="reference">
-      <div class="section-head"><span class="idx">41</span><h2>Reference</h2></div>
+      <div class="section-head"><span class="idx">41</span><h2>Reference &amp; Glossary</h2></div>
       <p class="section-intro">Thresholds and terms, for a reader arriving without the rest of this document in their head.</p>
 
       <h4 style="font-family:'IBM Plex Sans Condensed',sans-serif;font-size:0.85rem;letter-spacing:0.04em;text-transform:uppercase;color:var(--ink-3);margin-bottom:0.5rem;">Thresholds &amp; values</h4>
@@ -1627,32 +1605,32 @@ html { scroll-behavior: smooth; }
             <tr><td class="label">Flight 1 dip</td><td>−1.64m</td><td>max_vel 1.5, no killswitch floor existed yet</td></tr>
             <tr><td class="label">Verify flight #1 dip</td><td>−1.01m</td><td>max_vel 1.5, floor breach at −0.508m</td></tr>
             <tr><td class="label">EKF2 vs. Gazebo truth, controlled flight</td><td>≤0.27m</td><td>Watchdog flight, both streams logged</td></tr>
-            <tr><td class="label">Combined thrust-vector budget</td><td>12.5 m·s⁻²</td><td>Search, reallocation, optimizer (§18)</td></tr>
-            <tr><td class="label">Reallocation <code>limit_ratio_</code></td><td>1.1 → 1.3</td><td>The actual break on the reallocation stall (§18)</td></tr>
+            <tr><td class="label">Combined thrust-vector budget</td><td>12.5 m·s⁻²</td><td>Search, reallocation, optimizer (§24)</td></tr>
+            <tr><td class="label">Reallocation <code>limit_ratio_</code></td><td>1.1 → 1.3</td><td>The actual break on the reallocation stall (§24)</td></tr>
             <tr><td class="label">Reallocation iteration cap</td><td>3 → 8</td><td><code>kinodynamicReplan()</code> reject-if-still-infeasible</td></tr>
-            <tr><td class="label">Frontier switch margin</td><td>1.5m</td><td>Hysteresis v2 — <code>kFrontierSwitchMargin</code> (§22)</td></tr>
-            <tr><td class="label">Pillar_03 closest approach observed</td><td>≈0.49m (blind), 0.75m (fan, recovered)</td><td>§19 vs. §22</td></tr>
-            <tr><td class="label">Executor-stall guard threshold</td><td>0.3s gap (30× nominal 10ms)</td><td><code>kStallGapS</code>, top of <code>execFSMCallback()</code> (§23)</td></tr>
+            <tr><td class="label">Frontier switch margin</td><td>1.5m</td><td>Hysteresis v2 — <code>kFrontierSwitchMargin</code> (§28)</td></tr>
+            <tr><td class="label">Pillar_03 closest approach observed</td><td>≈0.49m (blind), 0.75m (fan, recovered)</td><td>§25 vs. §28</td></tr>
+            <tr><td class="label">Executor-stall guard threshold</td><td>0.3s gap (30× nominal 10ms)</td><td><code>kStallGapS</code>, top of <code>execFSMCallback()</code> (§29)</td></tr>
             <tr><td class="label">Observed real stall durations</td><td>2.3–4.8s</td><td>200+ events, 2 flights, 0 crashes</td></tr>
-            <tr><td class="label">ESDF corridor-tier fetch period</td><td>1.5s → 4.0s</td><td>Near tier (0.25s) left untouched (§24)</td></tr>
-            <tr><td class="label">SDF map visualization timer</td><td>50ms → 500ms</td><td><code>vis_timer_</code>, the larger of the two §24 fixes</td></tr>
-            <tr><td class="label">Stall-frequency reduction, §24 combined</td><td>≈60%</td><td>Comparable-window measurement, not a full fix</td></tr>
-            <tr><td class="label">Odom-staleness guard threshold</td><td>0.5s receipt age</td><td><code>triggerTrackingDivergenceHold()</code> (§27)</td></tr>
-            <tr><td class="label">Livelock duration observed</td><td>44 min parked, 0 progress (126 stalls logged live)†</td><td>Single flight, §28</td></tr>
-            <tr><td class="label">Container restart: zombies cleared</td><td>77 → 2</td><td>Confirmed via <code>docker restart</code> (§28)</td></tr>
-            <tr><td class="label">Container restart: load average</td><td>10+ → 3-5</td><td>Same host, before/after (§28)</td></tr>
-            <tr><td class="label">Multi-threaded executor test</td><td>0 stalls, search fails almost every attempt</td><td>Tried &amp; reverted same night (§29)</td></tr>
-            <tr><td class="label">Corridor fetch, after address-hoist</td><td>184–232ms → 104–120ms</td><td>≈40–45% reduction, measured (§30)</td></tr>
-            <tr><td class="label">Vis publishers with zero real consumers</td><td>2 of 5 (<code>/sdf_map/occupancy</code>, <code>/sdf_map/esdf</code>)</td><td>Now skipped unconditionally when unwatched (§30)</td></tr>
-            <tr><td class="label">Clean post-reset flight time</td><td>4.32s, 0 stalls, 0 breaches</td><td>goalflight31, 0.56m pillar_03 clearance (§31)</td></tr>
-            <tr><td class="label">Livelocked post-reset flight</td><td>385 stalls† , ~10 min parked</td><td>goalflight33, same code, higher load (§31)</td></tr>
-            <tr><td class="label">Stale-FSM crash breach altitude</td><td>4.49m</td><td>goalflight34, both guards correctly refused to act (§32)</td></tr>
-            <tr><td class="label">Clean flight, full-restart rule applied</td><td>5.36s, 27 stalls, 0 breaches, 0.83m clearance</td><td>goalflight35 (§33)</td></tr>
-            <tr><td class="label">Clean flight, Gazebo GUI left open</td><td>2.15s, 15 stalls, 0 breaches, 1.15m clearance</td><td>goalflight36, fastest of the engagement (§33)</td></tr>
+            <tr><td class="label">ESDF corridor-tier fetch period</td><td>1.5s → 4.0s</td><td>Near tier (0.25s) left untouched (§30)</td></tr>
+            <tr><td class="label">SDF map visualization timer</td><td>50ms → 500ms</td><td><code>vis_timer_</code>, the larger of the two §30 fixes</td></tr>
+            <tr><td class="label">Stall-frequency reduction, §30 combined</td><td>≈60%</td><td>Comparable-window measurement, not a full fix</td></tr>
+            <tr><td class="label">Odom-staleness guard threshold</td><td>0.5s receipt age</td><td><code>triggerTrackingDivergenceHold()</code> (§31)</td></tr>
+            <tr><td class="label">Livelock duration observed</td><td>44 min parked, 0 progress (126 stalls logged live)†</td><td>Single flight, §32</td></tr>
+            <tr><td class="label">Container restart: zombies cleared</td><td>77 → 2</td><td>Confirmed via <code>docker restart</code> (§32)</td></tr>
+            <tr><td class="label">Container restart: load average</td><td>10+ → 3-5</td><td>Same host, before/after (§32)</td></tr>
+            <tr><td class="label">Multi-threaded executor test</td><td>0 stalls, search fails almost every attempt</td><td>Tried &amp; reverted same night (§33)</td></tr>
+            <tr><td class="label">Corridor fetch, after address-hoist</td><td>184–232ms → 104–120ms</td><td>≈40–45% reduction, measured (§34)</td></tr>
+            <tr><td class="label">Vis publishers with zero real consumers</td><td>2 of 5 (<code>/sdf_map/occupancy</code>, <code>/sdf_map/esdf</code>)</td><td>Now skipped unconditionally when unwatched (§34)</td></tr>
+            <tr><td class="label">Clean post-reset flight time</td><td>4.32s, 0 stalls, 0 breaches</td><td>goalflight31, 0.56m pillar_03 clearance (§35)</td></tr>
+            <tr><td class="label">Livelocked post-reset flight</td><td>385 stalls† , ~10 min parked</td><td>goalflight33, same code, higher load (§35)</td></tr>
+            <tr><td class="label">Stale-FSM crash breach altitude</td><td>4.49m</td><td>goalflight34, both guards correctly refused to act (§36)</td></tr>
+            <tr><td class="label">Clean flight, full-restart rule applied</td><td>5.36s, 27 stalls, 0 breaches, 0.83m clearance</td><td>goalflight35 (§37)</td></tr>
+            <tr><td class="label">Clean flight, Gazebo GUI left open</td><td>2.15s, 15 stalls, 0 breaches, 1.15m clearance</td><td>goalflight36, fastest of the engagement (§37)</td></tr>
           </tbody>
         </table>
       </div>
-      <p class="footnote">† Audited 2026-08-28: these two stall counts (126 and 385) were recorded live at the time but don't match the raw logs that survived on disk for their respective time windows (336 and 95/no-livelock-visible, respectively). Left as originally recorded rather than silently replaced — see the audit footnotes in §28 and §31 for the full comparison.</p>
+      <p class="footnote">† Audited 2026-08-28: these two stall counts (126 and 385) were recorded live at the time but don't match the raw logs that survived on disk for their respective time windows (336 and 95/no-livelock-visible, respectively). Left as originally recorded rather than silently replaced — see the audit footnotes in §32 and §35 for the full comparison.</p>
 
       <h4 style="font-family:'IBM Plex Sans Condensed',sans-serif;font-size:0.85rem;letter-spacing:0.04em;text-transform:uppercase;color:var(--ink-3);margin:2rem 0 0.5rem;">Glossary</h4>
       <dl class="glossary">
@@ -1670,12 +1648,12 @@ html { scroll-behavior: smooth; }
         <div class="gterm"><dt>Executor stall</dt><dd>A wall-clock gap in the planner's own control-loop ticking, caused by the single thread it runs on getting descheduled under system load — not a bad planning decision, a decision computed from stale time.</dd></div>
         <div class="gterm"><dt>Hysteresis (frontier)</dt><dd>Persisting the previously-chosen detour angle across replan cycles, and requiring a clearly better alternative before abandoning it — added after the un-persisted fan flip-flopped between left and right detours cycle to cycle.</dd></div>
         <div class="gterm"><dt>Corridor / near tier</dt><dd>The two ESDF fetch ranges <code>SDFMap</code> pulls from nvblox: a fast, small near-field fetch immediate avoidance depends on, and a slower, much larger corridor fetch for longer-range look-ahead.</dd></div>
-        <div class="gterm"><dt><code>local_bound_min_</code> / <code>local_bound_max_</code></dt><dd>The 3D voxel-index range every map-visualization publisher iterates. Left at its zero-default for the whole engagement until §21's fix recentered it on the drone's live position.</dd></div>
+        <div class="gterm"><dt><code>local_bound_min_</code> / <code>local_bound_max_</code></dt><dd>The 3D voxel-index range every map-visualization publisher iterates. Left at its zero-default for the whole engagement until §27's fix recentered it on the drone's live position.</dd></div>
         <div class="gterm"><dt>Livelock</dt><dd>A safe-but-permanently-stuck state: the process keeps running and never crashes, but a self-reinforcing pattern (here, the stall guard's own early-return) prevents it from ever reaching the logic that would make forward progress.</dd></div>
         <div class="gterm"><dt>Callback group</dt><dd>A ROS 2 grouping mechanism that determines which callbacks are allowed to run concurrently under a multi-threaded executor; callbacks in the same group never overlap each other, callbacks in different groups can run on different threads at once.</dd></div>
-        <div class="gterm"><dt>MultiThreadedExecutor</dt><dd>A ROS 2 executor that spins multiple threads instead of one, allowing callbacks in different callback groups to run concurrently — the structural fix attempted in §29.</dd></div>
-        <div class="gterm"><dt>Subscriber-count gating</dt><dd>Checking a publisher's <code>get_subscription_count()</code> before doing the (potentially expensive) work of building its message, and skipping entirely if nobody's listening — applied to all five map-visualization publishers in §30.</dd></div>
-        <div class="gterm"><dt>Home capture</dt><dd>The bridge's arm-time behavior of setting its climb reference to wherever the vehicle physically is at that moment, not a fixed world origin — a landed-in-place drone re-armed without a world reset silently starts its next mission from the wrong point (§31).</dd></div>
+        <div class="gterm"><dt>MultiThreadedExecutor</dt><dd>A ROS 2 executor that spins multiple threads instead of one, allowing callbacks in different callback groups to run concurrently — the structural fix attempted in §33.</dd></div>
+        <div class="gterm"><dt>Subscriber-count gating</dt><dd>Checking a publisher's <code>get_subscription_count()</code> before doing the (potentially expensive) work of building its message, and skipping entirely if nobody's listening — applied to all five map-visualization publishers in §34.</dd></div>
+        <div class="gterm"><dt>Home capture</dt><dd>The bridge's arm-time behavior of setting its climb reference to wherever the vehicle physically is at that moment, not a fixed world origin — a landed-in-place drone re-armed without a world reset silently starts its next mission from the wrong point (§35).</dd></div>
       </dl>
     </section>
 
