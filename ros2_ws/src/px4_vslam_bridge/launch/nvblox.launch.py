@@ -37,16 +37,46 @@ so that band never gets any real observations even though TSDF blocks
 are genuinely being allocated from real depth data (confirmed via
 mapper.cpp's GPU hash growth log messages during a flight test). A
 drone needs the full 3D ESDF, not a ground-level slice.
+
+feasibility-gate addition: integrate_depth_rate_hz/update_esdf_rate_hz are
+exposed as launch arguments (defaulting to nvblox_base.yaml's own 40.0/
+10.0, so omitting them changes nothing) for
+tools/feasibility_gate/run_gate.sh's `--workload nvblox` contention knob.
+This MUST be a launch-time argument, not a runtime `ros2 param set`:
+node_params.cpp's initParam() reads every nvblox param exactly once via
+declare_parameter() at construction and assigns it into a plain struct
+member (nvblox_node.cpp:990's params_.integrate_depth_rate_hz) -- there is
+no add_on_set_parameters_callback anywhere in nvblox_ros (checked), so a
+live `ros2 param set` on a running node changes the parameter server's
+stored value only, silently, with zero effect on actual behavior.
+Changing the rate for real means relaunching this container with the new
+value, which is what run_gate.sh does (kill + relaunch, not param set).
 """
 
 import launch
+from launch.actions import DeclareLaunchArgument
+from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import ComposableNodeContainer
-from launch_ros.descriptions import ComposableNode
+from launch_ros.descriptions import ComposableNode, ParameterValue
 
 NVBLOX_BASE_CONFIG = "/opt/ros/humble/share/nvblox_examples_bringup/config/nvblox/nvblox_base.yaml"
 
+# nvblox_base.yaml's own defaults -- kept here only so omitting the launch
+# arguments reproduces exactly the previous, un-overridden behavior.
+DEFAULT_INTEGRATE_DEPTH_RATE_HZ = "40.0"
+DEFAULT_UPDATE_ESDF_RATE_HZ = "10.0"
+
 
 def generate_launch_description() -> launch.LaunchDescription:
+    integrate_depth_rate_hz_arg = DeclareLaunchArgument(
+        "integrate_depth_rate_hz", default_value=DEFAULT_INTEGRATE_DEPTH_RATE_HZ,
+        description="feasibility-gate contention knob -- see module docstring.",
+    )
+    update_esdf_rate_hz_arg = DeclareLaunchArgument(
+        "update_esdf_rate_hz", default_value=DEFAULT_UPDATE_ESDF_RATE_HZ,
+        description="feasibility-gate contention knob -- see module docstring.",
+    )
+
     nvblox_node = ComposableNode(
         name="nvblox_node",
         package="nvblox_ros",
@@ -85,6 +115,12 @@ def generate_launch_description() -> launch.LaunchDescription:
                 "clear_map_outside_radius_rate_hz": 1.0,
                 "publish_layer_rate_hz": 2.0,
                 "esdf_mode": "3d",
+                "integrate_depth_rate_hz": ParameterValue(
+                    LaunchConfiguration("integrate_depth_rate_hz"), value_type=float
+                ),
+                "update_esdf_rate_hz": ParameterValue(
+                    LaunchConfiguration("update_esdf_rate_hz"), value_type=float
+                ),
             },
         ],
         remappings=[
@@ -122,4 +158,8 @@ def generate_launch_description() -> launch.LaunchDescription:
         output="screen",
     )
 
-    return launch.LaunchDescription([container])
+    return launch.LaunchDescription([
+        integrate_depth_rate_hz_arg,
+        update_esdf_rate_hz_arg,
+        container,
+    ])

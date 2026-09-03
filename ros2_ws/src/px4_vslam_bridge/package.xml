@@ -11,12 +11,14 @@
   <depend>rclpy</depend>
   <depend>px4_msgs</depend>
   <depend>nav_msgs</depend>
+  <depend>sensor_msgs</depend>
   <depend>geometry_msgs</depend>
   <depend>tf2_ros</depend>
   <depend>nvblox_msgs</depend>
   <depend>quadrotor_msgs</depend>
   <depend>python3-numpy</depend>
   <exec_depend>isaac_ros_visual_slam</exec_depend>
+  <exec_depend>isaac_ros_visual_slam_interfaces</exec_depend>
   <exec_depend>nvblox_ros</exec_depend>
 
   <buildtool_depend>ament_python</buildtool_depend>
