@@ -38,6 +38,16 @@ are genuinely being allocated from real depth data (confirmed via
 mapper.cpp's GPU hash growth log messages during a flight test). A
 drone needs the full 3D ESDF, not a ground-level slice.
 
+feasibility-gate addition: use_sim_time=True, matching visual_slam_node
+(vslam.launch.py) and ground_truth_tf (run.sh's use_sim_time:=true).
+Previously unset here -- nvblox_node's own timer/TF lookups fell back to
+wall-clock, which the project's own sim-time discipline (see the Phase 6
+"use_sim_time" incident in ground_truth_tf.py's history) already
+established as a real, silent-failure-mode risk for any node doing
+timestamp-sensitive work against a Gazebo-bridged clock. Fixed here as a
+measurement-correctness change only; does not touch EKF2_EV_CTRL,
+airframe, or estimator params.
+
 feasibility-gate addition: integrate_depth_rate_hz/update_esdf_rate_hz are
 exposed as launch arguments (defaulting to nvblox_base.yaml's own 40.0/
 10.0, so omitting them changes nothing) for
@@ -84,6 +94,7 @@ def generate_launch_description() -> launch.LaunchDescription:
         parameters=[
             NVBLOX_BASE_CONFIG,
             {
+                "use_sim_time": True,
                 "num_cameras": 1,
                 "use_color": False,
                 "use_lidar": False,
