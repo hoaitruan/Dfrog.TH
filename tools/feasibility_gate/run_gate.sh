@@ -56,8 +56,32 @@
 # pipeline already up:
 #   docker exec -u admin -it isaac_ros_dev_persistent \
 #     bash /workspaces/isaac_ros-dev/tools/feasibility_gate/run_gate.sh ...
+#
+# CLEANUP HARDENING (2026-09): a prior run left two fast_planner_bridge
+# processes alive and the vehicle armed after the script had already
+# printed "done" and exited -- plain `kill "$PID"` on a `ros2 run ... &`
+# job does not reliably reach the real node process (ros2's own launcher
+# layer can leave a live grandchild that a single-PID kill never
+# touches -- this project already hit the same class of bug once before,
+# see README's "Duplicate traj_server race": "fixed by killing every
+# child process explicitly during a reset, not just the launch
+# wrapper"). Every background job below is launched via `setsid` so it
+# gets its own process group, tracked in CHILD_PIDS[], and cleanup()
+# kills the whole group (not just the tracked PID), waits for it to
+# actually die, then unconditionally force-disarms -- so a run ending
+# any way (normal completion, Ctrl-C, or a `set -e` error) can't leave a
+# live node or an armed vehicle behind.
 
 set -eo pipefail
+
+# Every background job is launched as `setsid <cmd> < /dev/null &` (own
+# process group, detached stdin) immediately followed by
+# `CHILD_PIDS+=("$!")` on its own line -- deliberately not wrapped in a
+# helper function, since capturing $! through a function's return value
+# would require command substitution, which runs in a subshell and would
+# silently discard any CHILD_PIDS append made inside it.
+CHILD_PIDS=()
+CLEANED_UP=0
 
 if [[ "$(whoami)" != "admin" ]]; then
   echo "run_gate.sh: must run as admin (got '$(whoami)')." >&2
@@ -121,33 +145,81 @@ echo "  OK"
 
 # --- Contention knob -------------------------------------------------------
 declare -A NVBLOX_RATE_HZ=( [none]=40.0 [low]=80.0 [medium]=160.0 [high]=320.0 [extreme]=640.0 )
-GPU_STRESSOR_PID=""
+
+# Kill one tracked PID's whole process group: TERM, give it a moment,
+# KILL if any member is still alive, then wait so the originally-tracked
+# PID is actually reaped (not left as a zombie) before moving on.
+#
+# Liveness is checked via `pgrep -g` (any process in the GROUP), not
+# `kill -0` on just the tracked leader PID -- confirmed live via this
+# exact bug: `ros2 run <pkg> <exe>` leaves a wrapper process (the one
+# `$!` captures) as the PARENT of a separate grandchild that does the
+# real work (both share the wrapper's PGID). The wrapper dies from the
+# group-wide TERM slightly before its grandchild does; checking only the
+# wrapper's own PID via `kill -0` reports "gone" at that point even
+# though the real node is still fully alive in the same group, and the
+# original version of this function returned early right there, never
+# escalating to KILL. Checked directly against a live interrupt test
+# with fast_planner_bridge before trusting this fix.
+kill_group() {
+  local pid="$1"
+  pgrep -g "$pid" > /dev/null 2>&1 || return 0   # group already empty
+  kill -TERM "-$pid" 2>/dev/null || true         # negative PID = whole process group
+  for i in $(seq 1 10); do
+    pgrep -g "$pid" > /dev/null 2>&1 || return 0
+    sleep 0.3
+  done
+  kill -KILL "-$pid" 2>/dev/null || true
+  sleep 0.3
+  wait "$pid" 2>/dev/null || true
+}
 
 cleanup() {
+  [[ "$CLEANED_UP" -eq 1 ]] && return 0
+  CLEANED_UP=1
   echo ""
-  echo "run_gate.sh: cleaning up..."
-  [[ -n "$GPU_STRESSOR_PID" ]] && kill "$GPU_STRESSOR_PID" 2>/dev/null || true
-  [[ -n "${GPU_SAMPLER_PID:-}" ]] && kill "$GPU_SAMPLER_PID" 2>/dev/null || true
-  [[ -n "${VSLAM_COMPARE_PID:-}" ]] && kill "$VSLAM_COMPARE_PID" 2>/dev/null || true
-  [[ -n "${BAG_PID:-}" ]] && kill "$BAG_PID" 2>/dev/null || true
+  echo "run_gate.sh: cleaning up (${#CHILD_PIDS[@]} tracked process group(s))..."
+  for pid in "${CHILD_PIDS[@]}"; do
+    kill_group "$pid"
+  done
+  # Second-layer safety net, matching this project's own established
+  # convention (README: "fixed by killing every child process explicitly
+  # during a reset, not just the launch wrapper") -- catches anything a
+  # process-group kill somehow missed (e.g. a node that re-parents itself
+  # or was launched before this hardening existed in an older log).
+  pkill -f "fast_planner_bridge" 2>/dev/null || true
+  pkill -f "fast_planner_trigger" 2>/dev/null || true
+  pkill -f "vslam_compare" 2>/dev/null || true
+  pkill -f "gpu_stressor.py" 2>/dev/null || true
+  pkill -f "gpu_sampler.py" 2>/dev/null || true
+
   if [[ "$WORKLOAD" == "nvblox" && "$CONTENTION" != "none" ]]; then
     echo "  restoring nvblox to default rate..."
     pkill -f "nvblox.launch.py" 2>/dev/null || true
     sleep 2
-    ros2 launch px4_vslam_bridge nvblox.launch.py > "$OUT_DIR/nvblox_restore.log" 2>&1 &
+    setsid ros2 launch px4_vslam_bridge nvblox.launch.py \
+      > "$OUT_DIR/nvblox_restore.log" 2>&1 < /dev/null &
     sleep 5
   fi
+
+  # Unconditional, idempotent: whether or not a flight was ever
+  # triggered, whether cleanup got here via normal completion, Ctrl-C, or
+  # a `set -e` error, force-disarm is safe to call and must run -- this
+  # is the actual guarantee against "run ends, vehicle stays armed."
+  echo "  force-disarming (idempotent, safe even if never armed)..."
+  timeout 10 python3 "$WS/force_disarm.py" > "$OUT_DIR/force_disarm_cleanup.log" 2>&1 || true
 }
-trap cleanup EXIT INT TERM
+trap cleanup EXIT INT TERM ERR
 
 if [[ "$WORKLOAD" == "nvblox" ]]; then
   RATE="${NVBLOX_RATE_HZ[$CONTENTION]}"
   echo "=== workload=nvblox: relaunching nvblox_container at integrate_depth_rate_hz=$RATE ==="
   pkill -f "nvblox.launch.py" 2>/dev/null || true
   sleep 2
-  ros2 launch px4_vslam_bridge nvblox.launch.py \
+  setsid ros2 launch px4_vslam_bridge nvblox.launch.py \
     integrate_depth_rate_hz:="$RATE" \
-    > "$OUT_DIR/nvblox.log" 2>&1 &
+    > "$OUT_DIR/nvblox.log" 2>&1 < /dev/null &
+  CHILD_PIDS+=("$!")
   echo "  waiting for nvblox to come back up..."
   for i in $(seq 1 20); do
     if ros2 service list 2>/dev/null | grep -q "^/nvblox_node/get_esdf_and_gradient$"; then
@@ -163,30 +235,30 @@ if [[ "$WORKLOAD" == "nvblox" ]]; then
 elif [[ "$WORKLOAD" == "synthetic" ]]; then
   echo "=== workload=synthetic: starting gpu_stressor.py --intensity $CONTENTION ==="
   if [[ "$CONTENTION" != "none" ]]; then
-    python3 "$WS/tools/feasibility_gate/gpu_stressor.py" \
+    setsid python3 "$WS/tools/feasibility_gate/gpu_stressor.py" \
       --intensity "$CONTENTION" --duration $((DURATION + 15)) \
-      > "$OUT_DIR/gpu_stressor.log" 2>&1 &
-    GPU_STRESSOR_PID=$!
+      > "$OUT_DIR/gpu_stressor.log" 2>&1 < /dev/null &
+    CHILD_PIDS+=("$!")
   fi
 fi
 
 # --- Logging ----------------------------------------------------------------
 echo "=== Starting gpu_sampler.py ==="
-python3 "$WS/tools/feasibility_gate/gpu_sampler.py" \
+setsid python3 "$WS/tools/feasibility_gate/gpu_sampler.py" \
   --out "$OUT_DIR/gpu_log.csv" --interval 0.2 --duration $((DURATION + 15)) \
-  > "$OUT_DIR/gpu_sampler.log" 2>&1 &
-GPU_SAMPLER_PID=$!
+  > "$OUT_DIR/gpu_sampler.log" 2>&1 < /dev/null &
+CHILD_PIDS+=("$!")
 
 echo "=== Starting dedicated vslam_compare (CSV logging) ==="
-ros2 run px4_vslam_bridge vslam_compare --ros-args \
+setsid ros2 run px4_vslam_bridge vslam_compare --ros-args \
   -p csv_path:="$OUT_DIR/vslam_compare.csv" -p exp_id:="$EXP_ID" \
-  > "$OUT_DIR/vslam_compare_node.log" 2>&1 &
-VSLAM_COMPARE_PID=$!
+  > "$OUT_DIR/vslam_compare_node.log" 2>&1 < /dev/null &
+CHILD_PIDS+=("$!")
 sleep 2
 
 echo "=== Starting rosbag record ==="
 BAG_LOG="$OUT_DIR/bag_record.log"
-ros2 bag record -o "$OUT_DIR/rosbag" \
+setsid ros2 bag record -o "$OUT_DIR/rosbag" \
   /tf /tf_static /clock \
   /ground_truth/odom \
   /visual_slam/tracking/odometry \
@@ -195,8 +267,8 @@ ros2 bag record -o "$OUT_DIR/rosbag" \
   /fmu/out/estimator_status_flags \
   /stereo/left/image /stereo/right/image \
   /stereo/left/camera_info /stereo/right/camera_info \
-  > "$BAG_LOG" 2>&1 &
-BAG_PID=$!
+  > "$BAG_LOG" 2>&1 < /dev/null &
+CHILD_PIDS+=("$!")
 echo "  waiting for rosbag2_recorder to confirm topic subscriptions..."
 for i in $(seq 1 100); do
   grep -q "All requested topics are subscribed" "$BAG_LOG" 2>/dev/null && break
@@ -217,9 +289,9 @@ else
   # arm" prompt -- required here since this script has no live stdin
   # (backgrounded/non-interactive launch). Not a code change to the
   # bridge, just using a flag it already exposes for exactly this case.
-  OFFBOARD_AUTO_START=1 ros2 run px4_vslam_bridge fast_planner_bridge \
-    > "$OUT_DIR/fast_planner_bridge.log" 2>&1 &
-  FPB_PID=$!
+  setsid env OFFBOARD_AUTO_START=1 ros2 run px4_vslam_bridge fast_planner_bridge \
+    > "$OUT_DIR/fast_planner_bridge.log" 2>&1 < /dev/null &
+  CHILD_PIDS+=("$!")
   sleep 8
   echo "=== Triggering flight (fast_planner_trigger) ==="
   # fast_planner_trigger is a one-shot publisher -- it exits as soon as it
@@ -227,10 +299,15 @@ else
   # flight it kicked off actually finishes. Don't tear the bag/bridge down
   # the moment that process exits -- explicitly hold the recording window
   # open for the requested duration so the real flight gets captured.
-  ros2 run px4_vslam_bridge fast_planner_trigger \
+  # Foreground + timeout (not backgrounded/tracked): it's meant to exit on
+  # its own in well under a second once it finds a subscriber; the
+  # timeout is just a bound against it hanging and blocking cleanup.
+  timeout 15 ros2 run px4_vslam_bridge fast_planner_trigger \
     > "$OUT_DIR/fast_planner_trigger.log" 2>&1 || true
   sleep "$DURATION"
-  kill "$FPB_PID" 2>/dev/null || true
+  # fast_planner_bridge is reaped by cleanup()'s CHILD_PIDS loop (EXIT
+  # trap below), not here -- that's what makes it robust to this script
+  # exiting early too (Ctrl-C, an error) rather than only the happy path.
 fi
 
 echo ""

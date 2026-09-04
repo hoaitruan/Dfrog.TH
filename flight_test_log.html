@@ -728,6 +728,7 @@ html { scroll-behavior: smooth; }
     <ol>
       <li><a href="#m2-gate"><span class="n">42</span>Feasibility Gate — status</a></li>
       <li><a href="#m2-g3-1"><span class="n">43</span>G3.1 triage &amp; baseline drift diagnosis</a></li>
+      <li><a href="#m2-cleanup"><span class="n">44</span>run_gate.sh cleanup hardening</a></li>
     </ol>
   </nav>
 
@@ -1756,6 +1757,33 @@ html { scroll-behavior: smooth; }
         <p><strong>Diagnosis: not a clearly identified misconfiguration — no fix applied.</strong> The evidence rules out the two "mundane bug" explanations the classifier's table suggests (axis/frame swap, uniform scale error) directly and specifically. What's left — error concentrated cross-track during a curved, dynamic maneuver that no prior validation in this project ever exercised — reads as real VIO drift characteristic of that harder motion profile, not a wrong extrinsic, TF, or frame convention. No change made to TF, extrinsics, camera-IMU calibration, or any estimator/airframe parameter. <code>EKF2_EV_CTRL</code> untouched (0). No re-run performed, since no fix was applied to test.</p>
       </div>
       <p>Forward-looking note for G3.3's contention sweep (not acted on now): a curved/dynamic reference trajectory already carries real baseline drift of its own (≈8.6% of distance here, at <em>zero</em> added contention) — separating contention-driven degradation from this motion-driven baseline will need either a straighter reference path, enough repeats to characterize the no-contention baseline's own variance first, or both.</p>
+    </section>
+
+    <section id="m2-cleanup">
+      <div class="section-head"><span class="idx">44</span><h2>run_gate.sh cleanup hardening</h2></div>
+      <p class="section-intro">The G3.1 run left two <code>fast_planner_bridge</code> processes alive and the vehicle armed after the script had already printed "done." Root-caused and fixed, then demonstrated live against a real interrupt — not just reasoned about.</p>
+
+      <div class="callout bad">
+        <p><strong>Root cause, confirmed directly via <code>ps</code>, not guessed.</strong> <code>ros2 run &lt;pkg&gt; &lt;exe&gt; &amp;</code> does not exec into the target script — it leaves a wrapper process (the one <code>$!</code> captures) running as the <em>parent</em> of a separate grandchild that does the real work, both sharing the wrapper's process group. Plain <code>kill "$PID"</code> only reaches the wrapper; the grandchild survives as an orphan once its parent exits. This exact pattern showed up for both <code>fast_planner_bridge</code> and <code>vslam_compare</code> (two more stray <code>vslam_compare</code> zombies from earlier, unrelated runs were found and cleared while investigating). The project's own README already named this class of bug once before ("Duplicate <code>traj_server</code> race... fixed by killing every child process explicitly during a reset, not just the launch wrapper") — this is the same failure mode recurring in new tooling.</p>
+      </div>
+
+      <p>Fix: every background job is now launched via <code>setsid</code> (its own process group) and tracked in a <code>CHILD_PIDS[]</code> array; <code>cleanup()</code> (armed on <code>EXIT INT TERM ERR</code>, idempotent via a guard flag) kills each job's <em>whole group</em> (<code>kill -TERM -$pid</code>, escalating to <code>-KILL</code>), a second-layer <code>pkill -f</code> sweep by executable name as a net matching the project's existing convention, and an unconditional, idempotent <code>force_disarm.py</code> call at the end regardless of how cleanup was reached.</p>
+
+      <div class="callout bad">
+        <p><strong>The first fix attempt was incomplete — caught by testing, not assumed correct.</strong> <code>kill_group()</code>'s retry loop checked <code>kill -0 "$pid"</code> (is the originally-tracked leader PID still alive) to decide whether to escalate to <code>SIGKILL</code>. Live-tested by interrupting a real armed flight: the wrapper PID died from the group-wide <code>TERM</code>, <code>kill -0</code> reported it gone, the function returned early — while its grandchild (the actual <code>fast_planner_bridge</code> node) was still fully alive in the same process group, never escalated to <code>KILL</code>, confirmed via <code>ps</code> immediately after. Fixed by checking group membership (<code>pgrep -g "$pid"</code> — any process in the group, not one specific PID) instead.</p>
+      </div>
+
+      <h4 style="font-family:'IBM Plex Sans Condensed',sans-serif;font-size:0.85rem;letter-spacing:0.04em;text-transform:uppercase;color:var(--ink-3);margin:1.5rem 0 0.5rem;">Interrupt-test results</h4>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Test</th><th>Live processes after</th><th><code>arming_state</code> after</th></tr></thead>
+          <tbody>
+            <tr><td class="label">First attempt (leader-PID check)</td><td><span class="pill bad">1 orphan</span> — <code>fast_planner_bridge</code> grandchild survived</td><td><span class="pill good">1 (disarmed)</span></td></tr>
+            <tr><td class="label">Second attempt (group-membership check)</td><td><span class="pill good">0</span> — not even a zombie</td><td><span class="pill good">1 (disarmed)</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>Both tests: launched a real scenario, waited for the vehicle to actually arm and start flying (<code>arming_state: 2</code> confirmed live), sent <code>SIGINT</code> to <code>run_gate.sh</code> mid-flight, then inspected the container's process table and queried <code>/fmu/out/vehicle_status_v4</code> directly — not inferred from the script's own log output.</p>
     </section>
 
     <footer>
