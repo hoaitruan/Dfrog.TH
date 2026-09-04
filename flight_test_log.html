@@ -727,6 +727,7 @@ html { scroll-behavior: smooth; }
     <div class="nav-group-label">Milestone 2</div>
     <ol>
       <li><a href="#m2-gate"><span class="n">42</span>Feasibility Gate — status</a></li>
+      <li><a href="#m2-g3-1"><span class="n">43</span>G3.1 triage &amp; baseline drift diagnosis</a></li>
     </ol>
   </nav>
 
@@ -1722,6 +1723,39 @@ html { scroll-behavior: smooth; }
       <div class="callout bad">
         <p><strong>Known gaps.</strong> No incident rosbag exists for the original ~55m drift — none of the 4 rosbags currently in the repo carry any <code>/visual_slam/*</code> topic. The EKF estimator-status family (<code>/fmu/out/estimator_status_flags</code>, <code>/fmu/out/estimator_aid_src_ev_*</code>) is not yet subscribed by any node in this pipeline — and the aid-source topics specifically will never appear on the bus at all while <code>EKF2_EV_CTRL=0</code>, since PX4's EKF2 only advertises them when the matching control bit is set.</p>
       </div>
+    </section>
+
+    <section id="m2-g3-1">
+      <div class="section-head"><span class="idx">43</span><h2>G3.1 triage &amp; baseline drift diagnosis</h2></div>
+      <p class="section-intro">First real open-loop reproduction run (<code>g3_1_baseline_20260904_v2</code>, zero added contention), G1-triaged and diagnosed. <code>EKF2_EV_CTRL</code> stays 0 throughout.</p>
+
+      <h4 style="font-family:'IBM Plex Sans Condensed',sans-serif;font-size:0.85rem;letter-spacing:0.04em;text-transform:uppercase;color:var(--ink-3);margin-bottom:0.5rem;">G1 triage classification</h4>
+      <p><code>triage_incident.py</code> run over the full flight window (811 matched cuVSLAM/ground-truth samples, 38.7s). A real bug in the classifier's own proportional-to-distance check was found and fixed along the way: it computed error/distance ratio down to 0.3m of travel, where a fixed ~0.13m tracking-init offset dominates the ratio and spikes it (up to 0.45) regardless of any real proportional mechanism — raised the distance floor to scale with the flight's own range and switched from raw min-max spread to a trimmed range, so a few noisy near-origin points can't veto an otherwise clean fit. Regression-checked against the earlier synthetic sudden-jump bag — classification unchanged there.</p>
+      <div class="callout">
+        <p><strong>Classification: <code>proportional_to_distance</code>.</strong> Mean error/distance ratio ≈0.086 (min 0.064, max 0.129 over 605 samples past the noise floor) — a smooth, low-spread proportional relationship, not a discrete jump. <code>vo_state</code> stayed <code>Success</code> for all 811 samples; feature count stayed healthy throughout (138–417, mean 262). Per the gate's own mundane-cause table this pattern's generic implication is "frame/yaw/extrinsic misconfig" — <b style="color:var(--ink)">§43's diagnosis below finds the evidence does not actually support that</b>, a distinction the automated classifier's fixed table text can't make on its own.</p>
+      </div>
+
+      <h4 style="font-family:'IBM Plex Sans Condensed',sans-serif;font-size:0.85rem;letter-spacing:0.04em;text-transform:uppercase;color:var(--ink-3);margin:1.5rem 0 0.5rem;">A contaminated number, caught before it misled the diagnosis</h4>
+      <p>The first read of this flight used <code>vslam_compare</code>'s live console log, which showed error growing to <b style="color:var(--ink)">2.3m</b> — but that log kept running for ~31s <em>after</em> the rosbag itself had already stopped recording (root cause: the same cleanup bug fixed in §43's Task C below left the node alive, still comparing an unsupervised, still-moving vehicle against ground truth). Re-derived directly from the bag's own recorded messages instead: max error <b style="color:var(--ink)">0.85m</b> over the actual 38.7s flight. The 2.3m figure never happened during any recorded, intended scenario — it's an artifact of an orphaned process, not a property of the flight being measured.</p>
+
+      <h4 style="font-family:'IBM Plex Sans Condensed',sans-serif;font-size:0.85rem;letter-spacing:0.04em;text-transform:uppercase;color:var(--ink-3);margin:1.5rem 0 0.5rem;">Diagnosis: is 0.85m a regression, or a longer/harder path?</h4>
+      <p>Phase 3's original cuVSLAM validation (<code>README.md</code>: "328 tracked features, ~0.2–0.25m steady-state error vs. ground truth") measured a <b style="color:var(--ink)">5m vertical climb then 30+s of stationary hover</b> — max error 0.454m during the climb transient itself, settling to 0.2–0.25m once holding still, per the session record from that work. Zero lateral travel, zero sustained turning. This run is a fundamentally different motion profile: real lateral translation (≈8m north, ≈3.4m west) and a curved path — 15.46m actually flown against a 10.09m straight-line displacement, ≈53% "extra" distance from maneuvering — that Phase 3 never exercised at all. The two numbers aren't measuring the same thing, so 0.85m over this path isn't directly comparable to 0.2–0.25m over a hover.</p>
+      <p>Checked directly against the usual mundane causes before accepting "just harder path" as the answer:</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Candidate cause</th><th>Check</th><th>Result</th></tr></thead>
+          <tbody>
+            <tr><td class="label">Axis swap / sign flip</td><td>Per-axis displacement, vslam vs. ground truth</td><td><span class="pill good">Ruled out</span> — Y (largest displacement, 8.108m gt vs. 8.081m vslam) matches to 0.3%; Z within 3.7%. No swap or sign inversion.</td></tr>
+            <tr><td class="label">Uniform scale error (e.g. wrong stereo baseline)</td><td>Per-axis displacement ratio (vslam/gt)</td><td><span class="pill good">Ruled out</span> — Y ratio 0.997, Z ratio 1.037, but X ratio 0.763 (≈24% short). A global scale bug would show roughly equal proportional error on every axis, not one axis off by 24% while another is off by 0.3%.</td></tr>
+            <tr><td class="label">Discrete glitch / relocalize</td><td><code>vo_state</code> across the flight; error-shape classification</td><td><span class="pill good">Ruled out</span> — <code>vo_state</code> = Success throughout; triage classifies the growth as smooth/graded, not a step.</td></tr>
+            <tr><td class="label">Motion-dependent VIO drift (turning/lateral maneuvering)</td><td>Error concentrated by axis vs. direction of travel; path curvature</td><td><span class="pill accent">Best fit</span> — final position error (0.812, −0.027, 0.184)m is almost entirely in the axis <em>perpendicular</em> to the dominant direction of travel, while the along-track axis (largest displacement) is nearly error-free. Consistent with heading/cross-track drift accumulated specifically during the curved, turning portion of flight — a known VIO/IMU-integration characteristic under dynamic motion, not a fixed miscalibration.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout bad">
+        <p><strong>Diagnosis: not a clearly identified misconfiguration — no fix applied.</strong> The evidence rules out the two "mundane bug" explanations the classifier's table suggests (axis/frame swap, uniform scale error) directly and specifically. What's left — error concentrated cross-track during a curved, dynamic maneuver that no prior validation in this project ever exercised — reads as real VIO drift characteristic of that harder motion profile, not a wrong extrinsic, TF, or frame convention. No change made to TF, extrinsics, camera-IMU calibration, or any estimator/airframe parameter. <code>EKF2_EV_CTRL</code> untouched (0). No re-run performed, since no fix was applied to test.</p>
+      </div>
+      <p>Forward-looking note for G3.3's contention sweep (not acted on now): a curved/dynamic reference trajectory already carries real baseline drift of its own (≈8.6% of distance here, at <em>zero</em> added contention) — separating contention-driven degradation from this motion-driven baseline will need either a straighter reference path, enough repeats to characterize the no-contention baseline's own variance first, or both.</p>
     </section>
 
     <footer>

@@ -243,11 +243,24 @@ def classify_pattern(error_rows, feature_count, vo_state):
     # Smooth, roughly-proportional-to-distance growth.
     proportional = False
     if len(dists) > 5 and max(dists) > 1.0:
-        ratios = [e / d for e, d in zip(errs, dists) if d > 0.3]
+        # Exclude the near-origin regime: any fixed per-sample offset (e.g.
+        # cuVSLAM's own tracking-init settling, or plain timestamp-matching
+        # noise) dominates err/dist once dist is small, regardless of
+        # whether a real proportional-to-distance mechanism is present --
+        # a relative (not fixed-meter) floor so this scales with the
+        # flight's own distance range instead of one absolute constant.
+        d_floor = max(0.3, 0.1 * max(dists))
+        ratios = sorted(e / d for e, d in zip(errs, dists) if d > d_floor)
         if len(ratios) > 3:
             mean_ratio = sum(ratios) / len(ratios)
-            spread = max(ratios) - min(ratios)
-            proportional = mean_ratio > 0 and spread < 0.5 * mean_ratio and not sudden_jump
+            # Trimmed range (drop the extreme 10% each tail) instead of raw
+            # min-max: a handful of residual noisy points near d_floor
+            # shouldn't be able to single-handedly veto an otherwise tight
+            # proportional relationship the way a bare max-min spread can.
+            trim = max(1, len(ratios) // 10)
+            trimmed = ratios[trim:-trim] if len(ratios) > 2 * trim else ratios
+            spread = trimmed[-1] - trimmed[0]
+            proportional = mean_ratio > 0 and spread < 0.6 * mean_ratio and not sudden_jump
 
     if sudden_jump and tracking_loss_nearby:
         return "sudden_jump_tracking_loss", (
