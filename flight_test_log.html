@@ -729,6 +729,7 @@ html { scroll-behavior: smooth; }
       <li><a href="#m2-gate"><span class="n">42</span>Feasibility Gate — status</a></li>
       <li><a href="#m2-g3-1"><span class="n">43</span>G3.1 triage &amp; baseline drift diagnosis</a></li>
       <li><a href="#m2-cleanup"><span class="n">44</span>run_gate.sh cleanup hardening</a></li>
+      <li><a href="#m2-mini-dose"><span class="n">45</span>Mini dose screen (2026-09-04)</a></li>
     </ol>
   </nav>
 
@@ -1784,6 +1785,38 @@ html { scroll-behavior: smooth; }
         </table>
       </div>
       <p>Both tests: launched a real scenario, waited for the vehicle to actually arm and start flying (<code>arming_state: 2</code> confirmed live), sent <code>SIGINT</code> to <code>run_gate.sh</code> mid-flight, then inspected the container's process table and queried <code>/fmu/out/vehicle_status_v4</code> directly — not inferred from the script's own log output.</p>
+    </section>
+
+    <section id="m2-mini-dose">
+      <div class="section-head"><span class="idx">45</span><h2>Mini dose screen (2026-09-04)</h2></div>
+      <p class="section-intro">A small screening batch — not the full G3.3/G3.4 sweep — to check baseline reproducibility and look for a dose signal before investing in a 5×5 factorial. 15 runs total: 3 contention levels (none/low/high) × 5 repeats, synthetic-stressor workload only (no nvblox workload, no texture-poor world), fixed to the <code>g3_1_baseline_20260904_v2</code> scenario. <code>EKF2_EV_CTRL</code> untouched (0) throughout. Uses the hardened <code>run_gate.sh</code> (commit <code>c056723</code>) unchanged, with a throwaway restart-orchestration wrapper (not committed — its only job is a fresh PX4/Gazebo restart before each run, for a true origin spawn, then an unmodified call to <code>run_gate.sh</code>) and a throwaway aggregation script (also not committed, reuses <code>triage_incident.py</code>'s own bag-reading/alignment code directly, to avoid any repeat of §43's live-log contamination issue). Raw bags/CSVs and the summary plot are local under <code>results/feasibility_gate/mini_dose_*</code> and <code>mini_dose_screen.png</code> — gitignored per <code>CLAUDE.md</code>.</p>
+
+      <h4 style="font-family:'IBM Plex Sans Condensed',sans-serif;font-size:0.85rem;letter-spacing:0.04em;text-transform:uppercase;color:var(--ink-3);margin-bottom:0.5rem;">1. Baseline reproducibility — unstable</h4>
+      <div class="callout bad">
+        <p><strong>The zero-contention baseline is not reproducible.</strong> Max error across 5 identical (<code>none</code>, no added load) runs: 0.85m, 12.07m, 15.63m, 1.37m, 18.83m — mean 9.75m, stdev 8.24m, a &gt;20× spread between the best and worst run with <em>zero</em> difference in treatment. Error/distance ratio spread is just as wide: 8.6% to 122%. One run (r1) matched §43's earlier clean result almost exactly; the other four did not. In every case the growth was smooth and distance-tracking (not a discrete jump — confirmed by inspecting the full time series, not just endpoints) and <code>vo_state</code> stayed <code>Success</code> throughout even the worst runs — this is real accumulated VIO drift whose <em>rate</em> varies enormously run-to-run under nominally identical conditions, not a bug in the measurement.</p>
+      </div>
+
+      <h4 style="font-family:'IBM Plex Sans Condensed',sans-serif;font-size:0.85rem;letter-spacing:0.04em;text-transform:uppercase;color:var(--ink-3);margin:1.5rem 0 0.5rem;">2. Manipulation check — stressor works, low/high not well separated</h4>
+      <p>Mean GPU utilization: <b style="color:var(--ink)">none 2.6%</b> (max 16%) → <b style="color:var(--ink)">low 94.5%</b> (max 100%) → <b style="color:var(--ink)">high 95.7%</b> (max 100%). The stressor manipulation itself clearly bites — none is genuinely idle, low/high are genuinely loaded. But <code>nvidia-smi</code>'s coarse utilization metric doesn't distinguish low from high at all (94.5% vs 95.7%) despite very different configured presets (matrix size 1024/1 stream/30% duty vs 3072/4 streams/90% duty) — this metric appears to be closer to a busy/idle duty-cycle indicator than a load-intensity measure on this GPU. A real dose sweep will need a finer-grained metric (kernel duration/occupancy via <code>nsys</code>, already confirmed available — §42) to actually separate contention <em>levels</em>, not just contention <em>presence</em>.</p>
+
+      <h4 style="font-family:'IBM Plex Sans Condensed',sans-serif;font-size:0.85rem;letter-spacing:0.04em;text-transform:uppercase;color:var(--ink-3);margin:1.5rem 0 0.5rem;">3. Dose signal — none detectable at this n</h4>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Level</th><th>n</th><th>max error: mean ± stdev (range)</th><th>error/distance ratio: mean ± stdev (range)</th><th>GPU util mean (max)</th></tr></thead>
+          <tbody>
+            <tr><td class="label">none</td><td>5</td><td>9.75m ± 8.24m (0.85–18.83m)</td><td>0.509 ± 0.447 (0.086–1.219)</td><td>2.6% (16%)</td></tr>
+            <tr><td class="label">low</td><td>5</td><td>98.12m ± 147.49m (2.32–350.21m)</td><td>3.72 ± 7.33 (0.086–16.82)</td><td>94.5% (100%)</td></tr>
+            <tr><td class="label">high</td><td>5</td><td>21.73m ± 15.62m (1.36–41.98m)</td><td>1.37 ± 0.82 (0.104–2.375)</td><td>95.7% (100%)</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout bad">
+        <p><strong>No reliable dose-response signal in this screen.</strong> The raw group means are not even monotonic (none 9.75 &lt; high 21.73 &lt; low 98.12 — <code>low</code> looks worse than <code>high</code>, which is not what a real graded contention effect should look like). More importantly, per-run distributions overlap heavily across all three levels: <code>none</code>'s own worst run (18.83m) is worse than <code>low</code>'s best run (2.32m) and comparable to several <code>high</code> runs; <code>low</code>'s best run (2.32m, ratio 8.6%) is indistinguishable from a clean baseline run. The rise in group means for <code>low</code> and <code>high</code> is not clearly larger than <code>none</code>'s own spread (stdev 8.24m, range up to 18.83m) once individual runs are compared rather than means alone. Two of the worst loaded runs (<code>low_r5</code>, <code>high_r4</code>) did show a momentary complete feature dropout (<code>min feature_count = 0</code>) that no <code>none</code> run showed (<code>none</code>'s worst never dropped below 140 features) — a hint worth re-checking with more repeats, not a finding on its own at n=5.</p>
+      </div>
+      <p>This is exactly what a cheap screen is for: the baseline itself is too noisy at n=5 to support a dose-response claim from this batch, one way or the other. Before any larger sweep, the baseline's own run-to-run variance needs characterizing (many more <code>none</code> repeats) and reduced or explained — otherwise a 5×5 factorial would spend most of its statistical power fighting noise this screen has already found for free.</p>
+
+      <h4 style="font-family:'IBM Plex Sans Condensed',sans-serif;font-size:0.85rem;letter-spacing:0.04em;text-transform:uppercase;color:var(--ink-3);margin:1.5rem 0 0.5rem;">Run list</h4>
+      <p><code>mini_dose_{none,low,high}_r{1..5}</code> — 15 runs, all completed, all safely disarmed at end (verified live via <code>/fmu/out/vehicle_status_v4</code> after the batch). Per-run numbers: none — r1 0.85m/8.6%, r2 12.07m/52.9%, r3 15.63m/53.9%, r4 1.37m/17.2%, r5 18.83m/121.9%. low — r1 2.32m/8.6%, r2 109.91m/43.9%, r3 17.01m/52.1%, r4 11.15m/72.6%, r5 350.21m/1682.2%. high — r1 31.79m/143.6%, r2 16.49m/126.1%, r3 17.03m/166.6%, r4 41.98m/237.5%, r5 1.36m/10.4%.</p>
     </section>
 
     <footer>
