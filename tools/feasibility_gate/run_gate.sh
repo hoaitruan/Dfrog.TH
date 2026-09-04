@@ -193,6 +193,8 @@ ros2 bag record -o "$OUT_DIR/rosbag" \
   /visual_slam/status \
   /visual_slam/vis/observations_cloud \
   /fmu/out/estimator_status_flags \
+  /stereo/left/image /stereo/right/image \
+  /stereo/left/camera_info /stereo/right/camera_info \
   > "$BAG_LOG" 2>&1 &
 BAG_PID=$!
 echo "  waiting for rosbag2_recorder to confirm topic subscriptions..."
@@ -210,12 +212,24 @@ else
   echo "    Operator: watch Gazebo / ground truth per the project's established"
   echo "    safe-testing protocol. hard_killswitch.py / force_disarm.py should"
   echo "    be available in another shell before proceeding."
-  ros2 run px4_vslam_bridge fast_planner_bridge > "$OUT_DIR/fast_planner_bridge.log" 2>&1 &
+  # OFFBOARD_AUTO_START=1 is fast_planner_bridge's own documented escape
+  # hatch (fast_planner_bridge.py) around its interactive "Press ENTER to
+  # arm" prompt -- required here since this script has no live stdin
+  # (backgrounded/non-interactive launch). Not a code change to the
+  # bridge, just using a flag it already exposes for exactly this case.
+  OFFBOARD_AUTO_START=1 ros2 run px4_vslam_bridge fast_planner_bridge \
+    > "$OUT_DIR/fast_planner_bridge.log" 2>&1 &
   FPB_PID=$!
   sleep 8
   echo "=== Triggering flight (fast_planner_trigger) ==="
-  timeout "$DURATION" ros2 run px4_vslam_bridge fast_planner_trigger \
+  # fast_planner_trigger is a one-shot publisher -- it exits as soon as it
+  # publishes (see its own log: "Trigger published"), well before the
+  # flight it kicked off actually finishes. Don't tear the bag/bridge down
+  # the moment that process exits -- explicitly hold the recording window
+  # open for the requested duration so the real flight gets captured.
+  ros2 run px4_vslam_bridge fast_planner_trigger \
     > "$OUT_DIR/fast_planner_trigger.log" 2>&1 || true
+  sleep "$DURATION"
   kill "$FPB_PID" 2>/dev/null || true
 fi
 
