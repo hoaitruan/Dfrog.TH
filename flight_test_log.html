@@ -724,6 +724,10 @@ html { scroll-behavior: smooth; }
     <ol>
       <li><a href="#reference"><span class="n">41</span>Reference &amp; glossary</a></li>
     </ol>
+    <div class="nav-group-label">Milestone 2</div>
+    <ol>
+      <li><a href="#m2-gate"><span class="n">42</span>Feasibility Gate — status</a></li>
+    </ol>
   </nav>
 
   <main>
@@ -1673,6 +1677,51 @@ html { scroll-behavior: smooth; }
         <li id="ref-gazebo">Koenig, N., &amp; Howard, A. (2004). Design and use paradigms for Gazebo, an open-source multi-robot simulator. In <em>2004 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS)</em>, vol. 3, pp. 2149–2154. This project uses Gazebo Sim (formerly Ignition Gazebo), the modern successor to the simulator this paper introduced — the physics and sensor simulation behind every SITL result in this record (§03). <a href="#cite-gazebo">↩</a></li>
         <li id="ref-kinectfusion">Newcombe, R. A., Izadi, S., Hilliges, O., Molyneaux, D., Kim, D., Davison, A. J., Kohi, P., Shotton, J., Hodges, S., &amp; Fitzgibbon, A. (2011). KinectFusion: Real-time dense surface mapping and tracking. In <em>2011 10th IEEE International Symposium on Mixed and Augmented Reality (ISMAR)</em>, pp. 127–136. The depth-fusion integration scheme nvblox's own TSDF is a GPU-accelerated descendant of (§03). <a href="#cite-kinectfusion">↩</a></li>
       </ol>
+    </section>
+
+    <section id="m2-gate">
+      <div class="section-head"><span class="idx">42</span><h2>Milestone 2 Feasibility Gate — status as of 2026-09-04</h2></div>
+      <p class="section-intro">A cheap, open-loop pre-check on whether GPU contention between cuVSLAM and nvblox degrades VIO accuracy, before committing to the full Milestone 2 study — done on a separate branch, <code>feasibility-gate</code>, not <code>main</code>. <code>EKF2_EV_CTRL</code> stays 0 throughout: cuVSLAM is logged, never fused into control, so this work carries no flight risk. This entry is a status snapshot, not a result — no contention has been swept yet.</p>
+
+      <div class="callout good">
+        <p><strong>Branch pushed.</strong> <code>feasibility-gate</code> is on GitHub, current commit <code>d868462</code> (<code>origin/feasibility-gate</code> confirmed at the same SHA), containing: the G1 triage script and G2 instrumentation (previous commit <code>400f245</code>), the comprehensive Gate→M0-M6 execution plan at <code>plan/plan.md</code>, and this <code>use_sim_time</code> fix on <code>nvblox_node</code>.</p>
+      </div>
+
+      <h4 style="font-family:'IBM Plex Sans Condensed',sans-serif;font-size:0.85rem;letter-spacing:0.04em;text-transform:uppercase;color:var(--ink-3);margin-bottom:0.5rem;">Verified topic &amp; parameter names</h4>
+      <p>Traced to a line in the code, not to documentation, per the Gate's own G0.4 requirement.</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Role</th><th>Name</th></tr></thead>
+          <tbody>
+            <tr><td class="label">Ground-truth pose</td><td><code>/ground_truth/odom</code></td></tr>
+            <tr><td class="label">cuVSLAM odometry</td><td><code>/visual_slam/tracking/odometry</code></td></tr>
+            <tr><td class="label">cuVSLAM status</td><td><code>/visual_slam/status</code></td></tr>
+            <tr><td class="label">Tracked-feature count</td><td>not a status field — width of <code>/visual_slam/vis/observations_cloud</code></td></tr>
+            <tr><td class="label">ESDF service</td><td><code>/nvblox_node/get_esdf_and_gradient</code></td></tr>
+            <tr><td class="label">nvblox node / contention knob</td><td><code>nvblox_node</code> / <code>integrate_depth_rate_hz</code> (launch-time only — see below)</td></tr>
+            <tr><td class="label">TF root</td><td><code>map</code> → <code>base_link_gt</code></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h4 style="font-family:'IBM Plex Sans Condensed',sans-serif;font-size:0.85rem;letter-spacing:0.04em;text-transform:uppercase;color:var(--ink-3);margin:1.5rem 0 0.5rem;">Config invariants</h4>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Invariant</th><th>Value</th></tr></thead>
+          <tbody>
+            <tr><td class="label"><code>EKF2_EV_CTRL</code></td><td>0 (open-loop; unchanged)</td></tr>
+            <tr><td class="label"><code>esdf_mode</code></td><td><code>"3d"</code></td></tr>
+            <tr><td class="label"><code>use_sim_time</code> on <code>nvblox_node</code></td><td><span class="pill good">now true</span> — was missing before today; live-verified via <code>ros2 param get /nvblox_node use_sim_time</code> → <code>Boolean value is: True</code></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h4 style="font-family:'IBM Plex Sans Condensed',sans-serif;font-size:0.85rem;letter-spacing:0.04em;text-transform:uppercase;color:var(--ink-3);margin:1.5rem 0 0.5rem;">Tooling status</h4>
+      <p><code>triage_incident.py</code>, <code>gpu_stressor.py</code>, <code>gpu_sampler.py</code>, and <code>run_gate.sh</code> are present and committed, along with an opt-in CSV-logging extension to <code>vslam_compare</code>. <code>analyze_sweep.py</code> is not yet built. <code>results/feasibility_gate/</code> is empty — no scenario has been run yet.</p>
+
+      <div class="callout bad">
+        <p><strong>Known gaps.</strong> No incident rosbag exists for the original ~55m drift — none of the 4 rosbags currently in the repo carry any <code>/visual_slam/*</code> topic. The EKF estimator-status family (<code>/fmu/out/estimator_status_flags</code>, <code>/fmu/out/estimator_aid_src_ev_*</code>) is not yet subscribed by any node in this pipeline — and the aid-source topics specifically will never appear on the bus at all while <code>EKF2_EV_CTRL=0</code>, since PX4's EKF2 only advertises them when the matching control bit is set.</p>
+      </div>
     </section>
 
     <footer>
