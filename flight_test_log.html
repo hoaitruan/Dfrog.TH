@@ -732,6 +732,7 @@ html { scroll-behavior: smooth; }
       <li><a href="#m2-mini-dose"><span class="n">45</span>Mini dose screen (2026-09-04)</a></li>
       <li><a href="#m2-remetric"><span class="n">46</span>Re-metric of the mini dose screen (2026-09-05)</a></li>
       <li><a href="#m2-power"><span class="n">47</span>Power analysis + finer GPU metric (2026-09-05)</a></li>
+      <li><a href="#m2-unblockers"><span class="n">48</span>Two unblockers + gate-sweep design (2026-09-05)</a></li>
     </ol>
   </nav>
 
@@ -1943,6 +1944,70 @@ html { scroll-behavior: smooth; }
         <p><strong>Reduce baseline variance first &mdash; do not proceed to the sweep at the required n yet.</strong> Required n (17&ndash;25/level) is 3.4&ndash;5&times; the piloted n=5, driven by the baseline's own residual noise (RPE CV still 0.5&ndash;0.6 even after §46's improvement); cutting that noise in half would roughly halve Cohen's d's denominator and, since required-n scales ~1/d&sup2;, cut the required sweep size roughly 4&times; &mdash; along with its wall-clock and (currently blocking) disk cost. Jumping straight to a 340&ndash;500-run sweep now would spend a day-plus of runtime and ~2&times; more disk than is free, all while power is only barely adequate at the least demanding of the four design points.</p>
         <p><strong>Cheapest next lever: an RPE init-transient exclusion window, applied to the existing 15 bags &mdash; zero new flights.</strong> §46 already built a "moving window" detector (per-run in-flight region, arc-length speed &gt; 0.15&nbsp;m/s) for the drift-rate slope, but RPE in §46/§47 was computed over each run's <em>entire</em> trajectory, including the initial hover and final hold, where the vehicle is nearly stationary and the noise floor may behave differently (near-zero ground-truth motion makes any cuVSLAM jitter show up as a large <em>relative</em> error). Restricting RPE to the same in-flight window is a pure re-analysis of data already on disk, testable in minutes, and does not touch the scenario, trajectory, or world at all &mdash; the lowest-risk, lowest-cost thing to try before considering a tamer/shorter trajectory or a different world (both of which require new flights, scenario engineering, and re-validating §43's baseline-drift diagnosis from scratch). If the windowed RPE variance shrinks meaningfully, required-n (and the sweep's wall-clock/disk cost) drops with it before any larger commitment is made; if it doesn't, that's useful evidence the noise is intrinsic to cuVSLAM's tracking rather than an artifact of the hover/hold segments, and trajectory/world changes would need to be considered next.</p>
       </div>
+    </section>
+
+    <section id="m2-unblockers">
+      <div class="section-head"><span class="idx">48</span><h2>Two unblockers + gate-sweep design (2026-09-05)</h2></div>
+      <p class="section-intro">§47 identified two blockers before any sweep: required n (17&ndash;25/level) and a disk shortfall (needs 180&ndash;265GB, only 100GB free). This entry: (A) tests whether §47's own recommended lever &mdash; an in-flight-only RPE window &mdash; actually reduces the required n (pure re-analysis, no new flights); (B) fixes the disk blocker in <code>run_gate.sh</code> and verifies it with one flight (<code>EKF2_EV_CTRL</code>=0); (C) proposes the gate-sweep design. No sweep launched, no M1 work.</p>
+
+      <h4 style="font-family:'IBM Plex Sans Condensed',sans-serif;font-size:0.85rem;letter-spacing:0.04em;text-transform:uppercase;color:var(--ink-3);margin-bottom:0.5rem;">A. Windowed RPE: the lever didn't work</h4>
+      <p>Recomputed RPE (1.0s, 1.0m) restricted to each run's own in-flight window (§46's moving-window detector, arc-length speed &gt; 0.15&nbsp;m/s), excluding the hover and hold. Result: <b>CV got worse, not better</b>, for both windows at the "none" level.</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Metric</th><th>none CV: full-window (§47)</th><th>none CV: in-flight-only window</th><th>d (none&rarr;high): full</th><th>d: windowed</th><th>required n: full</th><th>required n: windowed</th></tr></thead>
+          <tbody>
+            <tr><td class="label">RPE 1.0s</td><td>0.60</td><td>1.08</td><td>1.02</td><td>1.05</td><td>17&ndash;20</td><td>16&ndash;19 (~flat)</td></tr>
+            <tr><td class="label">RPE 1.0m</td><td>0.52</td><td>1.36</td><td>0.83</td><td>0.28</td><td>22&ndash;25</td><td class="pill bad">161&ndash;204 (worse)</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout bad">
+        <p><strong>Honest result: the hypothesized lever failed.</strong> Restricting to the in-flight window did not reduce baseline noise as expected &mdash; it removes the large near-stationary hover/hold segment that had been diluting each run's per-sample RPE toward a small, consistent value, leaving only the noisier, shorter, in-motion segment (as few as 130 samples in one run). For RPE&nbsp;1.0s the effect size and required-n are essentially unchanged (a wash). For RPE&nbsp;1.0m it's dramatically worse: one run's windowed median (<code>none_r5</code>, computed over just a 10s/207-sample window) came out at 2.41m, more than 6&times; the next-highest <code>none</code> run, blowing up that level's variance and required-n from 25 to 204. <strong>Do not use the windowed RPE for the gate sweep &mdash; use full-window RPE&nbsp;1.0s</strong>, which is the only metric/window combination that held up (and was already the strongest candidate in §47).</p>
+      </div>
+
+      <h4 style="font-family:'IBM Plex Sans Condensed',sans-serif;font-size:0.85rem;letter-spacing:0.04em;text-transform:uppercase;color:var(--ink-3);margin:1.5rem 0 0.5rem;">B. Disk blocker fixed and verified</h4>
+      <p><code>run_gate.sh</code>'s bag recording is trimmed to exactly the topics the metrics pipeline reads: <code>/visual_slam/tracking/odometry</code>, <code>/ground_truth/odom</code>, <code>/visual_slam/status</code>, <code>/visual_slam/vis/observations_cloud</code> (feature count). Dropped: the four stereo image/camera-info topics (the actual disk driver), plus <code>/tf</code>, <code>/tf_static</code>, <code>/clock</code>, and <code>/fmu/out/estimator_status_flags</code> &mdash; all recorded in the earlier version but never read by <code>triage_incident.py</code>'s or <code>remetric_mini_dose.py</code>'s analysis code (confirmed by grep before removing them). <code>gpu_log.csv</code> is unaffected (produced separately by <code>gpu_sampler.py</code>, not part of the bag).</p>
+      <p>Verification flight <code>verify_trim_r1</code> (<code>--contention none --workload synthetic --texture rich --duration 30</code>, fresh pipeline restart, <code>EKF2_EV_CTRL</code>=0 confirmed untouched): completed cleanly, vehicle disarmed after (<code>arming_state: 1</code>), no live stray processes (one pre-existing-pattern defunct zombie under the container's already-documented PID&nbsp;1 limitation &mdash; harmless).</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th></th><th>Before</th><th>After</th><th>Reduction</th></tr></thead>
+          <tbody>
+            <tr><td class="label">Per-run directory size</td><td>530MB</td><td>8.4MB</td><td>63&times;</td></tr>
+            <tr><td class="label">Topics recorded</td><td>10 (incl. 4 stereo)</td><td>4</td><td>&mdash;</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout good">
+        <p><strong>RPE recomputes fully from the reduced bag.</strong> 909 matched vslam/gt samples, RPE&nbsp;1.0s n=890 (mean 1.002, median 0.436), RPE&nbsp;1.0m n=801 (mean 1.417, median 0.909); feature count and <code>vo_state</code> both present and correctly matched per-sample. Target was &lt;20MB &mdash; achieved 8.4MB, a 63&times; reduction, with zero loss of metric fidelity. (This one run's own RPE values aren't compared against the batch &mdash; it's a fresh, unrelated verification run, not part of the 15-run dataset.)</p>
+      </div>
+
+      <h4 style="font-family:'IBM Plex Sans Condensed',sans-serif;font-size:0.85rem;letter-spacing:0.04em;text-transform:uppercase;color:var(--ink-3);margin:1.5rem 0 0.5rem;">C. Recommended gate-sweep design</h4>
+      <p>Metric: full-window RPE&nbsp;1.0s (per-run median), per finding A. Design: 5 contention levels (<code>none/low/medium/high/extreme</code>) &times; synthetic stressor only &times; one texture (rich) &times; n=20/level (§47's required n for the monotonic-trend question at power 0.8, &alpha;=0.05 &mdash; the more demanding and more relevant of the two questions, since a graded dose-response is the actual object of interest, not just a none-vs-worst-case difference which only needs n=17).</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Levels</th><th>n/level</th><th>Total runs</th><th>Wall-clock @ 104s/run</th><th>Disk @ 8.4MB/run</th><th>Fits?</th></tr></thead>
+          <tbody>
+            <tr><td class="label">5</td><td>20</td><td>100</td><td>2.9h</td><td>0.84GB</td><td class="pill good">yes, comfortably</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>Both blockers are gone: 2.9 hours of automated running (vs. the 100GB-blocked 10&ndash;14.5h/340&ndash;500-run designs in §47) and well under 1GB of disk against 100GB free. The per-run wall-clock figure is still only verified for synthetic-workload/texture-rich (§47's caveat stands); this design uses only that cell, so the caveat doesn't apply here &mdash; it would need re-checking if a future <code>--workload nvblox</code> or texture-poor arm is added.</p>
+
+      <h4 style="font-family:'IBM Plex Sans Condensed',sans-serif;font-size:0.85rem;letter-spacing:0.04em;text-transform:uppercase;color:var(--ink-3);margin:1.5rem 0 0.5rem;">Treatment recording &amp; full preset characterization</h4>
+      <p>Each run is labeled by its <code>--contention</code> preset and logs <code>gpu_sampler.py</code>'s CSV as before (coarse manipulation check only). Per-preset <code>nsys</code> characterization is done <b>once per preset, not per flight</b> (stressor-only, no flight, ~10s each &mdash; the §47 method). §47 covered <code>low</code>/<code>high</code>; the three remaining presets were characterized the same way here, completing the set:</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Preset</th><th>matrix/streams/duty</th><th>nsys avg kernel duration</th><th>kernel instances (8s window)</th></tr></thead>
+          <tbody>
+            <tr><td class="label">none</td><td>256/1/0%</td><td>n/a (no matmul kernels issued)</td><td>0</td></tr>
+            <tr><td class="label">low</td><td>1024/1/30%</td><td>296.3&micro;s</td><td>25,881</td></tr>
+            <tr><td class="label">medium</td><td>2048/2/60%</td><td>2,564.1&micro;s</td><td>3,940</td></tr>
+            <tr><td class="label">high</td><td>3072/4/90%</td><td>7,852.6&micro;s</td><td>2,480</td></tr>
+            <tr><td class="label">extreme</td><td>4096/4/100%</td><td>19,548.5&micro;s</td><td>708</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>Cleanly monotonic in both directions (duration up, instance count down) across all 5 presets &mdash; confirms the intensity ladder is well-ordered at the kernel level, independent of <code>nvidia-smi</code>'s coarse utilization reading. This table is the reference characterization for the sweep; it does not need to be regenerated per run.</p>
     </section>
 
     <footer>

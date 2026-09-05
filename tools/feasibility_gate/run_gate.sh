@@ -258,15 +258,23 @@ sleep 2
 
 echo "=== Starting rosbag record ==="
 BAG_LOG="$OUT_DIR/bag_record.log"
+# Recorded topic set is deliberately minimal -- only what the RPE/
+# feature/status metrics pipeline (triage_incident.py's read_bag +
+# remetric_mini_dose.py's full_align/attach_matched_series) actually
+# reads. Dropped vs. the earlier version: /stereo/left,right/image(+info)
+# (the disk driver -- ~500MB/run of the earlier ~530MB total), /tf,
+# /tf_static, /clock (recorded but never read downstream), and
+# /fmu/out/estimator_status_flags (declared in triage_incident.py but
+# never populated into BagData -- see its own EV_AID_SRC_TOPICS handling,
+# which only needs topic *presence*, not this topic's content, and is
+# moot anyway since those never exist on the bus at EKF2_EV_CTRL=0). If a
+# future G1 forensic triage needs the dropped topics again, add them back
+# for that run specifically -- don't restore them by default.
 setsid ros2 bag record -o "$OUT_DIR/rosbag" \
-  /tf /tf_static /clock \
   /ground_truth/odom \
   /visual_slam/tracking/odometry \
   /visual_slam/status \
   /visual_slam/vis/observations_cloud \
-  /fmu/out/estimator_status_flags \
-  /stereo/left/image /stereo/right/image \
-  /stereo/left/camera_info /stereo/right/camera_info \
   > "$BAG_LOG" 2>&1 < /dev/null &
 CHILD_PIDS+=("$!")
 echo "  waiting for rosbag2_recorder to confirm topic subscriptions..."
