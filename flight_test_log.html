@@ -733,6 +733,7 @@ html { scroll-behavior: smooth; }
       <li><a href="#m2-remetric"><span class="n">46</span>Re-metric of the mini dose screen (2026-09-05)</a></li>
       <li><a href="#m2-power"><span class="n">47</span>Power analysis + finer GPU metric (2026-09-05)</a></li>
       <li><a href="#m2-unblockers"><span class="n">48</span>Two unblockers + gate-sweep design (2026-09-05)</a></li>
+      <li><a href="#m2-gate-sweep"><span class="n">49</span>G3.3 gate sweep: halt, two fixes, full result (2026-09-06)</a></li>
     </ol>
   </nav>
 
@@ -2008,6 +2009,67 @@ html { scroll-behavior: smooth; }
         </table>
       </div>
       <p>Cleanly monotonic in both directions (duration up, instance count down) across all 5 presets &mdash; confirms the intensity ladder is well-ordered at the kernel level, independent of <code>nvidia-smi</code>'s coarse utilization reading. This table is the reference characterization for the sweep; it does not need to be regenerated per run.</p>
+    </section>
+
+    <section id="m2-gate-sweep">
+      <div class="section-head"><span class="idx">49</span><h2>G3.3 gate sweep: halt, two fixes, full result (2026-09-06)</h2></div>
+      <p class="section-intro">The full 100-run gate sweep designed in §48 (5 contention levels &times; n=20, synthetic stressor, texture rich, <code>g3_1_baseline_20260904_v2</code>). <code>EKF2_EV_CTRL</code>=0 throughout. New tool <code>tools/feasibility_gate/analyze_sweep.py</code> committed and smoke-tested against the existing 15 mini-dose runs before the sweep (exact match on per-level means and dropout counts vs §46/§47). The sweep halted once mid-run on a false alarm, was root-cause-fixed (not just detector-patched) and resumed from the same manifest, then completed cleanly.</p>
+
+      <h4 style="font-family:'IBM Plex Sans Condensed',sans-serif;font-size:0.85rem;letter-spacing:0.04em;text-transform:uppercase;color:var(--ink-3);margin-bottom:0.5rem;">The halt (run 5/100)</h4>
+      <div class="callout bad">
+        <p><code>[batch] HALT: after low_r10, vehicle arming_state='2' (expected 1/disarmed)</code>. The batch's robustness check (required by this task: halt rather than continue if any run leaves the vehicle armed or a stray process behind) worked exactly as designed. Investigation: the vehicle was actually disarmed by the time it was checked seconds later, <code>low_r10</code>'s own bag was complete and valid, and its <code>run_gate.sh</code> log showed a normal cleanup including a force-disarm call. Root cause: <code>force_disarm.py</code> was fire-and-forget -- it published 3 disarm commands, slept, and exited 0 unconditionally, <em>never confirming PX4 had actually processed the command</em> before <code>run_gate.sh</code>'s cleanup returned. The batch's own check, running immediately after, could catch a stale/in-flight reading.</p>
+      </div>
+
+      <h4 style="font-family:'IBM Plex Sans Condensed',sans-serif;font-size:0.85rem;letter-spacing:0.04em;text-transform:uppercase;color:var(--ink-3);margin:1.5rem 0 0.5rem;">FIX 1 (root cause): force_disarm.py now blocks until confirmed</h4>
+      <p><code>force_disarm.py</code> now subscribes to <code>/fmu/out/vehicle_status_v4</code>, sends the disarm command, and polls up to 10s, resending every 1.5s if not yet confirmed -- it exits 0 only once <code>arming_state==DISARMED</code> is actually observed, exits 1 on a genuine timeout. <code>run_gate.sh</code>'s cleanup surfaces that failure as a loud warning instead of swallowing it with <code>|| true</code>, with its external timeout widened to 15s so it doesn't truncate the internal confirmation loop. Committed <code>81d8d92</code>.</p>
+      <div class="callout good">
+        <p><strong>Verified live, and it reproduced the exact race.</strong> One verification flight's <code>force_disarm_cleanup.log</code>: first poll read <code>arming_state=None</code> (no message yet), triggered a resend, confirmed disarmed at 2.2s. This is direct evidence the race is real and that confirming-before-returning is the actual fix, not a guess.</p>
+      </div>
+
+      <h4 style="font-family:'IBM Plex Sans Condensed',sans-serif;font-size:0.85rem;letter-spacing:0.04em;text-transform:uppercase;color:var(--ink-3);margin:1.5rem 0 0.5rem;">FIX 2 (backstop, not a weakened guard): settle-and-retry in the batch check</h4>
+      <p>The batch's own robustness check (throwaway <code>gate_sweep_batch.sh</code>, not committed, same convention as <code>mini_dose_batch.sh</code>) now polls arming_state up to 8 times, 1s apart, and returns pass the moment it reads disarmed -- it halts only if <em>every</em> poll in that window still reads armed or unreadable. A genuinely persistent-armed vehicle still halts the batch; only a resolving transient is tolerated.</p>
+      <p><strong>Unit-tested against simulated inputs, no real vehicle armed to test it</strong> -- six scripted cases against a mock reader, including the two this task required:</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Case</th><th>Scripted sequence</th><th>Expected</th><th>Result</th></tr></thead>
+          <tbody>
+            <tr><td class="label">persistent_armed</td><td>armed &times;8</td><td>halt</td><td class="pill good">PASS</td></tr>
+            <tr><td class="label">transient_then_disarmed</td><td>armed, armed, disarmed</td><td>pass</td><td class="pill good">PASS</td></tr>
+            <tr><td class="label">immediately_disarmed</td><td>disarmed</td><td>pass</td><td class="pill good">PASS</td></tr>
+            <tr><td class="label">never_readable</td><td>empty &times;8</td><td>halt</td><td class="pill good">PASS</td></tr>
+            <tr><td class="label">disarmed_at_last_poll</td><td>armed &times;7, disarmed</td><td>pass</td><td class="pill good">PASS</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout bad">
+        <p><strong>The test harness itself had a bug on the first attempt, caught before trusting it.</strong> The mock reader tracked its position in a plain shell variable, but <code>settle_check_disarmed</code> calls the reader via command substitution (<code>$(...)</code>), which always forks a bash subshell -- the mock's index increment never persisted back, so every poll silently re-read index 0. Fixed with a file-based counter (survives the subshell fork); all 6 cases then passed. Left in the log because it's a real lesson: a unit test can look green while testing nothing.</p>
+      </div>
+      <div class="callout bad">
+        <p><strong>A second, unrelated bug surfaced only once integrated into the real batch, not caught by the unit tests:</strong> <code>settle_check_disarmed</code>'s <code>for ((i=0; ...))</code> loop didn't declare <code>i</code> <code>local</code> -- in bash this makes it a global, which collided with <code>gate_sweep_batch.sh</code>'s own top-level loop counter (also named <code>i</code>). Every time the check passed on its first poll, it silently reset the outer run counter to 0, so the batch's progress log printed a wrong (stuck-at-"1/100"-style) run count for a stretch of real, correctly-processed runs -- a cosmetic bug (it never affected which run executed or whether data was valid, since run selection is driven by reading the manifest file, not by <code>i</code>) but a real one, and the unit tests didn't catch it because the test harness never had its own colliding <code>i</code> variable. Fixed with <code>local i</code>; added a regression test that sets an outer <code>i=42</code> before calling <code>settle_check_disarmed</code> and asserts it's unchanged after -- confirmed passing. This is exactly the gap "unit test the logic, then it'll definitely work in the real script" can have: integration context matters and unit tests alone didn't cover it.</p>
+      </div>
+      <p>Also added while resuming (not requested, but needed to actually finish 100 runs unattended): a bounded retry (3 attempts) around the pipeline restart's health check in <code>gate_sweep_batch.sh</code>, since a transient nvblox ESDF-query timeout at run 12 (<code>medium_r04</code>) would otherwise have hard-stopped the whole batch on ordinary Gazebo-startup flakiness unrelated to the arming/stray-process safety checks, which remain unchanged hard stops.</p>
+
+      <h4 style="font-family:'IBM Plex Sans Condensed',sans-serif;font-size:0.85rem;letter-spacing:0.04em;text-transform:uppercase;color:var(--ink-3);margin:1.5rem 0 0.5rem;">Resume and completion</h4>
+      <p>Resumed from the same manifest/seed (<code>20260906</code>) with idempotent skip-if-already-recorded logic -- the 5 runs completed before the halt (including <code>low_r10</code> itself, whose data was valid throughout) were kept, not re-run. All 100 runs completed: <code>[batch] ALL 100 RUNS COMPLETE</code>, zero further halts, exactly 20 runs per level. Final state verified: vehicle disarmed, zero live stray processes, 99GB free (fits the &lt;1GB projected in §48).</p>
+
+      <h4 style="font-family:'IBM Plex Sans Condensed',sans-serif;font-size:0.85rem;letter-spacing:0.04em;text-transform:uppercase;color:var(--ink-3);margin:1.5rem 0 0.5rem;">Full-sweep result -- RPE-1s, n=20/level</h4>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Level</th><th>mean</th><th>sd</th><th>95% CI (bootstrap)</th><th>dropout events</th></tr></thead>
+          <tbody>
+            <tr><td class="label">none</td><td>0.150</td><td>0.135</td><td>(0.100, 0.213)</td><td>1/20 (5%)</td></tr>
+            <tr><td class="label">low</td><td>0.159</td><td>0.155</td><td>(0.100, 0.230)</td><td>3/20 (15%)</td></tr>
+            <tr><td class="label">medium</td><td>0.160</td><td>0.123</td><td>(0.110, 0.215)</td><td>3/20 (15%)</td></tr>
+            <tr><td class="label">high</td><td>0.136</td><td>0.093</td><td>(0.100, 0.179)</td><td>4/20 (20%)</td></tr>
+            <tr><td class="label">extreme</td><td>0.142</td><td>0.127</td><td>(0.096, 0.202)</td><td>1/20 (5%)</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>Trend test (OLS, all 100 runs): slope=&minus;0.0039/level, r=&minus;0.044, <b>p=0.663</b>, bootstrap slope 95% CI (&minus;0.022, 0.014) -- crosses zero. Cohen's d (none&rarr;extreme) = <b>&minus;0.062</b> (negligible). Clean-tracking-only subset (n=88, dropout runs excluded): slope=&minus;0.0034/level, p=0.704 -- same null. Discrete-vs-graded flag: <code>no_rise</code> (level means don't rise monotonically at all). Manipulation check: GPU util none=3.0% vs. ~95% at every loaded level (confirms idle/loaded) but still doesn't separate loaded levels from each other -- consistent with §47/§48, where the <code>nsys</code> kernel-duration characterization already confirmed the presets themselves are cleanly separated (296&micro;s&rarr;19.5ms avg kernel duration none&rarr;extreme), so this null is not attributable to a failed manipulation.</p>
+
+      <div class="callout accent">
+        <p><strong>Provisional leaning: NEGATIVE.</strong> At the power-analysis-justified n=20/level, no dose-response signal is detectable on RPE-1s in the full sample or the clean-tracking-only subset -- a well-powered null, not an underpowered "can't tell" like the n=5 screen. Neither pathway shows a positive result: the <em>accuracy</em> pathway (clean-tracking subset) is flat and non-significant; the <em>timing</em> pathway (dropout-event rate 5%/15%/15%/20%/5% across none&rarr;extreme) isn't monotonic either, and <code>extreme</code> has the second-fewest dropout events of all five levels. This does not rule out a different workload (<code>--workload nvblox</code>, not tested here), a texture-poor world (not built), or an effect only visible closed-loop (this gate is open-loop by hard constraint and cannot reproduce the original incident's actual EKF-acceptance mechanism). Full reasoning and the recommendation in <code>results/feasibility_gate/REPORT.md</code> (local draft, gitignored per <code>CLAUDE.md</code> -- durable copy is this log entry). <b>This is a draft for review, not a final decision.</b></p>
+      </div>
     </section>
 
     <footer>
