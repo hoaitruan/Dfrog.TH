@@ -731,6 +731,7 @@ html { scroll-behavior: smooth; }
       <li><a href="#m2-cleanup"><span class="n">44</span>run_gate.sh cleanup hardening</a></li>
       <li><a href="#m2-mini-dose"><span class="n">45</span>Mini dose screen (2026-09-04)</a></li>
       <li><a href="#m2-remetric"><span class="n">46</span>Re-metric of the mini dose screen (2026-09-05)</a></li>
+      <li><a href="#m2-power"><span class="n">47</span>Power analysis + finer GPU metric (2026-09-05)</a></li>
     </ol>
   </nav>
 
@@ -1864,6 +1865,83 @@ html { scroll-behavior: smooth; }
 
       <div class="callout accent">
         <p><strong>Plain read.</strong> (a) The baseline is more measurable under RPE than under endpoint error — spread shrinks from 22× to 3&ndash;4× — but it is still not "stable"; unexplained run-to-run variance remains the dominant feature of this dataset under every metric tried. (b) There is a contention signal <em>hint</em> under short-window RPE (monotonic none&lt;low&lt;high) that does not appear under endpoint error or windowed drift-rate slope, and heavy per-run overlap means it is not established at n=5 — it is worth a small targeted follow-up (more <code>none</code>/<code>low</code>/<code>high</code> repeats, RPE-only, dropout events flagged not discarded) before it's treated as real. (c) Recommendation: do not change the scenario or add a warm-up yet — the baseline instability looks like a property of cuVSLAM tracking noise itself (present at zero contention, not an artifact of a cold start), and no init-quality proxy tested here explains it. Before any 5×5 sweep: (i) adopt short-window RPE (not endpoint error, not the windowed drift-rate slope) as the primary metric, (ii) run a larger <code>none</code>-only batch (10&ndash;15 reps) to actually characterize the baseline noise distribution, and (iii) find a better GPU load-intensity metric than <code>nvidia-smi</code> utilization (§45, point 2) before trying to separate contention <em>levels</em> rather than just presence/absence.</p>
+      </div>
+    </section>
+
+    <section id="m2-power">
+      <div class="section-head"><span class="idx">47</span><h2>Power analysis + finer GPU metric (2026-09-05)</h2></div>
+      <p class="section-intro">Two pieces, no full sweep. (A) A simulation-based power/feasibility analysis on the same 15 bags from §45/§46, using RPE only (§46 showed endpoint error and windowed drift-rate slope are worse metrics — both dropped per this task's instruction). (B) One tiny stressor-only measurement (no flight, <code>EKF2_EV_CTRL</code> irrelevant here since PX4 wasn't running) to check whether a finer GPU metric can separate <code>low</code> from <code>high</code>, unlike §45's <code>nvidia-smi</code> utilization reading. Throwaway scripts, not committed.</p>
+
+      <h4 style="font-family:'IBM Plex Sans Condensed',sans-serif;font-size:0.85rem;letter-spacing:0.04em;text-transform:uppercase;color:var(--ink-3);margin-bottom:0.5rem;">A1. Effect size, none&nbsp;&rarr;&nbsp;high (RPE, per-run median, n=5/level)</h4>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Window</th><th>none mean&plusmn;sd</th><th>high mean&plusmn;sd</th><th>Cohen's d</th><th>raw ratio</th></tr></thead>
+          <tbody>
+            <tr><td class="label">RPE, 1.0s</td><td>0.140 &plusmn; 0.083</td><td>0.268 &plusmn; 0.157</td><td>1.019</td><td>1.92&times;</td></tr>
+            <tr><td class="label">RPE, 1.0m arc-length</td><td>0.343 &plusmn; 0.177</td><td>0.615 &plusmn; 0.430</td><td>0.828</td><td>1.80&times;</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h4 style="font-family:'IBM Plex Sans Condensed',sans-serif;font-size:0.85rem;letter-spacing:0.04em;text-transform:uppercase;color:var(--ink-3);margin:1.5rem 0 0.5rem;">A2. Simulation-based power (Welch t-test / OLS trend, 4000 sim trials/n, &alpha;=0.05, target power 0.8)</h4>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Window</th><th>Question</th><th>Required n/level</th><th>Power at current n=5</th></tr></thead>
+          <tbody>
+            <tr><td class="label">RPE 1.0s</td><td>none vs. high</td><td>17</td><td>0.27</td></tr>
+            <tr><td class="label">RPE 1.0s</td><td>monotonic none/low/high trend</td><td>20</td><td>0.22</td></tr>
+            <tr><td class="label">RPE 1.0m</td><td>none vs. high</td><td>25</td><td>0.19</td></tr>
+            <tr><td class="label">RPE 1.0m</td><td>monotonic none/low/high trend</td><td>22</td><td>0.28</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>At the screen's actual n=5, power for every question above is 0.19&ndash;0.28 &mdash; a coin-flip-or-worse chance of detecting the observed effect size even if it's real. That's expected for a 5-rep screen and is exactly why §45/§46 could not conclude either way.</p>
+
+      <h4 style="font-family:'IBM Plex Sans Condensed',sans-serif;font-size:0.85rem;letter-spacing:0.04em;text-transform:uppercase;color:var(--ink-3);margin:1.5rem 0 0.5rem;">A3. Is the n=5 trend distinguishable from noise? No.</h4>
+      <div class="callout bad">
+        <p>OLS trend of RPE on level (coded 0/1/2), n=15 (5/level): RPE&nbsp;1.0s slope=0.064/level, p=0.176; RPE&nbsp;1.0m slope=0.136/level, p=0.171 &mdash; neither reaches p&lt;0.05. A within-level bootstrap (resample 5-with-replacement per level, 20,000 resamples) gives a 95% CI on the slope of (&minus;0.004, 0.134) for RPE&nbsp;1.0s and (&minus;0.040, 0.324) for RPE&nbsp;1.0m &mdash; <strong>both CIs cross zero.</strong> The apparent monotonic trend flagged in §46 is consistent with a real effect but is not statistically distinguishable from noise at this n. No overclaiming: this screen cannot currently tell a real graded contention effect from sampling variation.</p>
+      </div>
+
+      <h4 style="font-family:'IBM Plex Sans Condensed',sans-serif;font-size:0.85rem;letter-spacing:0.04em;text-transform:uppercase;color:var(--ink-3);margin:1.5rem 0 0.5rem;">A4. Sweep sizing and wall-clock/disk feasibility</h4>
+      <p>Scoped design: 5 contention levels &times; 2 workloads (synthetic, nvblox) &times; 2 textures = 20 cells &times; required n/level. Per-run wall-clock, measured from the actual mini-dose batch (bag-timestamp span over all 15 runs, including a full PX4/Gazebo restart before each run): <b>~104s/run</b> (~1.73 min), synthetic-workload/texture-rich only &mdash; not verified for the nvblox-workload or texture-poor cells, which may run slower. Per-run disk footprint (rosbag + stereo images + CSVs): <b>530MB</b>; only <b>100GB free</b> on the results volume (measured: 468GB total, 78% used).</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Binding n/level</th><th>Total runs (20 cells &times; n)</th><th>Wall-clock @ 104s/run</th><th>Disk @ 530MB/run</th><th>Fits in 100GB free?</th></tr></thead>
+          <tbody>
+            <tr><td class="label">17 (RPE 1.0s, none-vs-high)</td><td>340</td><td>9.8h</td><td>180GB</td><td class="pill bad">no</td></tr>
+            <tr><td class="label">20 (RPE 1.0s, trend)</td><td>400</td><td>11.6h</td><td>212GB</td><td class="pill bad">no</td></tr>
+            <tr><td class="label">22 (RPE 1.0m, trend)</td><td>440</td><td>12.7h</td><td>233GB</td><td class="pill bad">no</td></tr>
+            <tr><td class="label">25 (RPE 1.0m, none-vs-high)</td><td>500</td><td>14.4h</td><td>265GB</td><td class="pill bad">no</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout bad">
+        <p><strong>Wall-clock is feasible (well under a day of continuous automated running); disk is not, by roughly 2&times;, at every binding n.</strong> None of the four design points fit in the 100GB currently free, and the shortfall is 1.8&ndash;2.65&times; regardless of which required-n is used. This is a concrete, measured blocker (not a projection) and is independent of the statistical recommendation below &mdash; it would need addressing (e.g. deleting/archiving raw bags right after metric extraction instead of keeping all of them, or dropping the stereo image topics from the recording when they aren't needed for a given analysis) before any sweep at this scale could run to completion, regardless of which n is chosen.</p>
+      </div>
+
+      <h4 style="font-family:'IBM Plex Sans Condensed',sans-serif;font-size:0.85rem;letter-spacing:0.04em;text-transform:uppercase;color:var(--ink-3);margin:1.5rem 0 0.5rem;">B. Finer GPU metric: stressor-only, no flight</h4>
+      <p>Ran <code>gpu_stressor.py --intensity low</code> and <code>--intensity high</code> standalone (15s each, no PX4/Gazebo/cuVSLAM running) and measured with <code>pynvml</code> (5Hz) and <code>nsys profile --stats=true</code> (8s each).</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Metric</th><th>low</th><th>high</th><th>ratio</th><th>Separated?</th></tr></thead>
+          <tbody>
+            <tr><td class="label">nvidia-smi util % (in-flight, §45)</td><td>94.5%</td><td>95.7%</td><td>1.01&times;</td><td class="pill bad">no</td></tr>
+            <tr><td class="label">pynvml util % (stressor-only)</td><td>83.1%</td><td>93.5%</td><td>1.12&times;</td><td class="pill accent">weakly</td></tr>
+            <tr><td class="label">pynvml SM clock (MHz)</td><td>2155.1</td><td>1928.4</td><td>0.90&times;</td><td class="pill accent">weakly (inverted)</td></tr>
+            <tr><td class="label">pynvml mem used (MB)</td><td>574.7</td><td>1059.2</td><td>1.84&times;</td><td class="pill good">yes</td></tr>
+            <tr><td class="label">nsys avg CUDA kernel duration</td><td>296.3&micro;s</td><td>7,852.6&micro;s</td><td>26.5&times;</td><td class="pill good">yes, cleanly</td></tr>
+            <tr><td class="label">nsys avg CUDA memcpy duration</td><td>7.2&micro;s</td><td>418.4&micro;s</td><td>58.1&times;</td><td class="pill good">yes, cleanly</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout good">
+        <p><strong>Yes &mdash; finer metrics separate low and high cleanly; <code>nvidia-smi</code> utilization was the wrong instrument, not evidence the presets are poorly separated.</strong> <code>nsys</code> kernel-level timing gives a 26&ndash;58&times; separation between presets (matches the presets' own matrix-size/stream-count design: 1024&sup2;/1 stream/30% duty vs. 3072&sup2;/4 streams/90% duty). <code>pynvml</code> memory footprint also separates cleanly (1.84&times;) and is far cheaper to sample continuously during a real flight than launching <code>nsys</code> around the whole pipeline. One curiosity: SM clock is <em>lower</em> under <code>high</code> (1928 vs 2155 MHz) despite far more GPU work &mdash; likely thermal/power throttling under sustained heavy load, itself a real dose-correlated effect worth keeping in mind, not a measurement error (four defunct <code>nsys</code>/<code>nsys-launcher</code> zombie processes were left behind by this probe under the container's already-documented PID&nbsp;1-doesn't-reap limitation — confirmed harmless, GPU was idle afterward at 13% baseline noise / 15MB).</p>
+      </div>
+
+      <h4 style="font-family:'IBM Plex Sans Condensed',sans-serif;font-size:0.85rem;letter-spacing:0.04em;text-transform:uppercase;color:var(--ink-3);margin:1.5rem 0 0.5rem;">C. Recommendation</h4>
+      <div class="callout accent">
+        <p><strong>Reduce baseline variance first &mdash; do not proceed to the sweep at the required n yet.</strong> Required n (17&ndash;25/level) is 3.4&ndash;5&times; the piloted n=5, driven by the baseline's own residual noise (RPE CV still 0.5&ndash;0.6 even after §46's improvement); cutting that noise in half would roughly halve Cohen's d's denominator and, since required-n scales ~1/d&sup2;, cut the required sweep size roughly 4&times; &mdash; along with its wall-clock and (currently blocking) disk cost. Jumping straight to a 340&ndash;500-run sweep now would spend a day-plus of runtime and ~2&times; more disk than is free, all while power is only barely adequate at the least demanding of the four design points.</p>
+        <p><strong>Cheapest next lever: an RPE init-transient exclusion window, applied to the existing 15 bags &mdash; zero new flights.</strong> §46 already built a "moving window" detector (per-run in-flight region, arc-length speed &gt; 0.15&nbsp;m/s) for the drift-rate slope, but RPE in §46/§47 was computed over each run's <em>entire</em> trajectory, including the initial hover and final hold, where the vehicle is nearly stationary and the noise floor may behave differently (near-zero ground-truth motion makes any cuVSLAM jitter show up as a large <em>relative</em> error). Restricting RPE to the same in-flight window is a pure re-analysis of data already on disk, testable in minutes, and does not touch the scenario, trajectory, or world at all &mdash; the lowest-risk, lowest-cost thing to try before considering a tamer/shorter trajectory or a different world (both of which require new flights, scenario engineering, and re-validating §43's baseline-drift diagnosis from scratch). If the windowed RPE variance shrinks meaningfully, required-n (and the sweep's wall-clock/disk cost) drops with it before any larger commitment is made; if it doesn't, that's useful evidence the noise is intrinsic to cuVSLAM's tracking rather than an artifact of the hover/hold segments, and trajectory/world changes would need to be considered next.</p>
       </div>
     </section>
 
