@@ -730,6 +730,7 @@ html { scroll-behavior: smooth; }
       <li><a href="#m2-g3-1"><span class="n">43</span>G3.1 triage &amp; baseline drift diagnosis</a></li>
       <li><a href="#m2-cleanup"><span class="n">44</span>run_gate.sh cleanup hardening</a></li>
       <li><a href="#m2-mini-dose"><span class="n">45</span>Mini dose screen (2026-09-04)</a></li>
+      <li><a href="#m2-remetric"><span class="n">46</span>Re-metric of the mini dose screen (2026-09-05)</a></li>
     </ol>
   </nav>
 
@@ -1817,6 +1818,53 @@ html { scroll-behavior: smooth; }
 
       <h4 style="font-family:'IBM Plex Sans Condensed',sans-serif;font-size:0.85rem;letter-spacing:0.04em;text-transform:uppercase;color:var(--ink-3);margin:1.5rem 0 0.5rem;">Run list</h4>
       <p><code>mini_dose_{none,low,high}_r{1..5}</code> — 15 runs, all completed, all safely disarmed at end (verified live via <code>/fmu/out/vehicle_status_v4</code> after the batch). Per-run numbers: none — r1 0.85m/8.6%, r2 12.07m/52.9%, r3 15.63m/53.9%, r4 1.37m/17.2%, r5 18.83m/121.9%. low — r1 2.32m/8.6%, r2 109.91m/43.9%, r3 17.01m/52.1%, r4 11.15m/72.6%, r5 350.21m/1682.2%. high — r1 31.79m/143.6%, r2 16.49m/126.1%, r3 17.03m/166.6%, r4 41.98m/237.5%, r5 1.36m/10.4%.</p>
+    </section>
+
+    <section id="m2-remetric">
+      <div class="section-head"><span class="idx">46</span><h2>Re-metric of the mini dose screen (2026-09-05)</h2></div>
+      <p class="section-intro">Pure re-analysis of the same 15 bags from §45 — no new flights, <code>EKF2_EV_CTRL</code> untouched. Question: was §45's "no signal" real, or an artifact of using endpoint max-error/ratio as the metric? Re-derived RPE (translation) over a 1.0s time window and a 1.0m ground-truth arc-length window, plus a windowed drift-rate (linear-regression slope of position error vs. arc-length, restricted to each run's own in-flight window — the contiguous region where arc-length speed exceeds 0.15 m/s, which auto-excludes the arm/hover transient and the final goal-reached hold per run without a hand-picked fixed offset). All read directly from each run's rosbag via <code>triage_incident.py</code>'s own reader (not <code>vslam_compare.csv</code>, per §43's contamination lesson). Throwaway script, not committed.</p>
+
+      <h4 style="font-family:'IBM Plex Sans Condensed',sans-serif;font-size:0.85rem;letter-spacing:0.04em;text-transform:uppercase;color:var(--ink-3);margin-bottom:0.5rem;">A. Does the baseline spread shrink under a better metric?</h4>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Metric (none, n=5)</th><th>range</th><th>max/min ratio</th><th>CV (stdev/mean)</th></tr></thead>
+          <tbody>
+            <tr><td class="label">Endpoint max error (§45)</td><td>0.85–18.83m</td><td>22.2×</td><td>0.85</td></tr>
+            <tr><td class="label">RPE, 1.0s window (per-run median)</td><td>0.056–0.223m</td><td>4.0×</td><td>0.60</td></tr>
+            <tr><td class="label">RPE, 1.0m arc-length window (per-run median)</td><td>0.186–0.610m</td><td>3.3×</td><td>0.52</td></tr>
+            <tr><td class="label">Windowed drift-rate slope (in-flight window)</td><td>&minus;0.037–2.121 m/m</td><td>n/a (sign change)</td><td>1.54</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout good">
+        <p><strong>Partially yes.</strong> Short-window RPE (both the 1s and 1m variants, using each run's own <em>median</em> rather than mean — the mean is dragged around by rare large local spikes) cuts the baseline spread roughly in half by CV and from a 22× to a 3&ndash;4× range ratio. It's a real improvement, not just re-scaling: RPE measures local tracking noise per window, not accumulated drift, so it's far less exposed to the one-off events driving §45's endpoint spread. It does <em>not</em>, however, make the baseline look "stable" in any strong sense — a 3&ndash;4× spread with zero treatment difference is still a lot of unexplained run-to-run variance.</p>
+      </div>
+      <div class="callout bad">
+        <p><strong>Windowed drift-rate slope is not an improvement — it's worse (CV 1.54 vs. 0.85).</strong> It's a single linear-regression estimate per run, computed over each run's own in-flight window (as short as ~6s/130 samples in some runs), so it inherits all of that run's noise into one number with no within-run averaging to smooth it out; one run's slope came out slightly negative (a run whose error happened to plateau inside its own window). This metric is a bad choice for this dataset and should not be used as the primary signal metric in a follow-up sweep as-is.</p>
+      </div>
+
+      <h4 style="font-family:'IBM Plex Sans Condensed',sans-serif;font-size:0.85rem;letter-spacing:0.04em;text-transform:uppercase;color:var(--ink-3);margin:1.5rem 0 0.5rem;">B. Re-tabulated none/low/high under the new metrics</h4>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Level</th><th>RPE 1.0s (mean-of-per-run-median)</th><th>RPE 1.0m (mean-of-per-run-median)</th><th>Drift-rate slope (median-of-runs)</th></tr></thead>
+          <tbody>
+            <tr><td class="label">none</td><td>0.140m ± 0.083 (0.056–0.223)</td><td>0.343m ± 0.177 (0.186–0.610)</td><td>0.049 m/m</td></tr>
+            <tr><td class="label">low</td><td>0.217m ± 0.182 (0.078–0.535)</td><td>0.478m ± 0.266 (0.221–0.821)</td><td>0.597 m/m</td></tr>
+            <tr><td class="label">high</td><td>0.268m ± 0.157 (0.089–0.452)</td><td>0.615m ± 0.430 (0.231–1.143)</td><td>0.484 m/m</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout">
+        <p><strong>Mixed, metric-dependent result — this is the headline finding.</strong> Both RPE variants (median-based) are <em>monotonically increasing</em> none &lt; low &lt; high, which is what a graded contention effect should look like and which §45's endpoint metric did not show. But the windowed drift-rate slope, and the original endpoint metric, both show <code>low</code> &gt; <code>high</code> &gt; <code>none</code> — not monotonic. And per-run RPE distributions overlap heavily across levels regardless (e.g. <code>high</code>'s lowest per-run-median RPE, 0.089m, is below <code>none</code>'s highest, 0.223m). At n=5 per level this is a hint that a real, graded, local-tracking-noise effect may exist and is only visible under a short-window metric — not a confirmed finding. It would need materially more repeats (and dropping the drift-rate-slope metric, per finding A) to become one.</p>
+      </div>
+
+      <h4 style="font-family:'IBM Plex Sans Condensed',sans-serif;font-size:0.85rem;letter-spacing:0.04em;text-transform:uppercase;color:var(--ink-3);margin:1.5rem 0 0.5rem;">C. Init-quality correlation and clean-vs-dropout split</h4>
+      <p>Init-quality proxies tested: early (first 2s) feature count, early feature-count dip, and time-to-stable-tracking (time until feature count holds within 80% of its own later steady-state mean for 1s). Result: <b>uninformative by construction</b> — feature count starts at its <em>highest</em> value in every single run (377&ndash;381, essentially constant across all 15 runs) and <em>decreases</em> over the flight to a lower "steady" value (~170&ndash;275), so the stable-tracking threshold is trivially satisfied at t=0 in every run (<code>t_stable = 0.00s</code> universally) and there is no early dip to detect. Correlation against drift-rate slope: r = &minus;0.10 (early feature count vs. slope, n=15) — no relationship, but this is a null result about a proxy that never varied, not evidence that initialization quality doesn't matter. A useful init-quality proxy for this stack has not yet been found; feature count from <code>/visual_slam/vis/observations_cloud</code> is not it.</p>
+      <p>Tracking-loss (feature-count-to-0) events: <code>none</code> 1/5 (r3), <code>low</code> 1/5 (r5), <code>high</code> 2/5 (r3, r4) — consistent with, but not proof of, contention increasing dropout risk at n=5. Restricting the drift-rate-slope comparison to <em>clean-tracking-only</em> runs (dropping the event, not just capping its value): none (n=4) mean 0.762, low (n=4) mean 0.531, high (n=3) mean 0.846 — still not monotonic and still heavily overlapping (none's own clean-run range is 0.025&ndash;2.121, wider than the low-vs-high mean difference). Removing dropout events does not recover a clean trend under this metric.</p>
+
+      <div class="callout accent">
+        <p><strong>Plain read.</strong> (a) The baseline is more measurable under RPE than under endpoint error — spread shrinks from 22× to 3&ndash;4× — but it is still not "stable"; unexplained run-to-run variance remains the dominant feature of this dataset under every metric tried. (b) There is a contention signal <em>hint</em> under short-window RPE (monotonic none&lt;low&lt;high) that does not appear under endpoint error or windowed drift-rate slope, and heavy per-run overlap means it is not established at n=5 — it is worth a small targeted follow-up (more <code>none</code>/<code>low</code>/<code>high</code> repeats, RPE-only, dropout events flagged not discarded) before it's treated as real. (c) Recommendation: do not change the scenario or add a warm-up yet — the baseline instability looks like a property of cuVSLAM tracking noise itself (present at zero contention, not an artifact of a cold start), and no init-quality proxy tested here explains it. Before any 5×5 sweep: (i) adopt short-window RPE (not endpoint error, not the windowed drift-rate slope) as the primary metric, (ii) run a larger <code>none</code>-only batch (10&ndash;15 reps) to actually characterize the baseline noise distribution, and (iii) find a better GPU load-intensity metric than <code>nvidia-smi</code> utilization (§45, point 2) before trying to separate contention <em>levels</em> rather than just presence/absence.</p>
+      </div>
     </section>
 
     <footer>
