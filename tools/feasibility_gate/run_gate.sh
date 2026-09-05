@@ -206,8 +206,18 @@ cleanup() {
   # triggered, whether cleanup got here via normal completion, Ctrl-C, or
   # a `set -e` error, force-disarm is safe to call and must run -- this
   # is the actual guarantee against "run ends, vehicle stays armed."
-  echo "  force-disarming (idempotent, safe even if never armed)..."
-  timeout 10 python3 "$WS/force_disarm.py" > "$OUT_DIR/force_disarm_cleanup.log" 2>&1 || true
+  # force_disarm.py now BLOCKS until arming_state==DISARMED is actually
+  # confirmed (retrying internally, ~10s budget) instead of firing 3
+  # commands and exiting unconditionally -- that fire-and-forget gap was
+  # the root cause of a false-alarm halt in the G3.3 gate sweep (a batch
+  # robustness check read arming_state before PX4 had processed the
+  # disarm). External timeout is wider than force_disarm.py's own 10s
+  # budget so a genuine non-confirmation is reported by the script
+  # itself, not truncated by this wrapper first.
+  echo "  force-disarming (idempotent, safe even if never armed; blocks until confirmed)..."
+  if ! timeout 15 python3 "$WS/force_disarm.py" > "$OUT_DIR/force_disarm_cleanup.log" 2>&1; then
+    echo "  WARNING: force-disarm NOT CONFIRMED within timeout -- see $OUT_DIR/force_disarm_cleanup.log" >&2
+  fi
 }
 trap cleanup EXIT INT TERM ERR
 
