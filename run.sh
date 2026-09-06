@@ -32,6 +32,24 @@ WS=/workspaces/isaac_ros-dev
 LOG_DIR="$WS/ros2_ws/run_logs"
 mkdir -p "$LOG_DIR"
 
+# GZ_TARGET selects which PX4 SITL/Gazebo make target to launch. Default
+# is the original rich-texture vio_test world (unchanged behavior). Set
+# to gz_x500_depth_stereo_vio_test_poor for the G3.4 texture-poor arm
+# (same model/geometry/trajectory/camera/initial-state -- only the
+# world's albedo-map textures differ, see PX4-Autopilot/Tools/simulation/
+# gz/worlds/vio_test_poor.sdf and flight_test_log.html §50).
+#
+# GZ_WORLD_NAME must match the launched world's internal <world name="...">
+# attribute (which, per PX4's own px4-rc.gzsim convention, always equals
+# its .sdf filename -- confirmed the hard way: an earlier vio_test_poor.sdf
+# kept the internal name as "vio_test" while the filename was
+# "vio_test_poor", which made PX4's own /world/${PX4_GZ_WORLD}/scene/info
+# readiness poll target a service gz-sim never advertises, hanging forever
+# on "Waiting for Gazebo world..."). Used below to build the ros_gz bridge
+# topic so it tracks whichever world is actually active.
+GZ_TARGET="${GZ_TARGET:-gz_x500_depth_stereo_vio_test}"
+GZ_WORLD_NAME="${GZ_WORLD_NAME:-vio_test}"
+
 source /opt/ros/humble/setup.bash
 source "$WS/ros2_ws/install/setup.bash"
 
@@ -40,10 +58,10 @@ echo "=== [1/7] MicroXRCEAgent ==="
   > "$LOG_DIR/agent.log" 2>&1 &
 sleep 2
 
-echo "=== [2/7] PX4 SITL + Gazebo (gz_x500_depth_stereo_vio_test) ==="
+echo "=== [2/7] PX4 SITL + Gazebo ($GZ_TARGET) ==="
 (
   cd "$WS/PX4-Autopilot"
-  exec make px4_sitl gz_x500_depth_stereo_vio_test \
+  exec make px4_sitl "$GZ_TARGET" \
     < <(tail -f /dev/null)
 ) > "$LOG_DIR/px4.log" 2>&1 &
 echo "    waiting for PX4 to boot..."
@@ -78,7 +96,7 @@ ros2 run ros_gz_bridge parameter_bridge \
   /depth_camera/points@sensor_msgs/msg/PointCloud2[gz.msgs.PointCloudPacked \
   /camera_info@sensor_msgs/msg/CameraInfo[gz.msgs.CameraInfo \
   /clock@rosgraph_msgs/msg/Clock[gz.msgs.Clock \
-  /world/vio_test/dynamic_pose/info@tf2_msgs/msg/TFMessage[gz.msgs.Pose_V \
+  /world/$GZ_WORLD_NAME/dynamic_pose/info@tf2_msgs/msg/TFMessage[gz.msgs.Pose_V \
   > "$LOG_DIR/bridge.log" 2>&1 &
 sleep 3
 
