@@ -734,6 +734,8 @@ html { scroll-behavior: smooth; }
       <li><a href="#m2-power"><span class="n">47</span>Power analysis + finer GPU metric (2026-09-05)</a></li>
       <li><a href="#m2-unblockers"><span class="n">48</span>Two unblockers + gate-sweep design (2026-09-05)</a></li>
       <li><a href="#m2-gate-sweep"><span class="n">49</span>G3.3 gate sweep: halt, two fixes, full result (2026-09-06)</a></li>
+      <li><a href="#m2-texture-poor-world"><span class="n">50</span>G3.4 texture-poor world + manipulation check (2026-09-06)</a></li>
+      <li><a href="#m2-gate-sweep-poor"><span class="n">51</span>G3.4 gate sweep + rich-vs-poor comparison (2026-09-06)</a></li>
     </ol>
   </nav>
 
@@ -2070,6 +2072,71 @@ html { scroll-behavior: smooth; }
       <div class="callout accent">
         <p><strong>Provisional leaning: NEGATIVE.</strong> At the power-analysis-justified n=20/level, no dose-response signal is detectable on RPE-1s in the full sample or the clean-tracking-only subset -- a well-powered null, not an underpowered "can't tell" like the n=5 screen. Neither pathway shows a positive result: the <em>accuracy</em> pathway (clean-tracking subset) is flat and non-significant; the <em>timing</em> pathway (dropout-event rate 5%/15%/15%/20%/5% across none&rarr;extreme) isn't monotonic either, and <code>extreme</code> has the second-fewest dropout events of all five levels. This does not rule out a different workload (<code>--workload nvblox</code>, not tested here), a texture-poor world (not built), or an effect only visible closed-loop (this gate is open-loop by hard constraint and cannot reproduce the original incident's actual EKF-acceptance mechanism). Full reasoning and the recommendation in <code>results/feasibility_gate/REPORT.md</code> (local draft, gitignored per <code>CLAUDE.md</code> -- durable copy is this log entry). <b>This is a draft for review, not a final decision.</b></p>
       </div>
+    </section>
+
+    <section id="m2-texture-poor-world">
+      <div class="section-head"><span class="idx">50</span><h2>G3.4 texture-poor world + manipulation check (2026-09-06)</h2></div>
+      <p class="section-intro">The gate's own criteria call for both a rich-texture arm (G3.3, done in §49) and a texture-poor arm (G3.4). This entry builds the texture-poor world and confirms the manipulation actually works before spending a 100-run sweep on it. <code>EKF2_EV_CTRL</code>=0 throughout.</p>
+
+      <h4 style="font-family:'IBM Plex Sans Condensed',sans-serif;font-size:0.85rem;letter-spacing:0.04em;text-transform:uppercase;color:var(--ink-3);margin-bottom:0.5rem;">Building the world</h4>
+      <p>Copied <code>PX4-Autopilot/Tools/simulation/gz/worlds/vio_test.sdf</code> to <code>vio_test_poor.sdf</code> (both gitignored along with the rest of the vendored <code>PX4-Autopilot/</code> tree) and stripped every one of its 25 <code>&lt;pbr&gt;&lt;metal&gt;&lt;albedo_map&gt;...&lt;/albedo_map&gt;&lt;/metal&gt;&lt;/pbr&gt;</code> blocks (all 25 referenced the same locally-generated <code>checker_noise.png</code>) via a small Python regex pass, verified with <code>gz sdf --check</code> (valid). Geometry, collision, physics, lights, camera, and initial state are byte-identical to the rich world -- every surface keeps only its flat ambient/diffuse/specular color, the same colors that were already present alongside each stripped <code>pbr</code> block.</p>
+
+      <div class="callout bad">
+        <p><strong>Real bug found and fixed while wiring this up.</strong> PX4's own <code>px4-rc.gzsim</code> readiness check polls <code>/world/${PX4_GZ_WORLD}/scene/info</code>, built from the world <em>filename</em> PX4 was told to load -- not the SDF's internal <code>&lt;world name="..."&gt;</code> attribute. An earlier version of this file deliberately kept the internal name as <code>vio_test</code> (to preserve run.sh's hardcoded <code>/world/vio_test/dynamic_pose/info</code> bridge topic) while the filename was <code>vio_test_poor</code> -- this made PX4 poll a gz service (<code>/world/vio_test_poor/scene/info</code>) that gz-sim never advertises (it advertises under the real internal name, <code>vio_test</code>), producing an infinite <code>"Waiting for Gazebo world..."</code> hang, confirmed live via a stuck pipeline boot. Fixed properly: filename and internal world name now match (<code>vio_test_poor</code> everywhere, same convention as the original file), and <code>run.sh</code> is parameterized with a new <code>GZ_WORLD_NAME</code> env var so its bridge topic tracks whichever world is actually active, alongside the existing <code>GZ_TARGET</code> for the make target itself (both default to the original rich-texture behavior when unset). Committed <code>a2c31f8</code>.</p>
+      </div>
+
+      <h4 style="font-family:'IBM Plex Sans Condensed',sans-serif;font-size:0.85rem;letter-spacing:0.04em;text-transform:uppercase;color:var(--ink-3);margin:1.5rem 0 0.5rem;">Manipulation check -- required, and it passed</h4>
+      <p>Compared tracked feature count (<code>/visual_slam/vis/observations_cloud</code>, already recorded in every trimmed bag) between 3 existing rich-texture runs (<code>gate_sweep_none_r01/02/03</code>) and one fresh texture-poor verification flight (<code>verify_poor_r1</code>, contention none, 30s, confirmed disarmed and no strays after).</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th></th><th>mean</th><th>median</th><th>min</th><th>max</th></tr></thead>
+          <tbody>
+            <tr><td class="label">Rich</td><td>262.6</td><td>~229</td><td>13</td><td>429</td></tr>
+            <tr><td class="label">Poor</td><td>105.8</td><td>85.0</td><td>0</td><td>407</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout good">
+        <p><strong>PASSED.</strong> Poor/rich feature-count ratio 0.40x -- a substantial, unambiguous reduction. Poor texture's own minimum hit 0 (a genuine tracking-loss event within a single 30s hover-and-climb) where rich's worst sample across three runs never dropped below 13. "Poor" is actually poor.</p>
+      </div>
+    </section>
+
+    <section id="m2-gate-sweep-poor">
+      <div class="section-head"><span class="idx">51</span><h2>G3.4 gate sweep + rich-vs-poor comparison (2026-09-06)</h2></div>
+      <p class="section-intro">Same design as §49's rich sweep (5 contention levels &times; n=20, synthetic stressor, randomized order, fresh restart + confirmed-disarm between every run, 8.4MB trimmed recording, RPE-1s metric), run against the texture-poor world from §50 with an independent random seed (<code>20260907</code>). <code>EKF2_EV_CTRL</code>=0 throughout. Zero halts across all 100 runs -- §49's confirmed-disarm fix and settle-and-retry backstop held for the full 200 runs across both arms.</p>
+
+      <h4 style="font-family:'IBM Plex Sans Condensed',sans-serif;font-size:0.85rem;letter-spacing:0.04em;text-transform:uppercase;color:var(--ink-3);margin-bottom:0.5rem;">Per-level result, rich vs. poor</h4>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Level</th><th>Rich mean</th><th>Rich dropout</th><th>Poor mean</th><th>Poor dropout</th></tr></thead>
+          <tbody>
+            <tr><td class="label">none</td><td>0.150</td><td>1/20 (5%)</td><td>0.373</td><td>18/20 (90%)</td></tr>
+            <tr><td class="label">low</td><td>0.159</td><td>3/20 (15%)</td><td>0.310</td><td>17/20 (85%)</td></tr>
+            <tr><td class="label">medium</td><td>0.160</td><td>3/20 (15%)</td><td>0.272</td><td>16/20 (80%)</td></tr>
+            <tr><td class="label">high</td><td>0.136</td><td>4/20 (20%)</td><td>0.291</td><td>15/20 (75%)</td></tr>
+            <tr><td class="label">extreme</td><td>0.142</td><td>1/20 (5%)</td><td>0.344</td><td>17/20 (85%)</td></tr>
+            <tr><td class="label"><b>overall</b></td><td><b>0.149</b></td><td><b>12/100 (12%)</b></td><td><b>0.318</b></td><td><b>83/100 (83%)</b></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout accent">
+        <p><strong>Texture main effect is large and unambiguous:</strong> poor-texture RPE-1s runs ~2.1&times; rich's, and poor-texture tracking-loss rate (83%) is ~7&times; rich's (12%). This confirms G3.4's premise -- texture availability dominates VIO robustness in this world far more than anything tested in G3.3 -- but it's a <em>texture</em> effect, not a <em>contention</em> effect, and was never the variable the original hypothesis was about.</p>
+      </div>
+
+      <h4 style="font-family:'IBM Plex Sans Condensed',sans-serif;font-size:0.85rem;letter-spacing:0.04em;text-transform:uppercase;color:var(--ink-3);margin:1.5rem 0 0.5rem;">Contention trend within texture-poor</h4>
+      <p>Full sample (n=100): slope=&minus;0.0078/level, r=&minus;0.082, <b>p=0.415</b>, bootstrap 95% CI (&minus;0.027, 0.011) -- crosses zero. Cohen's d (none&rarr;extreme) = <b>&minus;0.199</b> (small, wrong direction). Same null conclusion as rich (p=0.663 there), just noisier.</p>
+      <div class="callout bad">
+        <p><strong>Clean-tracking-only subset flagged as unreliable, not reported as a finding.</strong> Because dropout is the <em>dominant</em> outcome at this texture level (75-90% per level), the clean-tracking subset is tiny and lopsided by level: none=2, low=3, medium=4, high=5, extreme=3 (n=17 total). Its OLS trend (slope=&minus;0.0508/level, p=0.107) has a bootstrap 95% CI of (&minus;0.090, &minus;0.011) that technically doesn't cross zero -- but bootstrap resampling from a per-level n as low as 2 has too few distinct resample outcomes to approximate real sampling variability, and a sample this small is highly vulnerable to single-point leverage. Even taken at face value, the direction (higher contention &rarr; <em>lower</em> RPE) is backwards from the hypothesis under test, more plausibly reflecting survivorship in an already-marginal tracking regime than a real accuracy effect.</p>
+      </div>
+      <p>Timing pathway (dropout-event rate by level): 90% / 85% / 80% / 75% / 85% for none&rarr;extreme -- not monotonic, and actually <em>lowest</em> at <code>high</code>, the second-heaviest contention level. Same non-monotonic-null pattern as rich (5/15/15/20/5%). No timing-pathway dose-response in either arm.</p>
+
+      <h4 style="font-family:'IBM Plex Sans Condensed',sans-serif;font-size:0.85rem;letter-spacing:0.04em;text-transform:uppercase;color:var(--ink-3);margin:1.5rem 0 0.5rem;">Rich-vs-poor interaction: null in both, texture dominates</h4>
+      <div class="callout accent">
+        <p><strong>Does contention show an effect in poor that was absent in rich? No.</strong> Both arms return a non-significant, near-zero-or-negative full-sample trend (p=0.663 rich, p=0.415 poor); neither shows a reliable accuracy-pathway or timing-pathway dose-response. The one nominally "significant" result (poor's clean-tracking-only subset) is built on a sample too small and too structurally biased (survivor selection under 83% dropout) to trust, and even it points the wrong direction. The real, large, well-powered effect in this combined 200-run dataset is texture itself -- never the variable under test in the original GPU-contention hypothesis.</p>
+      </div>
+
+      <h4 style="font-family:'IBM Plex Sans Condensed',sans-serif;font-size:0.85rem;letter-spacing:0.04em;text-transform:uppercase;color:var(--ink-3);margin:1.5rem 0 0.5rem;">Updated provisional gate verdict</h4>
+      <p>Leaning <b>NEGATIVE</b> for "GPU contention measurably degrades cuVSLAM tracking accuracy via a graded dose-response," now tested across both texture conditions the gate specified (G3.3 rich, G3.4 poor) -- completing the gate's own criteria. Does not rule out a different, more targeted GPU workload (<code>--workload nvblox</code>, not exercised in either sweep) or an effect only observable closed-loop (both arms are open-loop by hard constraint, so neither can reproduce the original ~55m incident's actual runaway mechanism). Full reasoning, both arms' tables, and the recommendation in <code>results/feasibility_gate/REPORT.md</code> (local draft, gitignored per <code>CLAUDE.md</code> -- durable copy is this log entry). <b>This is a draft for review, not a final decision.</b></p>
     </section>
 
     <footer>
