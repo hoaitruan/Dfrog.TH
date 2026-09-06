@@ -123,7 +123,14 @@ sleep 20
 
 echo ""
 echo "=== Health check ==="
-python3 "$WS/health_check.py"
+# SKIP_ESDF_CHECK=1: only for the Route 2 closed-loop probe's obstacle-
+# free world, where an empty ESDF is the correct sensor state (nothing
+# nearby to map), not a wiring bug. Unset/default behavior is unchanged.
+if [[ "${SKIP_ESDF_CHECK:-0}" == "1" ]]; then
+  python3 "$WS/health_check.py" --skip-esdf
+else
+  python3 "$WS/health_check.py"
+fi
 HEALTH_STATUS=$?
 
 echo ""
