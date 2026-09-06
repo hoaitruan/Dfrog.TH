@@ -736,6 +736,7 @@ html { scroll-behavior: smooth; }
       <li><a href="#m2-gate-sweep"><span class="n">49</span>G3.3 gate sweep: halt, two fixes, full result (2026-09-06)</a></li>
       <li><a href="#m2-texture-poor-world"><span class="n">50</span>G3.4 texture-poor world + manipulation check (2026-09-06)</a></li>
       <li><a href="#m2-gate-sweep-poor"><span class="n">51</span>G3.4 gate sweep + rich-vs-poor comparison (2026-09-06)</a></li>
+      <li><a href="#route2-probe"><span class="n">52</span>Route 2 closed-loop probe: setup, R2-0, R2-1 (2026-09-06/07)</a></li>
     </ol>
   </nav>
 
@@ -2137,6 +2138,52 @@ html { scroll-behavior: smooth; }
 
       <h4 style="font-family:'IBM Plex Sans Condensed',sans-serif;font-size:0.85rem;letter-spacing:0.04em;text-transform:uppercase;color:var(--ink-3);margin:1.5rem 0 0.5rem;">Updated provisional gate verdict</h4>
       <p>Leaning <b>NEGATIVE</b> for "GPU contention measurably degrades cuVSLAM tracking accuracy via a graded dose-response," now tested across both texture conditions the gate specified (G3.3 rich, G3.4 poor) -- completing the gate's own criteria. Does not rule out a different, more targeted GPU workload (<code>--workload nvblox</code>, not exercised in either sweep) or an effect only observable closed-loop (both arms are open-loop by hard constraint, so neither can reproduce the original ~55m incident's actual runaway mechanism). Full reasoning, both arms' tables, and the recommendation in <code>results/feasibility_gate/REPORT.md</code> (local draft, gitignored per <code>CLAUDE.md</code> -- durable copy is this log entry). <b>This is a draft for review, not a final decision.</b></p>
+    </section>
+
+    <section id="route2-probe">
+      <div class="section-head"><span class="idx">52</span><h2>Route 2 closed-loop probe: setup, R2-0, R2-1 (2026-09-06/07)</h2></div>
+      <p class="section-intro">First time <code>EKF2_EV_CTRL</code> is nonzero anywhere in this project. Deliberate, bounded feasibility probe (branch <code>r2-closedloop-probe</code>, never merged to <code>feasibility-gate</code> or <code>main</code>) into whether the original Phase 6 55m divergence incident was contention-gated or an estimator artifact independent of contention. SIM ONLY. <code>EKF2_EV_CTRL=11</code> (horizontal position + vertical position + yaw, no velocity) verified against this exact PX4 checkout's <code>params_external_vision.yaml</code> bit definitions and against this project's own Phase 4 history (README.md), confined entirely to a new airframe (<code>4900_gz_x500_depth_stereo_r2closedloop</code>) selected only via explicit <code>PX4_SYS_AUTOSTART=4900</code> -- the shared <code>4022</code> airframe every other experiment uses stays untouched at 0.</p>
+
+      <h4 style="font-family:'IBM Plex Sans Condensed',sans-serif;font-size:0.85rem;letter-spacing:0.04em;text-transform:uppercase;color:var(--ink-3);margin-bottom:0.5rem;">Setup</h4>
+      <p>New obstacle-free world (<code>vio_test_r2_obstaclefree.sdf</code>, all 24 physical obstacle models stripped -- so a genuine runaway flies into open space with nothing to hit) and a new safety watchdog, <code>tools/route2_probe/r2_killswitch.py</code>, extending <code>hard_killswitch.py</code>'s proven kill-bridge-then-disarm design (same geofence thresholds) with one new trigger: horizontal divergence between the EKF's fused NED estimate and Gazebo ENU ground truth, 10m threshold. The NED&harr;ENU conversion was validated live before being trusted -- residual stayed ~0.03-0.06m flat across a real flight with 3.6m lateral / 4.7m vertical displacement (would have grown with displacement had the axes been swapped or sign-flipped). Recording extended to the EKF's fused pose and the 3 EV aid-source topics (innovation/covariance/accept-reject) -- newly added to PX4's uXRCE-DDS publication whitelist, since they were never bridged to ROS2 at all before this probe, closed-loop or not.</p>
+      <div class="callout bad">
+        <p><strong>Two pre-existing infrastructure bugs found and fixed while wiring this up</strong> (neither introduced by this probe): (1) <code>4022_gz_x500_depth_stereo</code> was never actually registered in PX4's ROMFS CMakeLists -- it only worked via a stale, un-reproducible build artifact, exposed the moment a clean rebuild (needed to add the new 4900 airframe) silently dropped it. Fixed by registering both airframes properly; verified the standard feasibility-gate pipeline still boots correctly afterward. (2) PX4's own <code>px4-rc.gzsim</code> readiness check polls a gz service built from the world <em>filename</em>, not the SDF's internal <code>&lt;world name&gt;</code> attribute -- an earlier version of the obstacle-free world kept those mismatched, causing an infinite "Waiting for Gazebo world..." hang.</p>
+      </div>
+
+      <h4 style="font-family:'IBM Plex Sans Condensed',sans-serif;font-size:0.85rem;letter-spacing:0.04em;text-transform:uppercase;color:var(--ink-3);margin:1.5rem 0 0.5rem;">STAGE R2-0 -- closed-loop baseline, no contention (8 runs) -- EARLY-STOP GATE</h4>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>mean divergence</th><th>max divergence</th><th>runaway rate</th><th>ev_pos/ev_hgt fused</th><th>ev_yaw fused</th></tr></thead>
+          <tbody>
+            <tr><td>0.0296m &plusmn; 0.0216m</td><td>0.0350m &plusmn; 0.0204m</td><td>0/8 (0%)</td><td>96.4% / 99.6%</td><td>0.0%</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout good">
+        <p><strong>STABLE.</strong> Divergence is tiny, nowhere close to the 10m abort threshold; zero runaways. Per the gate's own logic this is not "unstable at none," so the probe proceeded to R2-1 rather than stopping. <strong>Yaw fusion never engages (0% across every run, R2-0 and R2-1 combined)</strong> -- not a bug: <code>visual_odometry_bridge.py</code>'s own docstring documents cuVSLAM's odometry as <code>POSE_FRAME_FRD</code> (relative, arbitrary yaw origin), not <code>POSE_FRAME_NED</code> (absolute, North-referenced) -- position/height fusion (the primary spatial estimate) worked well throughout (96-100% fused) regardless. Reported as a finding, not investigated further (out of scope for a bounded probe).</p>
+      </div>
+
+      <h4 style="font-family:'IBM Plex Sans Condensed',sans-serif;font-size:0.85rem;letter-spacing:0.04em;text-transform:uppercase;color:var(--ink-3);margin:1.5rem 0 0.5rem;">STAGE R2-1 -- contention probe, powered (none/medium/high, n=40/level, 120 runs)</h4>
+      <p>Randomized order (seed <code>20260906</code>), not blocked by level. Two real robustness-check halts during this stage, both root-caused and fixed live, batch resumed from the same manifest with no data lost: (1) <code>run_r2_probe.sh</code>'s own precondition check (cuVSLAM odometry present) had no retry and failed twice at the identical manifest position -- run.sh's health check verifies generic <code>/fmu/*</code> topics but never specifically waits on this one; fixed with a 20&times;1s retry. (2) <code>fast_planner_trigger</code> survived its own 15s <code>timeout</code> once (hung, empty log) -- the foreground <code>timeout ... || true</code> pattern only reached the <code>ros2 run</code> wrapper, not the real grandchild (reparented to PID 1) -- the same class of bug this project already hardened other children against; fixed with <code>setsid</code> + tracked PID + <code>kill_group()</code>. A large zombie-process backlog (this container's already-documented PID 1-doesn't-reap limitation) also required one full container restart mid-batch -- all data survived (<code>/workspaces</code> and <code>/tmp</code> are both bind-mounted/volume-backed).</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Level</th><th>mean divergence</th><th>max divergence</th><th>runaway rate</th><th>ev_pos fused</th></tr></thead>
+          <tbody>
+            <tr><td class="label">none</td><td>0.0306m &plusmn; 0.0175m</td><td>0.0346m &plusmn; 0.0180m</td><td>0/40 (0%)</td><td>97.2%</td></tr>
+            <tr><td class="label">medium</td><td>0.0236m &plusmn; 0.0134m</td><td>0.0283m &plusmn; 0.0150m</td><td>1/40 (2.5%)</td><td>97.9%</td></tr>
+            <tr><td class="label">high</td><td>0.0285m &plusmn; 0.0147m</td><td>0.0329m &plusmn; 0.0145m</td><td>0/40 (0%)</td><td>97.6%</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>Trend test (mean divergence ~ level, OLS): slope=&minus;0.00107/level, r=&minus;0.057, <b>p=0.540</b>, bootstrap 95% CI (&minus;0.0046, 0.0024) -- crosses zero. Cohen's d (none&rarr;high) = <b>&minus;0.132</b> (negligible). Runaway rate 0/1/0 across none/medium/high -- a single isolated event, at <em>medium</em> (not the highest level), no directional pattern. That one event (<code>medium_r106</code>) was an <code>altitude_low</code> breach at -0.52m (just past the ground-punch-through floor), consistent with a routine landing/settling overshoot -- a <code>divergence</code>-kind breach (the mechanism specific to this probe) never fired once across all 128 runs.</p>
+
+      <div class="callout bad">
+        <p><strong>STAGE R2-2 NOT RUN (wall-clock cap).</strong> Setup + two live infrastructure incidents + a container restart consumed the available budget. This is a disclosed gap, not a hidden one: R2-2 (nvblox concurrent + original-style cruise trajectory, none vs. high, n=22/level) was specifically designed to reproduce the <em>actual</em> Phase 6 incident conditions -- a synthetic PyTorch stressor and a simple climb (what R2-0/R2-1 tested) are not the same as nvblox's own concurrent CUDA context and a lateral cruise near obstacles. The result below applies only to the tested conditions.</p>
+      </div>
+
+      <div class="callout accent">
+        <p><strong>Provisional decision, scoped to what was tested: NO-GO (robust).</strong> No meaningful divergence across 128 closed-loop runs, no contention-linked trend in divergence (p=0.540) or runaway rate, no <code>divergence</code>-kind trigger ever fired. Under a synthetic GPU stressor, an obstacle-free world, and a simple climb-and-hover trajectory, this closed-loop configuration is stable regardless of contention level tested. <strong>This does not rule out the original hypothesis under the specific conditions that produced the incident</strong> (nvblox's own concurrent CUDA context, a lateral cruise near obstacles) -- those were never tested here; R2-2 exists precisely to close that gap. Recommendation: run R2-2 before treating Route 2 as closed -- if it's also negative, "55m was a one-off/mundane bug" becomes a much stronger claim than it is today. <code>EKF2_EV_CTRL</code> reverted to 0 in the default working config, confirmed live (zero data flow on EV aid-source topics under the unmodified 4022 airframe, no env overrides) -- the invariant holds for every other experiment in this repo; the EV-on config exists only on <code>r2-closedloop-probe</code>. Full reasoning in <code>results/route2_probe/REPORT.md</code> (local draft, gitignored). <b>This is a draft for review, not a final decision.</b></p>
+      </div>
     </section>
 
     <footer>
