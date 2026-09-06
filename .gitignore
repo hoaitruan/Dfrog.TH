@@ -25,6 +25,10 @@
 # tools/feasibility_gate/, not hand-authored, so they stay out too.
 /results/feasibility_gate/
 
+# Route 2 closed-loop probe experiment outputs -- same rationale as
+# /results/feasibility_gate/ above.
+/results/route2_probe/
+
 # Python
 __pycache__/
 *.pyc
