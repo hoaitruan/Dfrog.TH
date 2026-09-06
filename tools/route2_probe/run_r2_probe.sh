@@ -74,8 +74,25 @@ source /opt/ros/humble/setup.bash
 source "$WS/ros2_ws/install/setup.bash"
 
 echo "=== Checking base pipeline is up ==="
-if ! ros2 topic list 2>/dev/null | grep -q "^/visual_slam/tracking/odometry$"; then
-  echo "run_r2_probe.sh: /visual_slam/tracking/odometry not found -- is run.sh's pipeline up?" >&2
+# Retry, don't fail on the first miss: run.sh's own health check verifies
+# generic /fmu/* topics and process liveness, but never specifically
+# waits on /visual_slam/tracking/odometry -- confirmed live (twice) that
+# health check can print PASS while cuVSLAM's component container is
+# still mid-initialization (CUVSLAM_CreateTracker alone measured ~2s;
+# under load, the whole vslam_launch_container startup can occasionally
+# still be settling by the time this script's very first check runs
+# immediately after run.sh returns). Same retry shape as the nvblox
+# service-wait below, not a new pattern.
+PIPELINE_UP=0
+for i in $(seq 1 20); do
+  if ros2 topic list 2>/dev/null | grep -q "^/visual_slam/tracking/odometry$"; then
+    PIPELINE_UP=1
+    break
+  fi
+  sleep 1
+done
+if [[ "$PIPELINE_UP" -ne 1 ]]; then
+  echo "run_r2_probe.sh: /visual_slam/tracking/odometry not found after 20s -- is run.sh's pipeline up?" >&2
   exit 1
 fi
 echo "  OK"
@@ -218,8 +235,33 @@ setsid env OFFBOARD_AUTO_START=1 ros2 run px4_vslam_bridge fast_planner_bridge \
 CHILD_PIDS+=("$!")
 sleep 8
 echo "=== Triggering flight (fast_planner_trigger) ==="
-timeout 15 ros2 run px4_vslam_bridge fast_planner_trigger \
-  > "$OUT_DIR/fast_planner_trigger.log" 2>&1 || true
+# NOT `timeout 15 ros2 run ... || true` (run_gate.sh's foreground
+# pattern, inherited here at first) -- confirmed live this can leave a
+# real stray: `ros2 run`'s wrapper is timeout's direct child, but the
+# actual trigger entry-point is a separate grandchild in the same
+# process group. When the trigger hangs (empty log, no "Trigger
+# published" -- happened once in ~113 runs, cause not otherwise
+# diagnosed) and 15s elapses, timeout's SIGTERM reaches the wrapper,
+# the wrapper dies, and the still-hung grandchild gets reparented to
+# PID 1 and keeps running -- exactly the same "ros2 run wrapper vs.
+# grandchild" class of bug this project already hardened
+# fast_planner_bridge/run_gate.sh's other children against (see
+# kill_group()'s own comment). Fixed the same way: setsid + track PID +
+# kill_group() on timeout, not a bare `timeout` on the wrapper alone.
+setsid ros2 run px4_vslam_bridge fast_planner_trigger \
+  > "$OUT_DIR/fast_planner_trigger.log" 2>&1 < /dev/null &
+TRIGGER_PID=$!
+TRIGGER_DEADLINE=$((SECONDS + 15))
+while [[ $SECONDS -lt $TRIGGER_DEADLINE ]]; do
+  pgrep -g "$TRIGGER_PID" > /dev/null 2>&1 || break
+  sleep 0.2
+done
+if pgrep -g "$TRIGGER_PID" > /dev/null 2>&1; then
+  echo "  fast_planner_trigger still running after 15s -- killing its process group" >&2
+  kill_group "$TRIGGER_PID"
+else
+  wait "$TRIGGER_PID" 2>/dev/null || true
+fi
 sleep "$DURATION"
 
 echo ""
