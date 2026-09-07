@@ -90,7 +90,7 @@ def read_full_bag(bag_path):
 
 
 def analyze_run(exp_id, results_dir=RESULTS_DIR):
-    bag_path = os.path.join(results_dir, f"r2_{exp_id}", "rosbag")
+    bag_path = os.path.join(results_dir, f"r2_2_{exp_id}", "rosbag")
     if not os.path.isdir(bag_path):
         return None
     data, _ = read_bag(bag_path, None, None)
@@ -168,7 +168,7 @@ def analyze_run(exp_id, results_dir=RESULTS_DIR):
     if not divergences:
         return None
 
-    runaway_path = os.path.join(results_dir, f"r2_{exp_id}", "runaway_event.json")
+    runaway_path = os.path.join(results_dir, f"r2_2_{exp_id}", "runaway_event.json")
     had_runaway = os.path.isfile(runaway_path)
     min_clear = min(clearances) if clearances else None
     had_collision = min_clear is not None and min_clear <= 0.0
@@ -217,10 +217,12 @@ def main():
             print(f"WARNING: {exp_id} produced no usable data", file=sys.stderr)
             continue
         by_cond[cond].append(r)
+        ev_pos_str = (f"ev_pos_fused={r['ev_pos']['fused_pct']:.1f}% ev_pos_age={r['ev_pos']['mean_age_s']*1000:.1f}ms"
+                      if r["ev_pos"] else "ev_pos_fused=N/A (no aid-source data)")
+        ev_yaw_str = f"ev_yaw_fused={r['ev_yaw']['fused_pct']:.1f}%" if r["ev_yaw"] else "ev_yaw_fused=N/A"
         print(f"{r['exp_id']:8s} mean_div={r['mean_divergence']:.4f}m max_div={r['max_divergence']:.4f}m "
               f"runaway={r['had_runaway']} min_clear={r['min_clearance']:.3f}m collision={r['had_collision']} "
-              f"ev_pos_fused={r['ev_pos']['fused_pct']:.1f}% ev_pos_age={r['ev_pos']['mean_age_s']*1000:.1f}ms "
-              f"ev_yaw_fused={r['ev_yaw']['fused_pct']:.1f}%")
+              f"{ev_pos_str} {ev_yaw_str}")
 
     print()
     print("=" * 100)
@@ -261,6 +263,8 @@ def main():
         codes, ys = [], []
         for cond in CONDITIONS:
             for r in by_cond[cond]:
+                if r["ev_pos"] is None:
+                    continue
                 codes.append(COND_CODE[cond])
                 ys.append(extractor(r))
         if len(set(codes)) < 2:
