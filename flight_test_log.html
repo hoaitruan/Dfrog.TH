@@ -660,6 +660,11 @@ html { scroll-behavior: smooth; }
       <li><a href="#overview"><span class="n">00</span>Introduction</a></li>
       <li><a href="#status"><span class="n">01</span>Executive Summary</a></li>
     </ol>
+    <div class="nav-group-label">Research Origins</div>
+    <ol>
+      <li><a href="#origin-seed"><span class="n">P1</span>Origins: the seed observation &amp; research question</a></li>
+      <li><a href="#origin-model"><span class="n">P2</span>Working model, scope &amp; coordination</a></li>
+    </ol>
     <div class="nav-group-label">Part I — System Architecture</div>
     <ol>
       <li><a href="#m-perception"><span class="n">02</span>Perception: the VIO path, and what's actually flying today</a></li>
@@ -739,6 +744,11 @@ html { scroll-behavior: smooth; }
       <li><a href="#route2-probe"><span class="n">52</span>Route 2 closed-loop probe: setup, R2-0, R2-1 (2026-09-06/07)</a></li>
       <li><a href="#route2-r2-2"><span class="n">53</span>Route 2 R2-2: the decisive 55m-regime test — Route 2 CLOSED (2026-09-07)</a></li>
     </ol>
+    <div class="nav-group-label">Research Direction &amp; Pivot</div>
+    <ol>
+      <li><a href="#verdict-consolidated"><span class="n">54</span>Consolidated gate verdict &amp; where the project stands (2026-09-09)</a></li>
+      <li><a href="#direction-pivot"><span class="n">55</span>Research direction report: literature review &amp; the pivot to Direction E (2026-09-09)</a></li>
+    </ol>
   </nav>
 
   <main>
@@ -812,6 +822,60 @@ html { scroll-behavior: smooth; }
             <li>Isaac ROS 3.2 on the actual Jetson Orin Nano — not started.</li>
           </ul>
         </div>
+      </div>
+    </section>
+    <section id="origin-seed">
+      <div class="section-head"><span class="idx">P1</span><h2>Origins: the seed observation &amp; research question</h2></div>
+      <p class="section-intro">Added retrospectively (2026-09-09), from <code>plan/dfrog_comprehensive_report.md</code> and <code>plan/Dfrog_research_direction_report.md</code>, to record how the Milestone-2 research question in this log actually originated — before the Feasibility Gate work in §42 onward. Placed here, near the top, because it is chronologically <em>earlier</em> than everything else in Part I onward; per this project's own logging rule (no earlier section is ever altered or renumbered), it is a new entry physically inserted here, not a rewrite of anything that came before it.</p>
+
+      <div class="callout bad">
+        <p><strong>The seed observation was an n=1, with no rosbag.</strong> During Phase 6 (closed-loop reactive ESDF avoidance, see §07/§260 of the build history), a single, unrecorded cuVSLAM drift of roughly 55&nbsp;m from true position was observed once, under concurrent GPU load between cuVSLAM and nvblox, while EKF2 was still fusing the corrupted pose. The immediate engineering response was a workaround, not a fix: external-vision control was disabled (<code>EKF2_EV_CTRL</code> set to 0) and the vehicle flown on GPS alone from then on. This anecdote motivated the entire research question that follows — but it was, from the outset, a motivating story, not evidence. No rosbag of the original event was ever confirmed to exist (later checked directly and confirmed absent — see §43's G1 triage).</p>
+      </div>
+
+      <h4 style="font-family:'IBM Plex Sans Condensed',sans-serif;font-size:0.85rem;letter-spacing:0.04em;text-transform:uppercase;color:var(--ink-3);margin:1.5rem 0 0.5rem;">The research question</h4>
+      <p>Does shared-GPU contention between visual localization (cuVSLAM) and dense mapping (nvblox) degrade VIO localization accuracy, and does that degradation propagate to navigation safety? Reframed sharply, per the formal proposal (<code>Research_Development_Plan_4.md</code>, in <code>plan/</code>): <em>how much shared-GPU contention can a coupled aerial perception-navigation stack tolerate before localization and flight safety degrade — a transferable "critical compute envelope."</em> Formalized as five research questions, ordered so mechanism precedes threshold:</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>RQ</th><th>Question</th></tr></thead>
+          <tbody>
+            <tr><td class="label">RQ1 — Effect</td><td>Does shared-GPU interference degrade VIO accuracy, distinct from scene texture, motion, and CPU scheduling confounds?</td></tr>
+            <tr><td class="label">RQ2 — Mechanism</td><td>Is the downstream effect timing-mediated, accuracy-mediated, or an interaction of the two?</td></tr>
+            <tr><td class="label">RQ3 — Propagation</td><td>Does accuracy-mediated degradation interact with estimator state/covariance and propagate to navigation safety?</td></tr>
+            <tr><td class="label">RQ4 — Generality</td><td>How does the operating envelope vary across computing platforms (desktop vs. Jetson Orin Nano 8GB)?</td></tr>
+            <tr><td class="label">RQ5 — Regime (optional)</td><td>Does the effect show a statistically identifiable change-point / nonlinear regime transition as interference increases?</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h4 style="font-family:'IBM Plex Sans Condensed',sans-serif;font-size:0.85rem;letter-spacing:0.04em;text-transform:uppercase;color:var(--ink-3);margin:1.5rem 0 0.5rem;">Novelty positioning at the start</h4>
+      <p>A literature review and novelty matrix pinned the intended contribution to the <b style="color:var(--ink)">intersection of two occupied neighbor families</b>, deliberately choosing the gap between them:</p>
+      <ul>
+        <li><b>Resource-aware VIO (accuracy family)</b> — Mathur/Khedekar/Alexis (CRVIOS, IROS 2021); Affatato et al. (ECCV-W 2024): adapt VIO to resources, but on <b>CPU / design-time</b>, with <b>no propagation</b> to navigation.</li>
+        <li><b>Contention &rarr; navigation via timing</b> — Ali et al. (ICRA 2025, UNC): GPU contention &rarr; deadline miss &rarr; failure, i.e. a <b>timing</b> pathway, not an <b>accuracy</b> one.</li>
+      </ul>
+      <p>The intended novel wedge: an <b>accuracy</b> mechanism, from <b>shared-GPU</b> localization-vs-mapping contention, with <b>propagation</b> to navigation, characterized as a transferable envelope. Guiding principle carried through the whole engagement: <b style="color:var(--ink)">the platform is the instrument, not the contribution</b> — the paper is what the instrument measures, not the stack itself.</p>
+      <p>Deliverables from this phase (outside this repo, in the companion planning workspace): a formal Research Development Plan (<code>Research_Development_Plan_4.md</code>), a novelty check / literature review, and a comprehensive execution plan that was later committed inside this repo at <code>plan/plan.md</code> (§P2).</p>
+    </section>
+    <section id="origin-model">
+      <div class="section-head"><span class="idx">P2</span><h2>Working model, scope &amp; coordination</h2></div>
+      <p class="section-intro">How the work that fills the rest of this log was actually organized and bounded, decided before §42's Feasibility Gate work began.</p>
+
+      <h4 style="font-family:'IBM Plex Sans Condensed',sans-serif;font-size:0.85rem;letter-spacing:0.04em;text-transform:uppercase;color:var(--ink-3);margin-bottom:0.5rem;">The two-part operating model</h4>
+      <ul>
+        <li><b style="color:var(--ink)">Claude Code = executor + recorder.</b> Runs experiments, commits to GitHub, and logs progress into this file — the single source of truth. The standing rule that produced every §42+ entry below was codified directly in the repo's <code>CLAUDE.md</code>: after every batch or change, append a dated section here, then commit + push; raw bags/CSVs stay gitignored.</li>
+        <li><b style="color:var(--ink)">The planning/manager conversation = director / verifier.</b> Does not run code or own the record; checks that claims match the repo, flags drift, and re-orders work. This section and §P1/§54/§55 are themselves an output of that role, reviewed and folded into the executor's own record on request.</li>
+      </ul>
+      <div class="callout good">
+        <p><strong>Definition of "done," carried through the whole project:</strong> a task is done only when its artifact is in the repo and verifiable — never when a transcript claims it. This exact sentence is now also in <code>CLAUDE.md</code>.</p>
+      </div>
+
+      <h4 style="font-family:'IBM Plex Sans Condensed',sans-serif;font-size:0.85rem;letter-spacing:0.04em;text-transform:uppercase;color:var(--ink-3);margin:1.5rem 0 0.5rem;">Corrections applied along the way</h4>
+      <p>A <code>claude/execution-tracker.md</code> created early was retired/deleted at the user's request, to avoid a competing source of truth alongside this file. Planning documents were consolidated to two: the formal proposal (<code>Research_Development_Plan_4.md</code>) and one canonical execution plan committed inside this repo at <code>plan/plan.md</code> — a stale external copy of the plan was removed once the in-repo version became canonical.</p>
+
+      <h4 style="font-family:'IBM Plex Sans Condensed',sans-serif;font-size:0.85rem;letter-spacing:0.04em;text-transform:uppercase;color:var(--ink-3);margin:1.5rem 0 0.5rem;">Scope decision, locked with the user</h4>
+      <p>The capstone floor was set as <b style="color:var(--ink)">Gate + M1 + M2</b> (open-loop effect + threshold + mechanism). M4 (closed-loop propagation, flight under external-vision control) and M5 (Jetson cross-platform) were designated <em>stretch</em> goals, to be cut first if time slipped.</p>
+      <div class="callout accent">
+        <p><strong>How this actually played out:</strong> M4's closed-loop question didn't wait for stretch-goal status — it came back early and central, as the bounded <b>Route 2</b> probe (§52-53), once the open-loop gate's own null (§45-51) raised the natural follow-up question of whether the same null held under real feedback. Route 2 answered that question directly (NO-GO, §53) rather than being deferred or cut. M5 (Jetson) remained out of scope for the executed work in this repo — it resurfaces in §55 as a candidate centerpiece for the next research direction, not as executed work.</p>
       </div>
     </section>
     <section id="mechanism-head" style="padding-bottom:0; border-bottom:none;">
@@ -2217,6 +2281,126 @@ html { scroll-behavior: smooth; }
         <p><strong>DECISION R2: NO-GO (robust). Route 2 is CLOSED.</strong> Across all three closed-loop stages (200 total runs: 8 baseline + 120 synthetic-stressor-powered + 60 real-nvblox-load-powered against the actual obstacle world and the actual original control node), no meaningful divergence, no contention-linked trend in divergence/timing/rejection-rate, and zero <code>divergence</code>-kind killswitch triggers anywhere. R2-2 specifically closed the gap R2-0/R2-1 left open: real nvblox contention (not synthetic), the actual incident's control node (<code>reactive_esdf_avoidance</code>, not Fast-Planner), and the actual obstacle-laden cruise trajectory all failed to reproduce anything resembling the original 55m divergence, at any tested load level up to and including the worst-case combined condition. Combined with the open-loop gate's own negative finding (&sect;45-51: no contention-linked cuVSLAM tracking-accuracy effect either), <b>the original ~55m incident was not reproducible under any contention mechanism this project tested, and is best explained as a one-off, a mundane bug, or a condition outside the range this stack was probed across</b> -- not evidence that GPU contention is irrelevant to this stack in every conceivable configuration, only that the increasingly faithful attempts made across this whole engagement (G3.3 rich, G3.4 texture-poor, R2-0/R2-1 synthetic-closed-loop, R2-2 real-nvblox-closed-loop) never found it.</p>
         <p><strong>Recommendation:</strong> close Route 2 -- the evidence across 200 closed-loop runs plus the open-loop gate's own 200 runs does not support a contention-gated divergence/runaway mechanism in this stack. Separately worth noting for future closed-loop navigation work (a navigation-algorithm finding, not an estimator one): <code>reactive_esdf_avoidance</code>'s pure potential-field approach can graze obstacles or produce marginal descent-rate transients on its own, independent of GPU load. <code>EKF2_EV_CTRL</code> reverted to 0 in the default working config, confirmed live (zero data flow on any EV aid-source topic under the unmodified 4022 airframe, no env overrides) -- the invariant holds for every other experiment in this repo; the EV-on config exists only on <code>r2-closedloop-probe</code>. Full reasoning in <code>results/route2_probe/REPORT.md</code> (local draft, gitignored). <b>This is a draft finding for review, not a final decision.</b></p>
       </div>
+    </section>
+
+    <section id="verdict-consolidated">
+      <div class="section-head"><span class="idx">54</span><h2>Consolidated gate verdict &amp; where the project stands (2026-09-09)</h2></div>
+      <p class="section-intro">Synthesized from <code>plan/dfrog_comprehensive_report.md</code> (2026-09-09), which reviewed this entire record end to end. Nothing here is a new experiment -- it is the rollup of &sect;42-53, stated once in one place for a reader who wants the bottom line without the run-by-run detail.</p>
+
+      <div class="callout accent">
+        <p><strong>GATE VERDICT: NEGATIVE. Across ~400 total automated runs</strong> -- open-loop and closed-loop, synthetic and real nvblox contention, obstacle-free and obstacle-laden worlds, two textures -- <b>no contention-gated phenomenon was found under any tested condition.</b> The original ~55m incident is best explained as a one-off, a mundane bug, or a condition outside everything this stack tested. Scene <b>texture</b>, not GPU contention, is the operative driver of localization degradation. This is a <em>well-powered</em> null (adequate to detect the effect size that would have mattered), not an underpowered "cannot tell" -- the distinction the whole gate discipline (&sect;45-47's power analysis, &sect;46's small-sample false positive) exists to earn.</p>
+      </div>
+
+      <h4 style="font-family:'IBM Plex Sans Condensed',sans-serif;font-size:0.85rem;letter-spacing:0.04em;text-transform:uppercase;color:var(--ink-3);margin-bottom:0.5rem;">The result, in one table</h4>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Regime</th><th>Contention result</th><th>Notes</th></tr></thead>
+          <tbody>
+            <tr><td class="label">Open-loop, rich texture</td><td>null -- trend p=0.66, d&asymp;&minus;0.06</td><td>flat, non-monotonic</td></tr>
+            <tr><td class="label">Open-loop, poor texture</td><td>null -- trend p=0.42</td><td>contention flat again</td></tr>
+            <tr><td class="label">Closed-loop, synthetic (R2-1)</td><td>null -- trend p=0.54, d&asymp;&minus;0.13</td><td>runaways not contention-driven</td></tr>
+            <tr><td class="label">Closed-loop, real nvblox (R2-2)</td><td>null -- 0/60 large-divergence</td><td>the decisive test; message-age p=0.59, rejection p=0.45</td></tr>
+            <tr><td class="label"><b>Texture main effect</b></td><td><b>LARGE</b> -- RPE &asymp;2.1&times;, dropout &asymp;7&times;, features 0.40&times;</td><td>the variable that <em>does</em> drive degradation</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>A reusable methodological lesson sits underneath this table, not just the result itself: the pilot n=5 signal (&sect;46, d&asymp;1.0, apparently monotonic) <b>collapsed to a null</b> under n=20 + randomization -- a cautionary result about pilot-scale inference in high-variance robotic sims, and the direct justification for running the gate before committing months to a larger study built on noise.</p>
+
+      <h4 style="font-family:'IBM Plex Sans Condensed',sans-serif;font-size:0.85rem;letter-spacing:0.04em;text-transform:uppercase;color:var(--ink-3);margin:1.5rem 0 0.5rem;">Consolidated list of issues addressed</h4>
+      <p><b>Methodological:</b> endpoint/ATE metric unusable (22&times; baseline variance) &rarr; adopted RPE-1s (&sect;46); pilot n=5 false positive identified and explained; power analysis sized the real sweep (&sect;47); <code>nvidia-smi</code> shown inadequate as a treatment metric &rarr; nsys/pynvml preset characterization (&sect;47-48); randomized run order defended against thermal/time-drift confounds; texture confound separated via a factorial design with its own manipulation check (&sect;50-51).</p>
+      <p><b>Engineering / infrastructure (fixed for the whole project, not just one run):</b> <code>nvblox_node</code> missing <code>use_sim_time</code> (would have corrupted every timestamp-alignment join); recording trimmed 530MB &rarr; 8.4MB/run (removed the disk blocker for the sweep, &sect;48); <code>run_gate.sh</code> cleanup hardened (setsid/process-group kill + <code>pkill</code> net + unconditional force-disarm) after leftover-armed-vehicle events, &sect;44/49; batch robustness check given a settle-and-retry (a false-alarm fix, without weakening the safety guard) &sect;49; a proportional-to-distance bug in <code>triage_incident.py</code> &sect;43; a texture-poor-world PX4 boot hang from a world-name/filename mismatch &sect;50; an unregistered <code>4022</code> airframe that only worked via a stale build artifact &sect;52; a bag-path template bug in the R2-2 analysis &sect;53; zombie-process buildup identified and handled via container restarts &sect;52-53.</p>
+      <p><b>Safety / integrity:</b> a GitHub token pasted into chat during an earlier push was flagged as compromised, with rotation advised -- neither the manager conversation nor Claude Code ever embedded it; the alarming "2.3m" baseline drift figure was caught as a measurement artifact (a logger running past bag end on an unsupervised armed vehicle), real value 0.85m &sect;43; the closed-loop probe was confined to an isolated airframe/branch throughout, with the <code>EKF2_EV_CTRL=0</code> invariant restored and verified live after every stage &sect;52-53; every experimental claim in this log was verified against the repo before being treated as done, per this project's own "done" definition (&sect;P2).</p>
+
+      <h4 style="font-family:'IBM Plex Sans Condensed',sans-serif;font-size:0.85rem;letter-spacing:0.04em;text-transform:uppercase;color:var(--ink-3);margin:1.5rem 0 0.5rem;">Where the project stands</h4>
+      <p>The exciting hypothesis is definitively dead, open-loop and closed-loop. This is not an execution failure -- it is the feasibility gate working exactly as intended: a plausible, anecdote-backed effect was disproven cheaply, in about a week, before months were spent building on it. Two framings separate cleanly:</p>
+      <ul>
+        <li><b style="color:var(--ink)">Capstone (degree deliverable):</b> graded on rigor, not on whether the effect exists. <b>Secured.</b> The material exists in full: a comprehensive well-powered null, the texture&gt;&gt;contention finding, the methodology contributions, a reproducible harness, failure analysis, and closed-loop coverage.</li>
+        <li><b style="color:var(--ink)">Paper (contribution to the field):</b> the positive version is gone. As of this entry's own writing the viable path identified was "Route 3" (negative result + methodology + benchmark) -- superseded the same day by a more developed analysis; see &sect;55.</li>
+      </ul>
+      <div class="callout good">
+        <p><strong>Deliverables produced:</strong> in the companion planning workspace -- a formal research plan, a novelty-check literature review, a master Gate&rarr;M0-M6 task list, an executor prompt, and a negative-result paper/thesis outline. In this repo -- <code>plan/plan.md</code>, <code>tools/feasibility_gate/*</code>, <code>tools/route2_probe/*</code>, this log's &sect;42-53, <code>results/feasibility_gate/REPORT.md</code>, <code>results/route2_probe/REPORT.md</code>, and branches <code>feasibility-gate</code> and <code>r2-closedloop-probe</code> (the latter a strict superset of the former, both fully pushed to <code>origin</code> -- confirmed 2026-09-09 while integrating this entry).</p>
+      </div>
+    </section>
+
+    <section id="direction-pivot">
+      <div class="section-head"><span class="idx">55</span><h2>Research direction report: literature review &amp; the pivot to Direction E (2026-09-09)</h2></div>
+      <p class="section-intro">Synthesized from <code>plan/Dfrog_research_direction_report.md</code> (2026-09-09), a full literature-review pass done in the companion planning conversation once &sect;54's verdict was in hand. Question addressed: given a well-powered null plus a large texture effect plus a methodology story, what is actually publishable -- not what to run next.</p>
+
+      <h4 style="font-family:'IBM Plex Sans Condensed',sans-serif;font-size:0.85rem;letter-spacing:0.04em;text-transform:uppercase;color:var(--ink-3);margin-bottom:0.5rem;">Candidate directions, and why each was set aside</h4>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Direction</th><th>Pitch</th><th>Verdict</th></tr></thead>
+          <tbody>
+            <tr><td class="label">A1</td><td>Publish the null as-is</td><td>Weak -- OV&sup2;SLAM (below) shows contention <em>does</em> degrade accuracy under memory pressure, so "nobody checked" is false. Workshop-only.</td></tr>
+            <tr><td class="label">A2</td><td>Texture-dominant positive reframe</td><td>Thinner than first assessed -- both legs have close, recent prior art. Only the controlled head-to-head + the false-positive lesson survive.</td></tr>
+            <tr><td class="label">A3</td><td>Methodology / rigor paper</td><td>Narrow -- the "<code>nvidia-smi</code> is inadequate" insight is already established in GPU systems; the "common practice is underpowered" claim needs a 20-40 paper survey not yet done.</td></tr>
+            <tr><td class="label">B</td><td>Jetson Orin Nano replay</td><td>Re-scoped, not abandoned -- folds into Direction E as the second platform (below).</td></tr>
+            <tr><td class="label">C</td><td>Texture-health runtime monitor</td><td><b>Drop.</b> All three functional pieces (health signal, lead-time predictor, closed-loop response) are separately occupied in the literature; the lead-time differentiator specifically by SUPER (arXiv 2512.14189, 2026).</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h4 style="font-family:'IBM Plex Sans Condensed',sans-serif;font-size:0.85rem;letter-spacing:0.04em;text-transform:uppercase;color:var(--ink-3);margin:1.5rem 0 0.5rem;">The apparent contradiction with OV&sup2;SLAM -- resolved, not reconciled</h4>
+      <p>A key complication surfaced during the review: <em>Analysis and Mitigation of Shared Resource Contention on Heterogeneous Multicore</em> (arXiv 2304.13110) co-schedules a DNN + memory-DoS against OV&sup2;SLAM and finds ATE rising from &asymp;0.03m (solo) to &gt;0.8m (+DNN, &asymp;27&times;) via <b>shared-DRAM contention</b> on an integrated-GPU SoC -- the opposite sign to this project's own null.</p>
+      <div class="callout good">
+        <p><strong>There is no real contradiction -- two different mechanisms, different regimes.</strong> Texture&rarr;accuracy is direct and always-on: fewer distinctive features means worse geometry for the pose solve, on any hardware. Contention&rarr;accuracy is indirect, via timing: contention doesn't change the computed math, it changes <em>when</em> it finishes -- under enough load, deadlines are missed and frames/keyframes drop, and <em>those drops</em> degrade accuracy (OV&sup2;SLAM's own shared-DRAM mechanism). This project's laptop (RTX&nbsp;4060, 8GB, discrete GPU) observed the model at a point where starvation never triggered -- headroom, so no drops, so no accuracy hit. OV&sup2;SLAM observed it on a weak SoC with unified DRAM, where it did. Same physics, different operating point. "Reconcile / rebut OV&sup2;SLAM" was an overstatement -- there was nothing to reconcile. The one genuinely unmeasured quantity that falls out of this: on a starved platform, does a feature-poor scene make things worse than additive, or less? That interaction is structurally invisible to both prior results and becomes an axis of Direction E, not a standalone claim.</p>
+      </div>
+
+      <h4 style="font-family:'IBM Plex Sans Condensed',sans-serif;font-size:0.85rem;letter-spacing:0.04em;text-transform:uppercase;color:var(--ink-3);margin:1.5rem 0 0.5rem;">Recommended direction: E -- the operating-envelope / transition-point paper</h4>
+      <p>The reframe: stop asking <em>which factor causes the error</em> (a closed question, and one this project's own &sect;54 verdict already answers for GPU contention specifically) and instead characterize <em>where the safe/unsafe operating boundary sits for the coupled localization + dense-mapping GPU workload, and how to predict it</em> -- a systems/deployment contribution that absorbs every existing asset instead of building five thin competing papers.</p>
+      <p><b>The claim:</b> for this class of coupled aerial stack, localization degradation under compute load is a <b>threshold phenomenon, not a smooth trade-off</b>; the threshold's location is a <b>predictable function</b> of the platform's timing margin and the scene's feature load; and there is a <b>protocol + predictor</b> that locates it without flying. The elegant version, if the data cooperates: <em>"accuracy fails as a cliff, not a slope, and we can predict the edge."</em></p>
+      <p><b>The gap:</b> SLAMBench and its lineage own accuracy/performance/energy design-space exploration, but tune one SLAM algorithm's own parameters in isolation, not contention between two co-running nodes sharing a GPU. Real-time co-scheduling work (Ali et al., ICRA 2025; RED; RTGPU) owns the timing half and the solution half, stopping at deadline/latency metrics. Nobody has drawn the mapped, predictive, safety-linked operating envelope for the coupled cuVSLAM+nvblox+planner deployment pattern specifically.</p>
+
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Existing asset</th><th>Role in Direction E</th></tr></thead>
+          <tbody>
+            <tr><td class="label">Texture main effect</td><td>The scene-difficulty axis of the envelope; home for the texture&times;contention interaction</td></tr>
+            <tr><td class="label">Contention null (this laptop)</td><td>The flat, safe anchor -- one end of the boundary on a headroom-rich board</td></tr>
+            <tr><td class="label"><code>nsys</code> load characterization + the false-positive lesson</td><td>The measurement protocol underpinning the envelope</td></tr>
+            <tr><td class="label">Jetson Orin Nano (old Direction B)</td><td>Platform #2, where the cliff is reachable and the prediction gets tested</td></tr>
+            <tr><td class="label">Fast-Planner in the loop</td><td>The safety-outcome axis -- what makes crossing the cliff a <em>robotics</em> failure, not just a higher RPE number</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>Minimum new work: port the stack to the Orin Nano and replay the same rosbags; deliberately push mapping load (nvblox voxel resolution, ESDF range, update rate) until the cliff is located; build and validate the offline predictor. No new flight risk -- <code>EKF2_EV_CTRL=0</code> for the accuracy sweeps, on only for navigation-outcome runs behind the existing safety harness (&sect;52's geofence, divergence abort, killswitch). Main risk: the cliff may be unreachable even on the Orin (a replay without Gazebo frees GPU the laptop spent on rendering) -- mitigated by pushing mapping config to its limit and, if still safe, reporting that itself as a deployment-relevant bound. Target venue: RA-L or an IROS/ICRA systems paper, with an RTAS/RTSS/ECRTS/TECS workshop as the safe floor.</p>
+
+      <div class="callout accent">
+        <p><strong>Cross-check against this repo's own record:</strong> the direction report's recommended sequencing (&sect;9 of that document) opens with a forensic-triage step to settle the 55m attribution via a Q1/Q2 data-level analysis (was it genuinely closed-loop and fused; did features collapse before or after pose error grew). That step is <b>already effectively answered</b> by work already in this log: no original-incident rosbag was ever found to exist (&sect;43), and the mechanism question was directly tested by R2-2's 60-run real-nvblox, real-obstacle, real-original-control-node reproduction attempt (&sect;53) -- which found zero <code>divergence</code>-kind events, only benign control-loop transients. The remaining open items from that sequencing (push tooling+data -- already done, both branches fully pushed; confirm Orin Nano access; fold A2/A3 into E; drop C) stand as written.</p>
+      </div>
+
+      <h4 style="font-family:'IBM Plex Sans Condensed',sans-serif;font-size:0.85rem;letter-spacing:0.04em;text-transform:uppercase;color:var(--ink-3);margin:1.5rem 0 0.5rem;">Open decisions -- pending the user, not yet answered here</h4>
+      <div class="issues">
+        <div class="issue deferred">
+          <div class="issue-bar"></div>
+          <div class="issue-body">
+            <div class="issue-top"><h3>Orin Nano access</h3><span class="pill neutral">Open question</span></div>
+            <p>Solid enough to make it the paper's centerpiece? Determines Direction E in full vs. a laptop-only fallback envelope (sweep mapping load to find the 4060's own cliff -- weaker but self-contained).</p>
+          </div>
+        </div>
+        <div class="issue deferred">
+          <div class="issue-bar"></div>
+          <div class="issue-body">
+            <div class="issue-top"><h3>Target and timeline</h3><span class="pill neutral">Open question</span></div>
+            <p>Workshop / RA-L this cycle, vs. a full conference or journal cycle -- affects how much of Direction E to attempt before a first submission.</p>
+          </div>
+        </div>
+        <div class="issue deferred">
+          <div class="issue-bar"></div>
+          <div class="issue-body">
+            <div class="issue-top"><h3>Thesis vs. external publication</h3><span class="pill neutral">Open question</span></div>
+            <p>A rigorous null/characterization is fully acceptable for the capstone as-is; external venues weight the predictor and the cross-platform cliff more heavily.</p>
+          </div>
+        </div>
+        <div class="issue deferred">
+          <div class="issue-bar"></div>
+          <div class="issue-body">
+            <div class="issue-top"><h3>Interaction interest</h3><span class="pill neutral">Open question</span></div>
+            <p>Is the texture&times;contention interaction (above) a quantity worth measuring directly, or is the applied operating-envelope/predictor the real target? Both live inside Direction E; this only sets the emphasis.</p>
+          </div>
+        </div>
+      </div>
+      <p>Caveats carried over from the source analysis, for anyone building on this section: several key papers (OV&sup2;SLAM, the Embry-Riddle texture thesis, SUPER) were read from abstracts/result snippets, not in full, and should be read end-to-end before being cited as closest prior art; the A3 "common practice is underpowered" claim needs a systematic survey not yet performed; a dedicated novelty search specifically for "laptop-vs-Jetson contention envelope for this stack" has not been exhaustively run.</p>
     </section>
 
     <footer>
