@@ -660,6 +660,11 @@ html { scroll-behavior: smooth; }
       <li><a href="#overview"><span class="n">00</span>Introduction</a></li>
       <li><a href="#status"><span class="n">01</span>Executive Summary</a></li>
     </ol>
+    <div class="nav-group-label">Research Origins</div>
+    <ol>
+      <li><a href="#origin-seed"><span class="n">P1</span>Origins: the seed observation &amp; research question</a></li>
+      <li><a href="#origin-model"><span class="n">P2</span>Working model, scope &amp; coordination</a></li>
+    </ol>
     <div class="nav-group-label">Part I — System Architecture</div>
     <ol>
       <li><a href="#m-perception"><span class="n">02</span>Perception: the VIO path, and what's actually flying today</a></li>
@@ -723,6 +728,26 @@ html { scroll-behavior: smooth; }
     <div class="nav-group-label">Reference</div>
     <ol>
       <li><a href="#reference"><span class="n">41</span>Reference &amp; glossary</a></li>
+    </ol>
+    <div class="nav-group-label">Milestone 2</div>
+    <ol>
+      <li><a href="#m2-gate"><span class="n">42</span>Feasibility Gate — status</a></li>
+      <li><a href="#m2-g3-1"><span class="n">43</span>G3.1 triage &amp; baseline drift diagnosis</a></li>
+      <li><a href="#m2-cleanup"><span class="n">44</span>run_gate.sh cleanup hardening</a></li>
+      <li><a href="#m2-mini-dose"><span class="n">45</span>Mini dose screen (2026-09-04)</a></li>
+      <li><a href="#m2-remetric"><span class="n">46</span>Re-metric of the mini dose screen (2026-09-05)</a></li>
+      <li><a href="#m2-power"><span class="n">47</span>Power analysis + finer GPU metric (2026-09-05)</a></li>
+      <li><a href="#m2-unblockers"><span class="n">48</span>Two unblockers + gate-sweep design (2026-09-05)</a></li>
+      <li><a href="#m2-gate-sweep"><span class="n">49</span>G3.3 gate sweep: halt, two fixes, full result (2026-09-06)</a></li>
+      <li><a href="#m2-texture-poor-world"><span class="n">50</span>G3.4 texture-poor world + manipulation check (2026-09-06)</a></li>
+      <li><a href="#m2-gate-sweep-poor"><span class="n">51</span>G3.4 gate sweep + rich-vs-poor comparison (2026-09-06)</a></li>
+      <li><a href="#route2-probe"><span class="n">52</span>Route 2 closed-loop probe: setup, R2-0, R2-1 (2026-09-06/07)</a></li>
+      <li><a href="#route2-r2-2"><span class="n">53</span>Route 2 R2-2: the decisive 55m-regime test — Route 2 CLOSED (2026-09-07)</a></li>
+    </ol>
+    <div class="nav-group-label">Research Direction &amp; Pivot</div>
+    <ol>
+      <li><a href="#verdict-consolidated"><span class="n">54</span>Consolidated gate verdict &amp; where the project stands (2026-09-09)</a></li>
+      <li><a href="#direction-pivot"><span class="n">55</span>Research direction report: literature review &amp; the pivot to Direction E (2026-09-09)</a></li>
     </ol>
   </nav>
 
@@ -797,6 +822,60 @@ html { scroll-behavior: smooth; }
             <li>Isaac ROS 3.2 on the actual Jetson Orin Nano — not started.</li>
           </ul>
         </div>
+      </div>
+    </section>
+    <section id="origin-seed">
+      <div class="section-head"><span class="idx">P1</span><h2>Origins: the seed observation &amp; research question</h2></div>
+      <p class="section-intro">Added retrospectively (2026-09-09), from <code>plan/dfrog_comprehensive_report.md</code> and <code>plan/Dfrog_research_direction_report.md</code>, to record how the Milestone-2 research question in this log actually originated — before the Feasibility Gate work in §42 onward. Placed here, near the top, because it is chronologically <em>earlier</em> than everything else in Part I onward; per this project's own logging rule (no earlier section is ever altered or renumbered), it is a new entry physically inserted here, not a rewrite of anything that came before it.</p>
+
+      <div class="callout bad">
+        <p><strong>The seed observation was an n=1, with no rosbag.</strong> During Phase 6 (closed-loop reactive ESDF avoidance, see §07/§260 of the build history), a single, unrecorded cuVSLAM drift of roughly 55&nbsp;m from true position was observed once, under concurrent GPU load between cuVSLAM and nvblox, while EKF2 was still fusing the corrupted pose. The immediate engineering response was a workaround, not a fix: external-vision control was disabled (<code>EKF2_EV_CTRL</code> set to 0) and the vehicle flown on GPS alone from then on. This anecdote motivated the entire research question that follows — but it was, from the outset, a motivating story, not evidence. No rosbag of the original event was ever confirmed to exist (later checked directly and confirmed absent — see §43's G1 triage).</p>
+      </div>
+
+      <h4 style="font-family:'IBM Plex Sans Condensed',sans-serif;font-size:0.85rem;letter-spacing:0.04em;text-transform:uppercase;color:var(--ink-3);margin:1.5rem 0 0.5rem;">The research question</h4>
+      <p>Does shared-GPU contention between visual localization (cuVSLAM) and dense mapping (nvblox) degrade VIO localization accuracy, and does that degradation propagate to navigation safety? Reframed sharply, per the formal proposal (<code>Research_Development_Plan_4.md</code>, in <code>plan/</code>): <em>how much shared-GPU contention can a coupled aerial perception-navigation stack tolerate before localization and flight safety degrade — a transferable "critical compute envelope."</em> Formalized as five research questions, ordered so mechanism precedes threshold:</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>RQ</th><th>Question</th></tr></thead>
+          <tbody>
+            <tr><td class="label">RQ1 — Effect</td><td>Does shared-GPU interference degrade VIO accuracy, distinct from scene texture, motion, and CPU scheduling confounds?</td></tr>
+            <tr><td class="label">RQ2 — Mechanism</td><td>Is the downstream effect timing-mediated, accuracy-mediated, or an interaction of the two?</td></tr>
+            <tr><td class="label">RQ3 — Propagation</td><td>Does accuracy-mediated degradation interact with estimator state/covariance and propagate to navigation safety?</td></tr>
+            <tr><td class="label">RQ4 — Generality</td><td>How does the operating envelope vary across computing platforms (desktop vs. Jetson Orin Nano 8GB)?</td></tr>
+            <tr><td class="label">RQ5 — Regime (optional)</td><td>Does the effect show a statistically identifiable change-point / nonlinear regime transition as interference increases?</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h4 style="font-family:'IBM Plex Sans Condensed',sans-serif;font-size:0.85rem;letter-spacing:0.04em;text-transform:uppercase;color:var(--ink-3);margin:1.5rem 0 0.5rem;">Novelty positioning at the start</h4>
+      <p>A literature review and novelty matrix pinned the intended contribution to the <b style="color:var(--ink)">intersection of two occupied neighbor families</b>, deliberately choosing the gap between them:</p>
+      <ul>
+        <li><b>Resource-aware VIO (accuracy family)</b> — Mathur/Khedekar/Alexis (CRVIOS, IROS 2021); Affatato et al. (ECCV-W 2024): adapt VIO to resources, but on <b>CPU / design-time</b>, with <b>no propagation</b> to navigation.</li>
+        <li><b>Contention &rarr; navigation via timing</b> — Ali et al. (ICRA 2025, UNC): GPU contention &rarr; deadline miss &rarr; failure, i.e. a <b>timing</b> pathway, not an <b>accuracy</b> one.</li>
+      </ul>
+      <p>The intended novel wedge: an <b>accuracy</b> mechanism, from <b>shared-GPU</b> localization-vs-mapping contention, with <b>propagation</b> to navigation, characterized as a transferable envelope. Guiding principle carried through the whole engagement: <b style="color:var(--ink)">the platform is the instrument, not the contribution</b> — the paper is what the instrument measures, not the stack itself.</p>
+      <p>Deliverables from this phase (outside this repo, in the companion planning workspace): a formal Research Development Plan (<code>Research_Development_Plan_4.md</code>), a novelty check / literature review, and a comprehensive execution plan that was later committed inside this repo at <code>plan/plan.md</code> (§P2).</p>
+    </section>
+    <section id="origin-model">
+      <div class="section-head"><span class="idx">P2</span><h2>Working model, scope &amp; coordination</h2></div>
+      <p class="section-intro">How the work that fills the rest of this log was actually organized and bounded, decided before §42's Feasibility Gate work began.</p>
+
+      <h4 style="font-family:'IBM Plex Sans Condensed',sans-serif;font-size:0.85rem;letter-spacing:0.04em;text-transform:uppercase;color:var(--ink-3);margin-bottom:0.5rem;">The two-part operating model</h4>
+      <ul>
+        <li><b style="color:var(--ink)">Claude Code = executor + recorder.</b> Runs experiments, commits to GitHub, and logs progress into this file — the single source of truth. The standing rule that produced every §42+ entry below was codified directly in the repo's <code>CLAUDE.md</code>: after every batch or change, append a dated section here, then commit + push; raw bags/CSVs stay gitignored.</li>
+        <li><b style="color:var(--ink)">The planning/manager conversation = director / verifier.</b> Does not run code or own the record; checks that claims match the repo, flags drift, and re-orders work. This section and §P1/§54/§55 are themselves an output of that role, reviewed and folded into the executor's own record on request.</li>
+      </ul>
+      <div class="callout good">
+        <p><strong>Definition of "done," carried through the whole project:</strong> a task is done only when its artifact is in the repo and verifiable — never when a transcript claims it. This exact sentence is now also in <code>CLAUDE.md</code>.</p>
+      </div>
+
+      <h4 style="font-family:'IBM Plex Sans Condensed',sans-serif;font-size:0.85rem;letter-spacing:0.04em;text-transform:uppercase;color:var(--ink-3);margin:1.5rem 0 0.5rem;">Corrections applied along the way</h4>
+      <p>A <code>claude/execution-tracker.md</code> created early was retired/deleted at the user's request, to avoid a competing source of truth alongside this file. Planning documents were consolidated to two: the formal proposal (<code>Research_Development_Plan_4.md</code>) and one canonical execution plan committed inside this repo at <code>plan/plan.md</code> — a stale external copy of the plan was removed once the in-repo version became canonical.</p>
+
+      <h4 style="font-family:'IBM Plex Sans Condensed',sans-serif;font-size:0.85rem;letter-spacing:0.04em;text-transform:uppercase;color:var(--ink-3);margin:1.5rem 0 0.5rem;">Scope decision, locked with the user</h4>
+      <p>The capstone floor was set as <b style="color:var(--ink)">Gate + M1 + M2</b> (open-loop effect + threshold + mechanism). M4 (closed-loop propagation, flight under external-vision control) and M5 (Jetson cross-platform) were designated <em>stretch</em> goals, to be cut first if time slipped.</p>
+      <div class="callout accent">
+        <p><strong>How this actually played out:</strong> M4's closed-loop question didn't wait for stretch-goal status — it came back early and central, as the bounded <b>Route 2</b> probe (§52-53), once the open-loop gate's own null (§45-51) raised the natural follow-up question of whether the same null held under real feedback. Route 2 answered that question directly (NO-GO, §53) rather than being deferred or cut. M5 (Jetson) remained out of scope for the executed work in this repo — it resurfaces in §55 as a candidate centerpiece for the next research direction, not as executed work.</p>
       </div>
     </section>
     <section id="mechanism-head" style="padding-bottom:0; border-bottom:none;">
@@ -1673,6 +1752,655 @@ html { scroll-behavior: smooth; }
         <li id="ref-gazebo">Koenig, N., &amp; Howard, A. (2004). Design and use paradigms for Gazebo, an open-source multi-robot simulator. In <em>2004 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS)</em>, vol. 3, pp. 2149–2154. This project uses Gazebo Sim (formerly Ignition Gazebo), the modern successor to the simulator this paper introduced — the physics and sensor simulation behind every SITL result in this record (§03). <a href="#cite-gazebo">↩</a></li>
         <li id="ref-kinectfusion">Newcombe, R. A., Izadi, S., Hilliges, O., Molyneaux, D., Kim, D., Davison, A. J., Kohi, P., Shotton, J., Hodges, S., &amp; Fitzgibbon, A. (2011). KinectFusion: Real-time dense surface mapping and tracking. In <em>2011 10th IEEE International Symposium on Mixed and Augmented Reality (ISMAR)</em>, pp. 127–136. The depth-fusion integration scheme nvblox's own TSDF is a GPU-accelerated descendant of (§03). <a href="#cite-kinectfusion">↩</a></li>
       </ol>
+    </section>
+
+    <section id="m2-gate">
+      <div class="section-head"><span class="idx">42</span><h2>Milestone 2 Feasibility Gate — status as of 2026-09-04</h2></div>
+      <p class="section-intro">A cheap, open-loop pre-check on whether GPU contention between cuVSLAM and nvblox degrades VIO accuracy, before committing to the full Milestone 2 study — done on a separate branch, <code>feasibility-gate</code>, not <code>main</code>. <code>EKF2_EV_CTRL</code> stays 0 throughout: cuVSLAM is logged, never fused into control, so this work carries no flight risk. This entry is a status snapshot, not a result — no contention has been swept yet.</p>
+
+      <div class="callout good">
+        <p><strong>Branch pushed.</strong> <code>feasibility-gate</code> is on GitHub, current commit <code>d868462</code> (<code>origin/feasibility-gate</code> confirmed at the same SHA), containing: the G1 triage script and G2 instrumentation (previous commit <code>400f245</code>), the comprehensive Gate→M0-M6 execution plan at <code>plan/plan.md</code>, and this <code>use_sim_time</code> fix on <code>nvblox_node</code>.</p>
+      </div>
+
+      <h4 style="font-family:'IBM Plex Sans Condensed',sans-serif;font-size:0.85rem;letter-spacing:0.04em;text-transform:uppercase;color:var(--ink-3);margin-bottom:0.5rem;">Verified topic &amp; parameter names</h4>
+      <p>Traced to a line in the code, not to documentation, per the Gate's own G0.4 requirement.</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Role</th><th>Name</th></tr></thead>
+          <tbody>
+            <tr><td class="label">Ground-truth pose</td><td><code>/ground_truth/odom</code></td></tr>
+            <tr><td class="label">cuVSLAM odometry</td><td><code>/visual_slam/tracking/odometry</code></td></tr>
+            <tr><td class="label">cuVSLAM status</td><td><code>/visual_slam/status</code></td></tr>
+            <tr><td class="label">Tracked-feature count</td><td>not a status field — width of <code>/visual_slam/vis/observations_cloud</code></td></tr>
+            <tr><td class="label">ESDF service</td><td><code>/nvblox_node/get_esdf_and_gradient</code></td></tr>
+            <tr><td class="label">nvblox node / contention knob</td><td><code>nvblox_node</code> / <code>integrate_depth_rate_hz</code> (launch-time only — see below)</td></tr>
+            <tr><td class="label">TF root</td><td><code>map</code> → <code>base_link_gt</code></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h4 style="font-family:'IBM Plex Sans Condensed',sans-serif;font-size:0.85rem;letter-spacing:0.04em;text-transform:uppercase;color:var(--ink-3);margin:1.5rem 0 0.5rem;">Config invariants</h4>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Invariant</th><th>Value</th></tr></thead>
+          <tbody>
+            <tr><td class="label"><code>EKF2_EV_CTRL</code></td><td>0 (open-loop; unchanged)</td></tr>
+            <tr><td class="label"><code>esdf_mode</code></td><td><code>"3d"</code></td></tr>
+            <tr><td class="label"><code>use_sim_time</code> on <code>nvblox_node</code></td><td><span class="pill good">now true</span> — was missing before today; live-verified via <code>ros2 param get /nvblox_node use_sim_time</code> → <code>Boolean value is: True</code></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h4 style="font-family:'IBM Plex Sans Condensed',sans-serif;font-size:0.85rem;letter-spacing:0.04em;text-transform:uppercase;color:var(--ink-3);margin:1.5rem 0 0.5rem;">Tooling status</h4>
+      <p><code>triage_incident.py</code>, <code>gpu_stressor.py</code>, <code>gpu_sampler.py</code>, and <code>run_gate.sh</code> are present and committed, along with an opt-in CSV-logging extension to <code>vslam_compare</code>. <code>analyze_sweep.py</code> is not yet built. <code>results/feasibility_gate/</code> is empty — no scenario has been run yet.</p>
+
+      <div class="callout bad">
+        <p><strong>Known gaps.</strong> No incident rosbag exists for the original ~55m drift — none of the 4 rosbags currently in the repo carry any <code>/visual_slam/*</code> topic. The EKF estimator-status family (<code>/fmu/out/estimator_status_flags</code>, <code>/fmu/out/estimator_aid_src_ev_*</code>) is not yet subscribed by any node in this pipeline — and the aid-source topics specifically will never appear on the bus at all while <code>EKF2_EV_CTRL=0</code>, since PX4's EKF2 only advertises them when the matching control bit is set.</p>
+      </div>
+    </section>
+
+    <section id="m2-g3-1">
+      <div class="section-head"><span class="idx">43</span><h2>G3.1 triage &amp; baseline drift diagnosis</h2></div>
+      <p class="section-intro">First real open-loop reproduction run (<code>g3_1_baseline_20260904_v2</code>, zero added contention), G1-triaged and diagnosed. <code>EKF2_EV_CTRL</code> stays 0 throughout.</p>
+
+      <h4 style="font-family:'IBM Plex Sans Condensed',sans-serif;font-size:0.85rem;letter-spacing:0.04em;text-transform:uppercase;color:var(--ink-3);margin-bottom:0.5rem;">G1 triage classification</h4>
+      <p><code>triage_incident.py</code> run over the full flight window (811 matched cuVSLAM/ground-truth samples, 38.7s). A real bug in the classifier's own proportional-to-distance check was found and fixed along the way: it computed error/distance ratio down to 0.3m of travel, where a fixed ~0.13m tracking-init offset dominates the ratio and spikes it (up to 0.45) regardless of any real proportional mechanism — raised the distance floor to scale with the flight's own range and switched from raw min-max spread to a trimmed range, so a few noisy near-origin points can't veto an otherwise clean fit. Regression-checked against the earlier synthetic sudden-jump bag — classification unchanged there.</p>
+      <div class="callout">
+        <p><strong>Classification: <code>proportional_to_distance</code>.</strong> Mean error/distance ratio ≈0.086 (min 0.064, max 0.129 over 605 samples past the noise floor) — a smooth, low-spread proportional relationship, not a discrete jump. <code>vo_state</code> stayed <code>Success</code> for all 811 samples; feature count stayed healthy throughout (138–417, mean 262). Per the gate's own mundane-cause table this pattern's generic implication is "frame/yaw/extrinsic misconfig" — <b style="color:var(--ink)">§43's diagnosis below finds the evidence does not actually support that</b>, a distinction the automated classifier's fixed table text can't make on its own.</p>
+      </div>
+
+      <h4 style="font-family:'IBM Plex Sans Condensed',sans-serif;font-size:0.85rem;letter-spacing:0.04em;text-transform:uppercase;color:var(--ink-3);margin:1.5rem 0 0.5rem;">A contaminated number, caught before it misled the diagnosis</h4>
+      <p>The first read of this flight used <code>vslam_compare</code>'s live console log, which showed error growing to <b style="color:var(--ink)">2.3m</b> — but that log kept running for ~31s <em>after</em> the rosbag itself had already stopped recording (root cause: the same cleanup bug fixed in §43's Task C below left the node alive, still comparing an unsupervised, still-moving vehicle against ground truth). Re-derived directly from the bag's own recorded messages instead: max error <b style="color:var(--ink)">0.85m</b> over the actual 38.7s flight. The 2.3m figure never happened during any recorded, intended scenario — it's an artifact of an orphaned process, not a property of the flight being measured.</p>
+
+      <h4 style="font-family:'IBM Plex Sans Condensed',sans-serif;font-size:0.85rem;letter-spacing:0.04em;text-transform:uppercase;color:var(--ink-3);margin:1.5rem 0 0.5rem;">Diagnosis: is 0.85m a regression, or a longer/harder path?</h4>
+      <p>Phase 3's original cuVSLAM validation (<code>README.md</code>: "328 tracked features, ~0.2–0.25m steady-state error vs. ground truth") measured a <b style="color:var(--ink)">5m vertical climb then 30+s of stationary hover</b> — max error 0.454m during the climb transient itself, settling to 0.2–0.25m once holding still, per the session record from that work. Zero lateral travel, zero sustained turning. This run is a fundamentally different motion profile: real lateral translation (≈8m north, ≈3.4m west) and a curved path — 15.46m actually flown against a 10.09m straight-line displacement, ≈53% "extra" distance from maneuvering — that Phase 3 never exercised at all. The two numbers aren't measuring the same thing, so 0.85m over this path isn't directly comparable to 0.2–0.25m over a hover.</p>
+      <p>Checked directly against the usual mundane causes before accepting "just harder path" as the answer:</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Candidate cause</th><th>Check</th><th>Result</th></tr></thead>
+          <tbody>
+            <tr><td class="label">Axis swap / sign flip</td><td>Per-axis displacement, vslam vs. ground truth</td><td><span class="pill good">Ruled out</span> — Y (largest displacement, 8.108m gt vs. 8.081m vslam) matches to 0.3%; Z within 3.7%. No swap or sign inversion.</td></tr>
+            <tr><td class="label">Uniform scale error (e.g. wrong stereo baseline)</td><td>Per-axis displacement ratio (vslam/gt)</td><td><span class="pill good">Ruled out</span> — Y ratio 0.997, Z ratio 1.037, but X ratio 0.763 (≈24% short). A global scale bug would show roughly equal proportional error on every axis, not one axis off by 24% while another is off by 0.3%.</td></tr>
+            <tr><td class="label">Discrete glitch / relocalize</td><td><code>vo_state</code> across the flight; error-shape classification</td><td><span class="pill good">Ruled out</span> — <code>vo_state</code> = Success throughout; triage classifies the growth as smooth/graded, not a step.</td></tr>
+            <tr><td class="label">Motion-dependent VIO drift (turning/lateral maneuvering)</td><td>Error concentrated by axis vs. direction of travel; path curvature</td><td><span class="pill accent">Best fit</span> — final position error (0.812, −0.027, 0.184)m is almost entirely in the axis <em>perpendicular</em> to the dominant direction of travel, while the along-track axis (largest displacement) is nearly error-free. Consistent with heading/cross-track drift accumulated specifically during the curved, turning portion of flight — a known VIO/IMU-integration characteristic under dynamic motion, not a fixed miscalibration.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout bad">
+        <p><strong>Diagnosis: not a clearly identified misconfiguration — no fix applied.</strong> The evidence rules out the two "mundane bug" explanations the classifier's table suggests (axis/frame swap, uniform scale error) directly and specifically. What's left — error concentrated cross-track during a curved, dynamic maneuver that no prior validation in this project ever exercised — reads as real VIO drift characteristic of that harder motion profile, not a wrong extrinsic, TF, or frame convention. No change made to TF, extrinsics, camera-IMU calibration, or any estimator/airframe parameter. <code>EKF2_EV_CTRL</code> untouched (0). No re-run performed, since no fix was applied to test.</p>
+      </div>
+      <p>Forward-looking note for G3.3's contention sweep (not acted on now): a curved/dynamic reference trajectory already carries real baseline drift of its own (≈8.6% of distance here, at <em>zero</em> added contention) — separating contention-driven degradation from this motion-driven baseline will need either a straighter reference path, enough repeats to characterize the no-contention baseline's own variance first, or both.</p>
+    </section>
+
+    <section id="m2-cleanup">
+      <div class="section-head"><span class="idx">44</span><h2>run_gate.sh cleanup hardening</h2></div>
+      <p class="section-intro">The G3.1 run left two <code>fast_planner_bridge</code> processes alive and the vehicle armed after the script had already printed "done." Root-caused and fixed, then demonstrated live against a real interrupt — not just reasoned about.</p>
+
+      <div class="callout bad">
+        <p><strong>Root cause, confirmed directly via <code>ps</code>, not guessed.</strong> <code>ros2 run &lt;pkg&gt; &lt;exe&gt; &amp;</code> does not exec into the target script — it leaves a wrapper process (the one <code>$!</code> captures) running as the <em>parent</em> of a separate grandchild that does the real work, both sharing the wrapper's process group. Plain <code>kill "$PID"</code> only reaches the wrapper; the grandchild survives as an orphan once its parent exits. This exact pattern showed up for both <code>fast_planner_bridge</code> and <code>vslam_compare</code> (two more stray <code>vslam_compare</code> zombies from earlier, unrelated runs were found and cleared while investigating). The project's own README already named this class of bug once before ("Duplicate <code>traj_server</code> race... fixed by killing every child process explicitly during a reset, not just the launch wrapper") — this is the same failure mode recurring in new tooling.</p>
+      </div>
+
+      <p>Fix: every background job is now launched via <code>setsid</code> (its own process group) and tracked in a <code>CHILD_PIDS[]</code> array; <code>cleanup()</code> (armed on <code>EXIT INT TERM ERR</code>, idempotent via a guard flag) kills each job's <em>whole group</em> (<code>kill -TERM -$pid</code>, escalating to <code>-KILL</code>), a second-layer <code>pkill -f</code> sweep by executable name as a net matching the project's existing convention, and an unconditional, idempotent <code>force_disarm.py</code> call at the end regardless of how cleanup was reached.</p>
+
+      <div class="callout bad">
+        <p><strong>The first fix attempt was incomplete — caught by testing, not assumed correct.</strong> <code>kill_group()</code>'s retry loop checked <code>kill -0 "$pid"</code> (is the originally-tracked leader PID still alive) to decide whether to escalate to <code>SIGKILL</code>. Live-tested by interrupting a real armed flight: the wrapper PID died from the group-wide <code>TERM</code>, <code>kill -0</code> reported it gone, the function returned early — while its grandchild (the actual <code>fast_planner_bridge</code> node) was still fully alive in the same process group, never escalated to <code>KILL</code>, confirmed via <code>ps</code> immediately after. Fixed by checking group membership (<code>pgrep -g "$pid"</code> — any process in the group, not one specific PID) instead.</p>
+      </div>
+
+      <h4 style="font-family:'IBM Plex Sans Condensed',sans-serif;font-size:0.85rem;letter-spacing:0.04em;text-transform:uppercase;color:var(--ink-3);margin:1.5rem 0 0.5rem;">Interrupt-test results</h4>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Test</th><th>Live processes after</th><th><code>arming_state</code> after</th></tr></thead>
+          <tbody>
+            <tr><td class="label">First attempt (leader-PID check)</td><td><span class="pill bad">1 orphan</span> — <code>fast_planner_bridge</code> grandchild survived</td><td><span class="pill good">1 (disarmed)</span></td></tr>
+            <tr><td class="label">Second attempt (group-membership check)</td><td><span class="pill good">0</span> — not even a zombie</td><td><span class="pill good">1 (disarmed)</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>Both tests: launched a real scenario, waited for the vehicle to actually arm and start flying (<code>arming_state: 2</code> confirmed live), sent <code>SIGINT</code> to <code>run_gate.sh</code> mid-flight, then inspected the container's process table and queried <code>/fmu/out/vehicle_status_v4</code> directly — not inferred from the script's own log output.</p>
+    </section>
+
+    <section id="m2-mini-dose">
+      <div class="section-head"><span class="idx">45</span><h2>Mini dose screen (2026-09-04)</h2></div>
+      <p class="section-intro">A small screening batch — not the full G3.3/G3.4 sweep — to check baseline reproducibility and look for a dose signal before investing in a 5×5 factorial. 15 runs total: 3 contention levels (none/low/high) × 5 repeats, synthetic-stressor workload only (no nvblox workload, no texture-poor world), fixed to the <code>g3_1_baseline_20260904_v2</code> scenario. <code>EKF2_EV_CTRL</code> untouched (0) throughout. Uses the hardened <code>run_gate.sh</code> (commit <code>c056723</code>) unchanged, with a throwaway restart-orchestration wrapper (not committed — its only job is a fresh PX4/Gazebo restart before each run, for a true origin spawn, then an unmodified call to <code>run_gate.sh</code>) and a throwaway aggregation script (also not committed, reuses <code>triage_incident.py</code>'s own bag-reading/alignment code directly, to avoid any repeat of §43's live-log contamination issue). Raw bags/CSVs and the summary plot are local under <code>results/feasibility_gate/mini_dose_*</code> and <code>mini_dose_screen.png</code> — gitignored per <code>CLAUDE.md</code>.</p>
+
+      <h4 style="font-family:'IBM Plex Sans Condensed',sans-serif;font-size:0.85rem;letter-spacing:0.04em;text-transform:uppercase;color:var(--ink-3);margin-bottom:0.5rem;">1. Baseline reproducibility — unstable</h4>
+      <div class="callout bad">
+        <p><strong>The zero-contention baseline is not reproducible.</strong> Max error across 5 identical (<code>none</code>, no added load) runs: 0.85m, 12.07m, 15.63m, 1.37m, 18.83m — mean 9.75m, stdev 8.24m, a &gt;20× spread between the best and worst run with <em>zero</em> difference in treatment. Error/distance ratio spread is just as wide: 8.6% to 122%. One run (r1) matched §43's earlier clean result almost exactly; the other four did not. In every case the growth was smooth and distance-tracking (not a discrete jump — confirmed by inspecting the full time series, not just endpoints) and <code>vo_state</code> stayed <code>Success</code> throughout even the worst runs — this is real accumulated VIO drift whose <em>rate</em> varies enormously run-to-run under nominally identical conditions, not a bug in the measurement.</p>
+      </div>
+
+      <h4 style="font-family:'IBM Plex Sans Condensed',sans-serif;font-size:0.85rem;letter-spacing:0.04em;text-transform:uppercase;color:var(--ink-3);margin:1.5rem 0 0.5rem;">2. Manipulation check — stressor works, low/high not well separated</h4>
+      <p>Mean GPU utilization: <b style="color:var(--ink)">none 2.6%</b> (max 16%) → <b style="color:var(--ink)">low 94.5%</b> (max 100%) → <b style="color:var(--ink)">high 95.7%</b> (max 100%). The stressor manipulation itself clearly bites — none is genuinely idle, low/high are genuinely loaded. But <code>nvidia-smi</code>'s coarse utilization metric doesn't distinguish low from high at all (94.5% vs 95.7%) despite very different configured presets (matrix size 1024/1 stream/30% duty vs 3072/4 streams/90% duty) — this metric appears to be closer to a busy/idle duty-cycle indicator than a load-intensity measure on this GPU. A real dose sweep will need a finer-grained metric (kernel duration/occupancy via <code>nsys</code>, already confirmed available — §42) to actually separate contention <em>levels</em>, not just contention <em>presence</em>.</p>
+
+      <h4 style="font-family:'IBM Plex Sans Condensed',sans-serif;font-size:0.85rem;letter-spacing:0.04em;text-transform:uppercase;color:var(--ink-3);margin:1.5rem 0 0.5rem;">3. Dose signal — none detectable at this n</h4>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Level</th><th>n</th><th>max error: mean ± stdev (range)</th><th>error/distance ratio: mean ± stdev (range)</th><th>GPU util mean (max)</th></tr></thead>
+          <tbody>
+            <tr><td class="label">none</td><td>5</td><td>9.75m ± 8.24m (0.85–18.83m)</td><td>0.509 ± 0.447 (0.086–1.219)</td><td>2.6% (16%)</td></tr>
+            <tr><td class="label">low</td><td>5</td><td>98.12m ± 147.49m (2.32–350.21m)</td><td>3.72 ± 7.33 (0.086–16.82)</td><td>94.5% (100%)</td></tr>
+            <tr><td class="label">high</td><td>5</td><td>21.73m ± 15.62m (1.36–41.98m)</td><td>1.37 ± 0.82 (0.104–2.375)</td><td>95.7% (100%)</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout bad">
+        <p><strong>No reliable dose-response signal in this screen.</strong> The raw group means are not even monotonic (none 9.75 &lt; high 21.73 &lt; low 98.12 — <code>low</code> looks worse than <code>high</code>, which is not what a real graded contention effect should look like). More importantly, per-run distributions overlap heavily across all three levels: <code>none</code>'s own worst run (18.83m) is worse than <code>low</code>'s best run (2.32m) and comparable to several <code>high</code> runs; <code>low</code>'s best run (2.32m, ratio 8.6%) is indistinguishable from a clean baseline run. The rise in group means for <code>low</code> and <code>high</code> is not clearly larger than <code>none</code>'s own spread (stdev 8.24m, range up to 18.83m) once individual runs are compared rather than means alone. Two of the worst loaded runs (<code>low_r5</code>, <code>high_r4</code>) did show a momentary complete feature dropout (<code>min feature_count = 0</code>) that no <code>none</code> run showed (<code>none</code>'s worst never dropped below 140 features) — a hint worth re-checking with more repeats, not a finding on its own at n=5.</p>
+      </div>
+      <p>This is exactly what a cheap screen is for: the baseline itself is too noisy at n=5 to support a dose-response claim from this batch, one way or the other. Before any larger sweep, the baseline's own run-to-run variance needs characterizing (many more <code>none</code> repeats) and reduced or explained — otherwise a 5×5 factorial would spend most of its statistical power fighting noise this screen has already found for free.</p>
+
+      <h4 style="font-family:'IBM Plex Sans Condensed',sans-serif;font-size:0.85rem;letter-spacing:0.04em;text-transform:uppercase;color:var(--ink-3);margin:1.5rem 0 0.5rem;">Run list</h4>
+      <p><code>mini_dose_{none,low,high}_r{1..5}</code> — 15 runs, all completed, all safely disarmed at end (verified live via <code>/fmu/out/vehicle_status_v4</code> after the batch). Per-run numbers: none — r1 0.85m/8.6%, r2 12.07m/52.9%, r3 15.63m/53.9%, r4 1.37m/17.2%, r5 18.83m/121.9%. low — r1 2.32m/8.6%, r2 109.91m/43.9%, r3 17.01m/52.1%, r4 11.15m/72.6%, r5 350.21m/1682.2%. high — r1 31.79m/143.6%, r2 16.49m/126.1%, r3 17.03m/166.6%, r4 41.98m/237.5%, r5 1.36m/10.4%.</p>
+    </section>
+
+    <section id="m2-remetric">
+      <div class="section-head"><span class="idx">46</span><h2>Re-metric of the mini dose screen (2026-09-05)</h2></div>
+      <p class="section-intro">Pure re-analysis of the same 15 bags from §45 — no new flights, <code>EKF2_EV_CTRL</code> untouched. Question: was §45's "no signal" real, or an artifact of using endpoint max-error/ratio as the metric? Re-derived RPE (translation) over a 1.0s time window and a 1.0m ground-truth arc-length window, plus a windowed drift-rate (linear-regression slope of position error vs. arc-length, restricted to each run's own in-flight window — the contiguous region where arc-length speed exceeds 0.15 m/s, which auto-excludes the arm/hover transient and the final goal-reached hold per run without a hand-picked fixed offset). All read directly from each run's rosbag via <code>triage_incident.py</code>'s own reader (not <code>vslam_compare.csv</code>, per §43's contamination lesson). Throwaway script, not committed.</p>
+
+      <h4 style="font-family:'IBM Plex Sans Condensed',sans-serif;font-size:0.85rem;letter-spacing:0.04em;text-transform:uppercase;color:var(--ink-3);margin-bottom:0.5rem;">A. Does the baseline spread shrink under a better metric?</h4>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Metric (none, n=5)</th><th>range</th><th>max/min ratio</th><th>CV (stdev/mean)</th></tr></thead>
+          <tbody>
+            <tr><td class="label">Endpoint max error (§45)</td><td>0.85–18.83m</td><td>22.2×</td><td>0.85</td></tr>
+            <tr><td class="label">RPE, 1.0s window (per-run median)</td><td>0.056–0.223m</td><td>4.0×</td><td>0.60</td></tr>
+            <tr><td class="label">RPE, 1.0m arc-length window (per-run median)</td><td>0.186–0.610m</td><td>3.3×</td><td>0.52</td></tr>
+            <tr><td class="label">Windowed drift-rate slope (in-flight window)</td><td>&minus;0.037–2.121 m/m</td><td>n/a (sign change)</td><td>1.54</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout good">
+        <p><strong>Partially yes.</strong> Short-window RPE (both the 1s and 1m variants, using each run's own <em>median</em> rather than mean — the mean is dragged around by rare large local spikes) cuts the baseline spread roughly in half by CV and from a 22× to a 3&ndash;4× range ratio. It's a real improvement, not just re-scaling: RPE measures local tracking noise per window, not accumulated drift, so it's far less exposed to the one-off events driving §45's endpoint spread. It does <em>not</em>, however, make the baseline look "stable" in any strong sense — a 3&ndash;4× spread with zero treatment difference is still a lot of unexplained run-to-run variance.</p>
+      </div>
+      <div class="callout bad">
+        <p><strong>Windowed drift-rate slope is not an improvement — it's worse (CV 1.54 vs. 0.85).</strong> It's a single linear-regression estimate per run, computed over each run's own in-flight window (as short as ~6s/130 samples in some runs), so it inherits all of that run's noise into one number with no within-run averaging to smooth it out; one run's slope came out slightly negative (a run whose error happened to plateau inside its own window). This metric is a bad choice for this dataset and should not be used as the primary signal metric in a follow-up sweep as-is.</p>
+      </div>
+
+      <h4 style="font-family:'IBM Plex Sans Condensed',sans-serif;font-size:0.85rem;letter-spacing:0.04em;text-transform:uppercase;color:var(--ink-3);margin:1.5rem 0 0.5rem;">B. Re-tabulated none/low/high under the new metrics</h4>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Level</th><th>RPE 1.0s (mean-of-per-run-median)</th><th>RPE 1.0m (mean-of-per-run-median)</th><th>Drift-rate slope (median-of-runs)</th></tr></thead>
+          <tbody>
+            <tr><td class="label">none</td><td>0.140m ± 0.083 (0.056–0.223)</td><td>0.343m ± 0.177 (0.186–0.610)</td><td>0.049 m/m</td></tr>
+            <tr><td class="label">low</td><td>0.217m ± 0.182 (0.078–0.535)</td><td>0.478m ± 0.266 (0.221–0.821)</td><td>0.597 m/m</td></tr>
+            <tr><td class="label">high</td><td>0.268m ± 0.157 (0.089–0.452)</td><td>0.615m ± 0.430 (0.231–1.143)</td><td>0.484 m/m</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout">
+        <p><strong>Mixed, metric-dependent result — this is the headline finding.</strong> Both RPE variants (median-based) are <em>monotonically increasing</em> none &lt; low &lt; high, which is what a graded contention effect should look like and which §45's endpoint metric did not show. But the windowed drift-rate slope, and the original endpoint metric, both show <code>low</code> &gt; <code>high</code> &gt; <code>none</code> — not monotonic. And per-run RPE distributions overlap heavily across levels regardless (e.g. <code>high</code>'s lowest per-run-median RPE, 0.089m, is below <code>none</code>'s highest, 0.223m). At n=5 per level this is a hint that a real, graded, local-tracking-noise effect may exist and is only visible under a short-window metric — not a confirmed finding. It would need materially more repeats (and dropping the drift-rate-slope metric, per finding A) to become one.</p>
+      </div>
+
+      <h4 style="font-family:'IBM Plex Sans Condensed',sans-serif;font-size:0.85rem;letter-spacing:0.04em;text-transform:uppercase;color:var(--ink-3);margin:1.5rem 0 0.5rem;">C. Init-quality correlation and clean-vs-dropout split</h4>
+      <p>Init-quality proxies tested: early (first 2s) feature count, early feature-count dip, and time-to-stable-tracking (time until feature count holds within 80% of its own later steady-state mean for 1s). Result: <b>uninformative by construction</b> — feature count starts at its <em>highest</em> value in every single run (377&ndash;381, essentially constant across all 15 runs) and <em>decreases</em> over the flight to a lower "steady" value (~170&ndash;275), so the stable-tracking threshold is trivially satisfied at t=0 in every run (<code>t_stable = 0.00s</code> universally) and there is no early dip to detect. Correlation against drift-rate slope: r = &minus;0.10 (early feature count vs. slope, n=15) — no relationship, but this is a null result about a proxy that never varied, not evidence that initialization quality doesn't matter. A useful init-quality proxy for this stack has not yet been found; feature count from <code>/visual_slam/vis/observations_cloud</code> is not it.</p>
+      <p>Tracking-loss (feature-count-to-0) events: <code>none</code> 1/5 (r3), <code>low</code> 1/5 (r5), <code>high</code> 2/5 (r3, r4) — consistent with, but not proof of, contention increasing dropout risk at n=5. Restricting the drift-rate-slope comparison to <em>clean-tracking-only</em> runs (dropping the event, not just capping its value): none (n=4) mean 0.762, low (n=4) mean 0.531, high (n=3) mean 0.846 — still not monotonic and still heavily overlapping (none's own clean-run range is 0.025&ndash;2.121, wider than the low-vs-high mean difference). Removing dropout events does not recover a clean trend under this metric.</p>
+
+      <div class="callout accent">
+        <p><strong>Plain read.</strong> (a) The baseline is more measurable under RPE than under endpoint error — spread shrinks from 22× to 3&ndash;4× — but it is still not "stable"; unexplained run-to-run variance remains the dominant feature of this dataset under every metric tried. (b) There is a contention signal <em>hint</em> under short-window RPE (monotonic none&lt;low&lt;high) that does not appear under endpoint error or windowed drift-rate slope, and heavy per-run overlap means it is not established at n=5 — it is worth a small targeted follow-up (more <code>none</code>/<code>low</code>/<code>high</code> repeats, RPE-only, dropout events flagged not discarded) before it's treated as real. (c) Recommendation: do not change the scenario or add a warm-up yet — the baseline instability looks like a property of cuVSLAM tracking noise itself (present at zero contention, not an artifact of a cold start), and no init-quality proxy tested here explains it. Before any 5×5 sweep: (i) adopt short-window RPE (not endpoint error, not the windowed drift-rate slope) as the primary metric, (ii) run a larger <code>none</code>-only batch (10&ndash;15 reps) to actually characterize the baseline noise distribution, and (iii) find a better GPU load-intensity metric than <code>nvidia-smi</code> utilization (§45, point 2) before trying to separate contention <em>levels</em> rather than just presence/absence.</p>
+      </div>
+    </section>
+
+    <section id="m2-power">
+      <div class="section-head"><span class="idx">47</span><h2>Power analysis + finer GPU metric (2026-09-05)</h2></div>
+      <p class="section-intro">Two pieces, no full sweep. (A) A simulation-based power/feasibility analysis on the same 15 bags from §45/§46, using RPE only (§46 showed endpoint error and windowed drift-rate slope are worse metrics — both dropped per this task's instruction). (B) One tiny stressor-only measurement (no flight, <code>EKF2_EV_CTRL</code> irrelevant here since PX4 wasn't running) to check whether a finer GPU metric can separate <code>low</code> from <code>high</code>, unlike §45's <code>nvidia-smi</code> utilization reading. Throwaway scripts, not committed.</p>
+
+      <h4 style="font-family:'IBM Plex Sans Condensed',sans-serif;font-size:0.85rem;letter-spacing:0.04em;text-transform:uppercase;color:var(--ink-3);margin-bottom:0.5rem;">A1. Effect size, none&nbsp;&rarr;&nbsp;high (RPE, per-run median, n=5/level)</h4>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Window</th><th>none mean&plusmn;sd</th><th>high mean&plusmn;sd</th><th>Cohen's d</th><th>raw ratio</th></tr></thead>
+          <tbody>
+            <tr><td class="label">RPE, 1.0s</td><td>0.140 &plusmn; 0.083</td><td>0.268 &plusmn; 0.157</td><td>1.019</td><td>1.92&times;</td></tr>
+            <tr><td class="label">RPE, 1.0m arc-length</td><td>0.343 &plusmn; 0.177</td><td>0.615 &plusmn; 0.430</td><td>0.828</td><td>1.80&times;</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h4 style="font-family:'IBM Plex Sans Condensed',sans-serif;font-size:0.85rem;letter-spacing:0.04em;text-transform:uppercase;color:var(--ink-3);margin:1.5rem 0 0.5rem;">A2. Simulation-based power (Welch t-test / OLS trend, 4000 sim trials/n, &alpha;=0.05, target power 0.8)</h4>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Window</th><th>Question</th><th>Required n/level</th><th>Power at current n=5</th></tr></thead>
+          <tbody>
+            <tr><td class="label">RPE 1.0s</td><td>none vs. high</td><td>17</td><td>0.27</td></tr>
+            <tr><td class="label">RPE 1.0s</td><td>monotonic none/low/high trend</td><td>20</td><td>0.22</td></tr>
+            <tr><td class="label">RPE 1.0m</td><td>none vs. high</td><td>25</td><td>0.19</td></tr>
+            <tr><td class="label">RPE 1.0m</td><td>monotonic none/low/high trend</td><td>22</td><td>0.28</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>At the screen's actual n=5, power for every question above is 0.19&ndash;0.28 &mdash; a coin-flip-or-worse chance of detecting the observed effect size even if it's real. That's expected for a 5-rep screen and is exactly why §45/§46 could not conclude either way.</p>
+
+      <h4 style="font-family:'IBM Plex Sans Condensed',sans-serif;font-size:0.85rem;letter-spacing:0.04em;text-transform:uppercase;color:var(--ink-3);margin:1.5rem 0 0.5rem;">A3. Is the n=5 trend distinguishable from noise? No.</h4>
+      <div class="callout bad">
+        <p>OLS trend of RPE on level (coded 0/1/2), n=15 (5/level): RPE&nbsp;1.0s slope=0.064/level, p=0.176; RPE&nbsp;1.0m slope=0.136/level, p=0.171 &mdash; neither reaches p&lt;0.05. A within-level bootstrap (resample 5-with-replacement per level, 20,000 resamples) gives a 95% CI on the slope of (&minus;0.004, 0.134) for RPE&nbsp;1.0s and (&minus;0.040, 0.324) for RPE&nbsp;1.0m &mdash; <strong>both CIs cross zero.</strong> The apparent monotonic trend flagged in §46 is consistent with a real effect but is not statistically distinguishable from noise at this n. No overclaiming: this screen cannot currently tell a real graded contention effect from sampling variation.</p>
+      </div>
+
+      <h4 style="font-family:'IBM Plex Sans Condensed',sans-serif;font-size:0.85rem;letter-spacing:0.04em;text-transform:uppercase;color:var(--ink-3);margin:1.5rem 0 0.5rem;">A4. Sweep sizing and wall-clock/disk feasibility</h4>
+      <p>Scoped design: 5 contention levels &times; 2 workloads (synthetic, nvblox) &times; 2 textures = 20 cells &times; required n/level. Per-run wall-clock, measured from the actual mini-dose batch (bag-timestamp span over all 15 runs, including a full PX4/Gazebo restart before each run): <b>~104s/run</b> (~1.73 min), synthetic-workload/texture-rich only &mdash; not verified for the nvblox-workload or texture-poor cells, which may run slower. Per-run disk footprint (rosbag + stereo images + CSVs): <b>530MB</b>; only <b>100GB free</b> on the results volume (measured: 468GB total, 78% used).</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Binding n/level</th><th>Total runs (20 cells &times; n)</th><th>Wall-clock @ 104s/run</th><th>Disk @ 530MB/run</th><th>Fits in 100GB free?</th></tr></thead>
+          <tbody>
+            <tr><td class="label">17 (RPE 1.0s, none-vs-high)</td><td>340</td><td>9.8h</td><td>180GB</td><td class="pill bad">no</td></tr>
+            <tr><td class="label">20 (RPE 1.0s, trend)</td><td>400</td><td>11.6h</td><td>212GB</td><td class="pill bad">no</td></tr>
+            <tr><td class="label">22 (RPE 1.0m, trend)</td><td>440</td><td>12.7h</td><td>233GB</td><td class="pill bad">no</td></tr>
+            <tr><td class="label">25 (RPE 1.0m, none-vs-high)</td><td>500</td><td>14.4h</td><td>265GB</td><td class="pill bad">no</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout bad">
+        <p><strong>Wall-clock is feasible (well under a day of continuous automated running); disk is not, by roughly 2&times;, at every binding n.</strong> None of the four design points fit in the 100GB currently free, and the shortfall is 1.8&ndash;2.65&times; regardless of which required-n is used. This is a concrete, measured blocker (not a projection) and is independent of the statistical recommendation below &mdash; it would need addressing (e.g. deleting/archiving raw bags right after metric extraction instead of keeping all of them, or dropping the stereo image topics from the recording when they aren't needed for a given analysis) before any sweep at this scale could run to completion, regardless of which n is chosen.</p>
+      </div>
+
+      <h4 style="font-family:'IBM Plex Sans Condensed',sans-serif;font-size:0.85rem;letter-spacing:0.04em;text-transform:uppercase;color:var(--ink-3);margin:1.5rem 0 0.5rem;">B. Finer GPU metric: stressor-only, no flight</h4>
+      <p>Ran <code>gpu_stressor.py --intensity low</code> and <code>--intensity high</code> standalone (15s each, no PX4/Gazebo/cuVSLAM running) and measured with <code>pynvml</code> (5Hz) and <code>nsys profile --stats=true</code> (8s each).</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Metric</th><th>low</th><th>high</th><th>ratio</th><th>Separated?</th></tr></thead>
+          <tbody>
+            <tr><td class="label">nvidia-smi util % (in-flight, §45)</td><td>94.5%</td><td>95.7%</td><td>1.01&times;</td><td class="pill bad">no</td></tr>
+            <tr><td class="label">pynvml util % (stressor-only)</td><td>83.1%</td><td>93.5%</td><td>1.12&times;</td><td class="pill accent">weakly</td></tr>
+            <tr><td class="label">pynvml SM clock (MHz)</td><td>2155.1</td><td>1928.4</td><td>0.90&times;</td><td class="pill accent">weakly (inverted)</td></tr>
+            <tr><td class="label">pynvml mem used (MB)</td><td>574.7</td><td>1059.2</td><td>1.84&times;</td><td class="pill good">yes</td></tr>
+            <tr><td class="label">nsys avg CUDA kernel duration</td><td>296.3&micro;s</td><td>7,852.6&micro;s</td><td>26.5&times;</td><td class="pill good">yes, cleanly</td></tr>
+            <tr><td class="label">nsys avg CUDA memcpy duration</td><td>7.2&micro;s</td><td>418.4&micro;s</td><td>58.1&times;</td><td class="pill good">yes, cleanly</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout good">
+        <p><strong>Yes &mdash; finer metrics separate low and high cleanly; <code>nvidia-smi</code> utilization was the wrong instrument, not evidence the presets are poorly separated.</strong> <code>nsys</code> kernel-level timing gives a 26&ndash;58&times; separation between presets (matches the presets' own matrix-size/stream-count design: 1024&sup2;/1 stream/30% duty vs. 3072&sup2;/4 streams/90% duty). <code>pynvml</code> memory footprint also separates cleanly (1.84&times;) and is far cheaper to sample continuously during a real flight than launching <code>nsys</code> around the whole pipeline. One curiosity: SM clock is <em>lower</em> under <code>high</code> (1928 vs 2155 MHz) despite far more GPU work &mdash; likely thermal/power throttling under sustained heavy load, itself a real dose-correlated effect worth keeping in mind, not a measurement error (four defunct <code>nsys</code>/<code>nsys-launcher</code> zombie processes were left behind by this probe under the container's already-documented PID&nbsp;1-doesn't-reap limitation — confirmed harmless, GPU was idle afterward at 13% baseline noise / 15MB).</p>
+      </div>
+
+      <h4 style="font-family:'IBM Plex Sans Condensed',sans-serif;font-size:0.85rem;letter-spacing:0.04em;text-transform:uppercase;color:var(--ink-3);margin:1.5rem 0 0.5rem;">C. Recommendation</h4>
+      <div class="callout accent">
+        <p><strong>Reduce baseline variance first &mdash; do not proceed to the sweep at the required n yet.</strong> Required n (17&ndash;25/level) is 3.4&ndash;5&times; the piloted n=5, driven by the baseline's own residual noise (RPE CV still 0.5&ndash;0.6 even after §46's improvement); cutting that noise in half would roughly halve Cohen's d's denominator and, since required-n scales ~1/d&sup2;, cut the required sweep size roughly 4&times; &mdash; along with its wall-clock and (currently blocking) disk cost. Jumping straight to a 340&ndash;500-run sweep now would spend a day-plus of runtime and ~2&times; more disk than is free, all while power is only barely adequate at the least demanding of the four design points.</p>
+        <p><strong>Cheapest next lever: an RPE init-transient exclusion window, applied to the existing 15 bags &mdash; zero new flights.</strong> §46 already built a "moving window" detector (per-run in-flight region, arc-length speed &gt; 0.15&nbsp;m/s) for the drift-rate slope, but RPE in §46/§47 was computed over each run's <em>entire</em> trajectory, including the initial hover and final hold, where the vehicle is nearly stationary and the noise floor may behave differently (near-zero ground-truth motion makes any cuVSLAM jitter show up as a large <em>relative</em> error). Restricting RPE to the same in-flight window is a pure re-analysis of data already on disk, testable in minutes, and does not touch the scenario, trajectory, or world at all &mdash; the lowest-risk, lowest-cost thing to try before considering a tamer/shorter trajectory or a different world (both of which require new flights, scenario engineering, and re-validating §43's baseline-drift diagnosis from scratch). If the windowed RPE variance shrinks meaningfully, required-n (and the sweep's wall-clock/disk cost) drops with it before any larger commitment is made; if it doesn't, that's useful evidence the noise is intrinsic to cuVSLAM's tracking rather than an artifact of the hover/hold segments, and trajectory/world changes would need to be considered next.</p>
+      </div>
+    </section>
+
+    <section id="m2-unblockers">
+      <div class="section-head"><span class="idx">48</span><h2>Two unblockers + gate-sweep design (2026-09-05)</h2></div>
+      <p class="section-intro">§47 identified two blockers before any sweep: required n (17&ndash;25/level) and a disk shortfall (needs 180&ndash;265GB, only 100GB free). This entry: (A) tests whether §47's own recommended lever &mdash; an in-flight-only RPE window &mdash; actually reduces the required n (pure re-analysis, no new flights); (B) fixes the disk blocker in <code>run_gate.sh</code> and verifies it with one flight (<code>EKF2_EV_CTRL</code>=0); (C) proposes the gate-sweep design. No sweep launched, no M1 work.</p>
+
+      <h4 style="font-family:'IBM Plex Sans Condensed',sans-serif;font-size:0.85rem;letter-spacing:0.04em;text-transform:uppercase;color:var(--ink-3);margin-bottom:0.5rem;">A. Windowed RPE: the lever didn't work</h4>
+      <p>Recomputed RPE (1.0s, 1.0m) restricted to each run's own in-flight window (§46's moving-window detector, arc-length speed &gt; 0.15&nbsp;m/s), excluding the hover and hold. Result: <b>CV got worse, not better</b>, for both windows at the "none" level.</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Metric</th><th>none CV: full-window (§47)</th><th>none CV: in-flight-only window</th><th>d (none&rarr;high): full</th><th>d: windowed</th><th>required n: full</th><th>required n: windowed</th></tr></thead>
+          <tbody>
+            <tr><td class="label">RPE 1.0s</td><td>0.60</td><td>1.08</td><td>1.02</td><td>1.05</td><td>17&ndash;20</td><td>16&ndash;19 (~flat)</td></tr>
+            <tr><td class="label">RPE 1.0m</td><td>0.52</td><td>1.36</td><td>0.83</td><td>0.28</td><td>22&ndash;25</td><td class="pill bad">161&ndash;204 (worse)</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout bad">
+        <p><strong>Honest result: the hypothesized lever failed.</strong> Restricting to the in-flight window did not reduce baseline noise as expected &mdash; it removes the large near-stationary hover/hold segment that had been diluting each run's per-sample RPE toward a small, consistent value, leaving only the noisier, shorter, in-motion segment (as few as 130 samples in one run). For RPE&nbsp;1.0s the effect size and required-n are essentially unchanged (a wash). For RPE&nbsp;1.0m it's dramatically worse: one run's windowed median (<code>none_r5</code>, computed over just a 10s/207-sample window) came out at 2.41m, more than 6&times; the next-highest <code>none</code> run, blowing up that level's variance and required-n from 25 to 204. <strong>Do not use the windowed RPE for the gate sweep &mdash; use full-window RPE&nbsp;1.0s</strong>, which is the only metric/window combination that held up (and was already the strongest candidate in §47).</p>
+      </div>
+
+      <h4 style="font-family:'IBM Plex Sans Condensed',sans-serif;font-size:0.85rem;letter-spacing:0.04em;text-transform:uppercase;color:var(--ink-3);margin:1.5rem 0 0.5rem;">B. Disk blocker fixed and verified</h4>
+      <p><code>run_gate.sh</code>'s bag recording is trimmed to exactly the topics the metrics pipeline reads: <code>/visual_slam/tracking/odometry</code>, <code>/ground_truth/odom</code>, <code>/visual_slam/status</code>, <code>/visual_slam/vis/observations_cloud</code> (feature count). Dropped: the four stereo image/camera-info topics (the actual disk driver), plus <code>/tf</code>, <code>/tf_static</code>, <code>/clock</code>, and <code>/fmu/out/estimator_status_flags</code> &mdash; all recorded in the earlier version but never read by <code>triage_incident.py</code>'s or <code>remetric_mini_dose.py</code>'s analysis code (confirmed by grep before removing them). <code>gpu_log.csv</code> is unaffected (produced separately by <code>gpu_sampler.py</code>, not part of the bag).</p>
+      <p>Verification flight <code>verify_trim_r1</code> (<code>--contention none --workload synthetic --texture rich --duration 30</code>, fresh pipeline restart, <code>EKF2_EV_CTRL</code>=0 confirmed untouched): completed cleanly, vehicle disarmed after (<code>arming_state: 1</code>), no live stray processes (one pre-existing-pattern defunct zombie under the container's already-documented PID&nbsp;1 limitation &mdash; harmless).</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th></th><th>Before</th><th>After</th><th>Reduction</th></tr></thead>
+          <tbody>
+            <tr><td class="label">Per-run directory size</td><td>530MB</td><td>8.4MB</td><td>63&times;</td></tr>
+            <tr><td class="label">Topics recorded</td><td>10 (incl. 4 stereo)</td><td>4</td><td>&mdash;</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout good">
+        <p><strong>RPE recomputes fully from the reduced bag.</strong> 909 matched vslam/gt samples, RPE&nbsp;1.0s n=890 (mean 1.002, median 0.436), RPE&nbsp;1.0m n=801 (mean 1.417, median 0.909); feature count and <code>vo_state</code> both present and correctly matched per-sample. Target was &lt;20MB &mdash; achieved 8.4MB, a 63&times; reduction, with zero loss of metric fidelity. (This one run's own RPE values aren't compared against the batch &mdash; it's a fresh, unrelated verification run, not part of the 15-run dataset.)</p>
+      </div>
+
+      <h4 style="font-family:'IBM Plex Sans Condensed',sans-serif;font-size:0.85rem;letter-spacing:0.04em;text-transform:uppercase;color:var(--ink-3);margin:1.5rem 0 0.5rem;">C. Recommended gate-sweep design</h4>
+      <p>Metric: full-window RPE&nbsp;1.0s (per-run median), per finding A. Design: 5 contention levels (<code>none/low/medium/high/extreme</code>) &times; synthetic stressor only &times; one texture (rich) &times; n=20/level (§47's required n for the monotonic-trend question at power 0.8, &alpha;=0.05 &mdash; the more demanding and more relevant of the two questions, since a graded dose-response is the actual object of interest, not just a none-vs-worst-case difference which only needs n=17).</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Levels</th><th>n/level</th><th>Total runs</th><th>Wall-clock @ 104s/run</th><th>Disk @ 8.4MB/run</th><th>Fits?</th></tr></thead>
+          <tbody>
+            <tr><td class="label">5</td><td>20</td><td>100</td><td>2.9h</td><td>0.84GB</td><td class="pill good">yes, comfortably</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>Both blockers are gone: 2.9 hours of automated running (vs. the 100GB-blocked 10&ndash;14.5h/340&ndash;500-run designs in §47) and well under 1GB of disk against 100GB free. The per-run wall-clock figure is still only verified for synthetic-workload/texture-rich (§47's caveat stands); this design uses only that cell, so the caveat doesn't apply here &mdash; it would need re-checking if a future <code>--workload nvblox</code> or texture-poor arm is added.</p>
+
+      <h4 style="font-family:'IBM Plex Sans Condensed',sans-serif;font-size:0.85rem;letter-spacing:0.04em;text-transform:uppercase;color:var(--ink-3);margin:1.5rem 0 0.5rem;">Treatment recording &amp; full preset characterization</h4>
+      <p>Each run is labeled by its <code>--contention</code> preset and logs <code>gpu_sampler.py</code>'s CSV as before (coarse manipulation check only). Per-preset <code>nsys</code> characterization is done <b>once per preset, not per flight</b> (stressor-only, no flight, ~10s each &mdash; the §47 method). §47 covered <code>low</code>/<code>high</code>; the three remaining presets were characterized the same way here, completing the set:</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Preset</th><th>matrix/streams/duty</th><th>nsys avg kernel duration</th><th>kernel instances (8s window)</th></tr></thead>
+          <tbody>
+            <tr><td class="label">none</td><td>256/1/0%</td><td>n/a (no matmul kernels issued)</td><td>0</td></tr>
+            <tr><td class="label">low</td><td>1024/1/30%</td><td>296.3&micro;s</td><td>25,881</td></tr>
+            <tr><td class="label">medium</td><td>2048/2/60%</td><td>2,564.1&micro;s</td><td>3,940</td></tr>
+            <tr><td class="label">high</td><td>3072/4/90%</td><td>7,852.6&micro;s</td><td>2,480</td></tr>
+            <tr><td class="label">extreme</td><td>4096/4/100%</td><td>19,548.5&micro;s</td><td>708</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>Cleanly monotonic in both directions (duration up, instance count down) across all 5 presets &mdash; confirms the intensity ladder is well-ordered at the kernel level, independent of <code>nvidia-smi</code>'s coarse utilization reading. This table is the reference characterization for the sweep; it does not need to be regenerated per run.</p>
+    </section>
+
+    <section id="m2-gate-sweep">
+      <div class="section-head"><span class="idx">49</span><h2>G3.3 gate sweep: halt, two fixes, full result (2026-09-06)</h2></div>
+      <p class="section-intro">The full 100-run gate sweep designed in §48 (5 contention levels &times; n=20, synthetic stressor, texture rich, <code>g3_1_baseline_20260904_v2</code>). <code>EKF2_EV_CTRL</code>=0 throughout. New tool <code>tools/feasibility_gate/analyze_sweep.py</code> committed and smoke-tested against the existing 15 mini-dose runs before the sweep (exact match on per-level means and dropout counts vs §46/§47). The sweep halted once mid-run on a false alarm, was root-cause-fixed (not just detector-patched) and resumed from the same manifest, then completed cleanly.</p>
+
+      <h4 style="font-family:'IBM Plex Sans Condensed',sans-serif;font-size:0.85rem;letter-spacing:0.04em;text-transform:uppercase;color:var(--ink-3);margin-bottom:0.5rem;">The halt (run 5/100)</h4>
+      <div class="callout bad">
+        <p><code>[batch] HALT: after low_r10, vehicle arming_state='2' (expected 1/disarmed)</code>. The batch's robustness check (required by this task: halt rather than continue if any run leaves the vehicle armed or a stray process behind) worked exactly as designed. Investigation: the vehicle was actually disarmed by the time it was checked seconds later, <code>low_r10</code>'s own bag was complete and valid, and its <code>run_gate.sh</code> log showed a normal cleanup including a force-disarm call. Root cause: <code>force_disarm.py</code> was fire-and-forget -- it published 3 disarm commands, slept, and exited 0 unconditionally, <em>never confirming PX4 had actually processed the command</em> before <code>run_gate.sh</code>'s cleanup returned. The batch's own check, running immediately after, could catch a stale/in-flight reading.</p>
+      </div>
+
+      <h4 style="font-family:'IBM Plex Sans Condensed',sans-serif;font-size:0.85rem;letter-spacing:0.04em;text-transform:uppercase;color:var(--ink-3);margin:1.5rem 0 0.5rem;">FIX 1 (root cause): force_disarm.py now blocks until confirmed</h4>
+      <p><code>force_disarm.py</code> now subscribes to <code>/fmu/out/vehicle_status_v4</code>, sends the disarm command, and polls up to 10s, resending every 1.5s if not yet confirmed -- it exits 0 only once <code>arming_state==DISARMED</code> is actually observed, exits 1 on a genuine timeout. <code>run_gate.sh</code>'s cleanup surfaces that failure as a loud warning instead of swallowing it with <code>|| true</code>, with its external timeout widened to 15s so it doesn't truncate the internal confirmation loop. Committed <code>81d8d92</code>.</p>
+      <div class="callout good">
+        <p><strong>Verified live, and it reproduced the exact race.</strong> One verification flight's <code>force_disarm_cleanup.log</code>: first poll read <code>arming_state=None</code> (no message yet), triggered a resend, confirmed disarmed at 2.2s. This is direct evidence the race is real and that confirming-before-returning is the actual fix, not a guess.</p>
+      </div>
+
+      <h4 style="font-family:'IBM Plex Sans Condensed',sans-serif;font-size:0.85rem;letter-spacing:0.04em;text-transform:uppercase;color:var(--ink-3);margin:1.5rem 0 0.5rem;">FIX 2 (backstop, not a weakened guard): settle-and-retry in the batch check</h4>
+      <p>The batch's own robustness check (throwaway <code>gate_sweep_batch.sh</code>, not committed, same convention as <code>mini_dose_batch.sh</code>) now polls arming_state up to 8 times, 1s apart, and returns pass the moment it reads disarmed -- it halts only if <em>every</em> poll in that window still reads armed or unreadable. A genuinely persistent-armed vehicle still halts the batch; only a resolving transient is tolerated.</p>
+      <p><strong>Unit-tested against simulated inputs, no real vehicle armed to test it</strong> -- six scripted cases against a mock reader, including the two this task required:</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Case</th><th>Scripted sequence</th><th>Expected</th><th>Result</th></tr></thead>
+          <tbody>
+            <tr><td class="label">persistent_armed</td><td>armed &times;8</td><td>halt</td><td class="pill good">PASS</td></tr>
+            <tr><td class="label">transient_then_disarmed</td><td>armed, armed, disarmed</td><td>pass</td><td class="pill good">PASS</td></tr>
+            <tr><td class="label">immediately_disarmed</td><td>disarmed</td><td>pass</td><td class="pill good">PASS</td></tr>
+            <tr><td class="label">never_readable</td><td>empty &times;8</td><td>halt</td><td class="pill good">PASS</td></tr>
+            <tr><td class="label">disarmed_at_last_poll</td><td>armed &times;7, disarmed</td><td>pass</td><td class="pill good">PASS</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout bad">
+        <p><strong>The test harness itself had a bug on the first attempt, caught before trusting it.</strong> The mock reader tracked its position in a plain shell variable, but <code>settle_check_disarmed</code> calls the reader via command substitution (<code>$(...)</code>), which always forks a bash subshell -- the mock's index increment never persisted back, so every poll silently re-read index 0. Fixed with a file-based counter (survives the subshell fork); all 6 cases then passed. Left in the log because it's a real lesson: a unit test can look green while testing nothing.</p>
+      </div>
+      <div class="callout bad">
+        <p><strong>A second, unrelated bug surfaced only once integrated into the real batch, not caught by the unit tests:</strong> <code>settle_check_disarmed</code>'s <code>for ((i=0; ...))</code> loop didn't declare <code>i</code> <code>local</code> -- in bash this makes it a global, which collided with <code>gate_sweep_batch.sh</code>'s own top-level loop counter (also named <code>i</code>). Every time the check passed on its first poll, it silently reset the outer run counter to 0, so the batch's progress log printed a wrong (stuck-at-"1/100"-style) run count for a stretch of real, correctly-processed runs -- a cosmetic bug (it never affected which run executed or whether data was valid, since run selection is driven by reading the manifest file, not by <code>i</code>) but a real one, and the unit tests didn't catch it because the test harness never had its own colliding <code>i</code> variable. Fixed with <code>local i</code>; added a regression test that sets an outer <code>i=42</code> before calling <code>settle_check_disarmed</code> and asserts it's unchanged after -- confirmed passing. This is exactly the gap "unit test the logic, then it'll definitely work in the real script" can have: integration context matters and unit tests alone didn't cover it.</p>
+      </div>
+      <p>Also added while resuming (not requested, but needed to actually finish 100 runs unattended): a bounded retry (3 attempts) around the pipeline restart's health check in <code>gate_sweep_batch.sh</code>, since a transient nvblox ESDF-query timeout at run 12 (<code>medium_r04</code>) would otherwise have hard-stopped the whole batch on ordinary Gazebo-startup flakiness unrelated to the arming/stray-process safety checks, which remain unchanged hard stops.</p>
+
+      <h4 style="font-family:'IBM Plex Sans Condensed',sans-serif;font-size:0.85rem;letter-spacing:0.04em;text-transform:uppercase;color:var(--ink-3);margin:1.5rem 0 0.5rem;">Resume and completion</h4>
+      <p>Resumed from the same manifest/seed (<code>20260906</code>) with idempotent skip-if-already-recorded logic -- the 5 runs completed before the halt (including <code>low_r10</code> itself, whose data was valid throughout) were kept, not re-run. All 100 runs completed: <code>[batch] ALL 100 RUNS COMPLETE</code>, zero further halts, exactly 20 runs per level. Final state verified: vehicle disarmed, zero live stray processes, 99GB free (fits the &lt;1GB projected in §48).</p>
+
+      <h4 style="font-family:'IBM Plex Sans Condensed',sans-serif;font-size:0.85rem;letter-spacing:0.04em;text-transform:uppercase;color:var(--ink-3);margin:1.5rem 0 0.5rem;">Full-sweep result -- RPE-1s, n=20/level</h4>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Level</th><th>mean</th><th>sd</th><th>95% CI (bootstrap)</th><th>dropout events</th></tr></thead>
+          <tbody>
+            <tr><td class="label">none</td><td>0.150</td><td>0.135</td><td>(0.100, 0.213)</td><td>1/20 (5%)</td></tr>
+            <tr><td class="label">low</td><td>0.159</td><td>0.155</td><td>(0.100, 0.230)</td><td>3/20 (15%)</td></tr>
+            <tr><td class="label">medium</td><td>0.160</td><td>0.123</td><td>(0.110, 0.215)</td><td>3/20 (15%)</td></tr>
+            <tr><td class="label">high</td><td>0.136</td><td>0.093</td><td>(0.100, 0.179)</td><td>4/20 (20%)</td></tr>
+            <tr><td class="label">extreme</td><td>0.142</td><td>0.127</td><td>(0.096, 0.202)</td><td>1/20 (5%)</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>Trend test (OLS, all 100 runs): slope=&minus;0.0039/level, r=&minus;0.044, <b>p=0.663</b>, bootstrap slope 95% CI (&minus;0.022, 0.014) -- crosses zero. Cohen's d (none&rarr;extreme) = <b>&minus;0.062</b> (negligible). Clean-tracking-only subset (n=88, dropout runs excluded): slope=&minus;0.0034/level, p=0.704 -- same null. Discrete-vs-graded flag: <code>no_rise</code> (level means don't rise monotonically at all). Manipulation check: GPU util none=3.0% vs. ~95% at every loaded level (confirms idle/loaded) but still doesn't separate loaded levels from each other -- consistent with §47/§48, where the <code>nsys</code> kernel-duration characterization already confirmed the presets themselves are cleanly separated (296&micro;s&rarr;19.5ms avg kernel duration none&rarr;extreme), so this null is not attributable to a failed manipulation.</p>
+
+      <div class="callout accent">
+        <p><strong>Provisional leaning: NEGATIVE.</strong> At the power-analysis-justified n=20/level, no dose-response signal is detectable on RPE-1s in the full sample or the clean-tracking-only subset -- a well-powered null, not an underpowered "can't tell" like the n=5 screen. Neither pathway shows a positive result: the <em>accuracy</em> pathway (clean-tracking subset) is flat and non-significant; the <em>timing</em> pathway (dropout-event rate 5%/15%/15%/20%/5% across none&rarr;extreme) isn't monotonic either, and <code>extreme</code> has the second-fewest dropout events of all five levels. This does not rule out a different workload (<code>--workload nvblox</code>, not tested here), a texture-poor world (not built), or an effect only visible closed-loop (this gate is open-loop by hard constraint and cannot reproduce the original incident's actual EKF-acceptance mechanism). Full reasoning and the recommendation in <code>results/feasibility_gate/REPORT.md</code> (local draft, gitignored per <code>CLAUDE.md</code> -- durable copy is this log entry). <b>This is a draft for review, not a final decision.</b></p>
+      </div>
+    </section>
+
+    <section id="m2-texture-poor-world">
+      <div class="section-head"><span class="idx">50</span><h2>G3.4 texture-poor world + manipulation check (2026-09-06)</h2></div>
+      <p class="section-intro">The gate's own criteria call for both a rich-texture arm (G3.3, done in §49) and a texture-poor arm (G3.4). This entry builds the texture-poor world and confirms the manipulation actually works before spending a 100-run sweep on it. <code>EKF2_EV_CTRL</code>=0 throughout.</p>
+
+      <h4 style="font-family:'IBM Plex Sans Condensed',sans-serif;font-size:0.85rem;letter-spacing:0.04em;text-transform:uppercase;color:var(--ink-3);margin-bottom:0.5rem;">Building the world</h4>
+      <p>Copied <code>PX4-Autopilot/Tools/simulation/gz/worlds/vio_test.sdf</code> to <code>vio_test_poor.sdf</code> (both gitignored along with the rest of the vendored <code>PX4-Autopilot/</code> tree) and stripped every one of its 25 <code>&lt;pbr&gt;&lt;metal&gt;&lt;albedo_map&gt;...&lt;/albedo_map&gt;&lt;/metal&gt;&lt;/pbr&gt;</code> blocks (all 25 referenced the same locally-generated <code>checker_noise.png</code>) via a small Python regex pass, verified with <code>gz sdf --check</code> (valid). Geometry, collision, physics, lights, camera, and initial state are byte-identical to the rich world -- every surface keeps only its flat ambient/diffuse/specular color, the same colors that were already present alongside each stripped <code>pbr</code> block.</p>
+
+      <div class="callout bad">
+        <p><strong>Real bug found and fixed while wiring this up.</strong> PX4's own <code>px4-rc.gzsim</code> readiness check polls <code>/world/${PX4_GZ_WORLD}/scene/info</code>, built from the world <em>filename</em> PX4 was told to load -- not the SDF's internal <code>&lt;world name="..."&gt;</code> attribute. An earlier version of this file deliberately kept the internal name as <code>vio_test</code> (to preserve run.sh's hardcoded <code>/world/vio_test/dynamic_pose/info</code> bridge topic) while the filename was <code>vio_test_poor</code> -- this made PX4 poll a gz service (<code>/world/vio_test_poor/scene/info</code>) that gz-sim never advertises (it advertises under the real internal name, <code>vio_test</code>), producing an infinite <code>"Waiting for Gazebo world..."</code> hang, confirmed live via a stuck pipeline boot. Fixed properly: filename and internal world name now match (<code>vio_test_poor</code> everywhere, same convention as the original file), and <code>run.sh</code> is parameterized with a new <code>GZ_WORLD_NAME</code> env var so its bridge topic tracks whichever world is actually active, alongside the existing <code>GZ_TARGET</code> for the make target itself (both default to the original rich-texture behavior when unset). Committed <code>a2c31f8</code>.</p>
+      </div>
+
+      <h4 style="font-family:'IBM Plex Sans Condensed',sans-serif;font-size:0.85rem;letter-spacing:0.04em;text-transform:uppercase;color:var(--ink-3);margin:1.5rem 0 0.5rem;">Manipulation check -- required, and it passed</h4>
+      <p>Compared tracked feature count (<code>/visual_slam/vis/observations_cloud</code>, already recorded in every trimmed bag) between 3 existing rich-texture runs (<code>gate_sweep_none_r01/02/03</code>) and one fresh texture-poor verification flight (<code>verify_poor_r1</code>, contention none, 30s, confirmed disarmed and no strays after).</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th></th><th>mean</th><th>median</th><th>min</th><th>max</th></tr></thead>
+          <tbody>
+            <tr><td class="label">Rich</td><td>262.6</td><td>~229</td><td>13</td><td>429</td></tr>
+            <tr><td class="label">Poor</td><td>105.8</td><td>85.0</td><td>0</td><td>407</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout good">
+        <p><strong>PASSED.</strong> Poor/rich feature-count ratio 0.40x -- a substantial, unambiguous reduction. Poor texture's own minimum hit 0 (a genuine tracking-loss event within a single 30s hover-and-climb) where rich's worst sample across three runs never dropped below 13. "Poor" is actually poor.</p>
+      </div>
+    </section>
+
+    <section id="m2-gate-sweep-poor">
+      <div class="section-head"><span class="idx">51</span><h2>G3.4 gate sweep + rich-vs-poor comparison (2026-09-06)</h2></div>
+      <p class="section-intro">Same design as §49's rich sweep (5 contention levels &times; n=20, synthetic stressor, randomized order, fresh restart + confirmed-disarm between every run, 8.4MB trimmed recording, RPE-1s metric), run against the texture-poor world from §50 with an independent random seed (<code>20260907</code>). <code>EKF2_EV_CTRL</code>=0 throughout. Zero halts across all 100 runs -- §49's confirmed-disarm fix and settle-and-retry backstop held for the full 200 runs across both arms.</p>
+
+      <h4 style="font-family:'IBM Plex Sans Condensed',sans-serif;font-size:0.85rem;letter-spacing:0.04em;text-transform:uppercase;color:var(--ink-3);margin-bottom:0.5rem;">Per-level result, rich vs. poor</h4>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Level</th><th>Rich mean</th><th>Rich dropout</th><th>Poor mean</th><th>Poor dropout</th></tr></thead>
+          <tbody>
+            <tr><td class="label">none</td><td>0.150</td><td>1/20 (5%)</td><td>0.373</td><td>18/20 (90%)</td></tr>
+            <tr><td class="label">low</td><td>0.159</td><td>3/20 (15%)</td><td>0.310</td><td>17/20 (85%)</td></tr>
+            <tr><td class="label">medium</td><td>0.160</td><td>3/20 (15%)</td><td>0.272</td><td>16/20 (80%)</td></tr>
+            <tr><td class="label">high</td><td>0.136</td><td>4/20 (20%)</td><td>0.291</td><td>15/20 (75%)</td></tr>
+            <tr><td class="label">extreme</td><td>0.142</td><td>1/20 (5%)</td><td>0.344</td><td>17/20 (85%)</td></tr>
+            <tr><td class="label"><b>overall</b></td><td><b>0.149</b></td><td><b>12/100 (12%)</b></td><td><b>0.318</b></td><td><b>83/100 (83%)</b></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout accent">
+        <p><strong>Texture main effect is large and unambiguous:</strong> poor-texture RPE-1s runs ~2.1&times; rich's, and poor-texture tracking-loss rate (83%) is ~7&times; rich's (12%). This confirms G3.4's premise -- texture availability dominates VIO robustness in this world far more than anything tested in G3.3 -- but it's a <em>texture</em> effect, not a <em>contention</em> effect, and was never the variable the original hypothesis was about.</p>
+      </div>
+
+      <h4 style="font-family:'IBM Plex Sans Condensed',sans-serif;font-size:0.85rem;letter-spacing:0.04em;text-transform:uppercase;color:var(--ink-3);margin:1.5rem 0 0.5rem;">Contention trend within texture-poor</h4>
+      <p>Full sample (n=100): slope=&minus;0.0078/level, r=&minus;0.082, <b>p=0.415</b>, bootstrap 95% CI (&minus;0.027, 0.011) -- crosses zero. Cohen's d (none&rarr;extreme) = <b>&minus;0.199</b> (small, wrong direction). Same null conclusion as rich (p=0.663 there), just noisier.</p>
+      <div class="callout bad">
+        <p><strong>Clean-tracking-only subset flagged as unreliable, not reported as a finding.</strong> Because dropout is the <em>dominant</em> outcome at this texture level (75-90% per level), the clean-tracking subset is tiny and lopsided by level: none=2, low=3, medium=4, high=5, extreme=3 (n=17 total). Its OLS trend (slope=&minus;0.0508/level, p=0.107) has a bootstrap 95% CI of (&minus;0.090, &minus;0.011) that technically doesn't cross zero -- but bootstrap resampling from a per-level n as low as 2 has too few distinct resample outcomes to approximate real sampling variability, and a sample this small is highly vulnerable to single-point leverage. Even taken at face value, the direction (higher contention &rarr; <em>lower</em> RPE) is backwards from the hypothesis under test, more plausibly reflecting survivorship in an already-marginal tracking regime than a real accuracy effect.</p>
+      </div>
+      <p>Timing pathway (dropout-event rate by level): 90% / 85% / 80% / 75% / 85% for none&rarr;extreme -- not monotonic, and actually <em>lowest</em> at <code>high</code>, the second-heaviest contention level. Same non-monotonic-null pattern as rich (5/15/15/20/5%). No timing-pathway dose-response in either arm.</p>
+
+      <h4 style="font-family:'IBM Plex Sans Condensed',sans-serif;font-size:0.85rem;letter-spacing:0.04em;text-transform:uppercase;color:var(--ink-3);margin:1.5rem 0 0.5rem;">Rich-vs-poor interaction: null in both, texture dominates</h4>
+      <div class="callout accent">
+        <p><strong>Does contention show an effect in poor that was absent in rich? No.</strong> Both arms return a non-significant, near-zero-or-negative full-sample trend (p=0.663 rich, p=0.415 poor); neither shows a reliable accuracy-pathway or timing-pathway dose-response. The one nominally "significant" result (poor's clean-tracking-only subset) is built on a sample too small and too structurally biased (survivor selection under 83% dropout) to trust, and even it points the wrong direction. The real, large, well-powered effect in this combined 200-run dataset is texture itself -- never the variable under test in the original GPU-contention hypothesis.</p>
+      </div>
+
+      <h4 style="font-family:'IBM Plex Sans Condensed',sans-serif;font-size:0.85rem;letter-spacing:0.04em;text-transform:uppercase;color:var(--ink-3);margin:1.5rem 0 0.5rem;">Updated provisional gate verdict</h4>
+      <p>Leaning <b>NEGATIVE</b> for "GPU contention measurably degrades cuVSLAM tracking accuracy via a graded dose-response," now tested across both texture conditions the gate specified (G3.3 rich, G3.4 poor) -- completing the gate's own criteria. Does not rule out a different, more targeted GPU workload (<code>--workload nvblox</code>, not exercised in either sweep) or an effect only observable closed-loop (both arms are open-loop by hard constraint, so neither can reproduce the original ~55m incident's actual runaway mechanism). Full reasoning, both arms' tables, and the recommendation in <code>results/feasibility_gate/REPORT.md</code> (local draft, gitignored per <code>CLAUDE.md</code> -- durable copy is this log entry). <b>This is a draft for review, not a final decision.</b></p>
+    </section>
+
+    <section id="route2-probe">
+      <div class="section-head"><span class="idx">52</span><h2>Route 2 closed-loop probe: setup, R2-0, R2-1 (2026-09-06/07)</h2></div>
+      <p class="section-intro">First time <code>EKF2_EV_CTRL</code> is nonzero anywhere in this project. Deliberate, bounded feasibility probe (branch <code>r2-closedloop-probe</code>, never merged to <code>feasibility-gate</code> or <code>main</code>) into whether the original Phase 6 55m divergence incident was contention-gated or an estimator artifact independent of contention. SIM ONLY. <code>EKF2_EV_CTRL=11</code> (horizontal position + vertical position + yaw, no velocity) verified against this exact PX4 checkout's <code>params_external_vision.yaml</code> bit definitions and against this project's own Phase 4 history (README.md), confined entirely to a new airframe (<code>4900_gz_x500_depth_stereo_r2closedloop</code>) selected only via explicit <code>PX4_SYS_AUTOSTART=4900</code> -- the shared <code>4022</code> airframe every other experiment uses stays untouched at 0.</p>
+
+      <h4 style="font-family:'IBM Plex Sans Condensed',sans-serif;font-size:0.85rem;letter-spacing:0.04em;text-transform:uppercase;color:var(--ink-3);margin-bottom:0.5rem;">Setup</h4>
+      <p>New obstacle-free world (<code>vio_test_r2_obstaclefree.sdf</code>, all 24 physical obstacle models stripped -- so a genuine runaway flies into open space with nothing to hit) and a new safety watchdog, <code>tools/route2_probe/r2_killswitch.py</code>, extending <code>hard_killswitch.py</code>'s proven kill-bridge-then-disarm design (same geofence thresholds) with one new trigger: horizontal divergence between the EKF's fused NED estimate and Gazebo ENU ground truth, 10m threshold. The NED&harr;ENU conversion was validated live before being trusted -- residual stayed ~0.03-0.06m flat across a real flight with 3.6m lateral / 4.7m vertical displacement (would have grown with displacement had the axes been swapped or sign-flipped). Recording extended to the EKF's fused pose and the 3 EV aid-source topics (innovation/covariance/accept-reject) -- newly added to PX4's uXRCE-DDS publication whitelist, since they were never bridged to ROS2 at all before this probe, closed-loop or not.</p>
+      <div class="callout bad">
+        <p><strong>Two pre-existing infrastructure bugs found and fixed while wiring this up</strong> (neither introduced by this probe): (1) <code>4022_gz_x500_depth_stereo</code> was never actually registered in PX4's ROMFS CMakeLists -- it only worked via a stale, un-reproducible build artifact, exposed the moment a clean rebuild (needed to add the new 4900 airframe) silently dropped it. Fixed by registering both airframes properly; verified the standard feasibility-gate pipeline still boots correctly afterward. (2) PX4's own <code>px4-rc.gzsim</code> readiness check polls a gz service built from the world <em>filename</em>, not the SDF's internal <code>&lt;world name&gt;</code> attribute -- an earlier version of the obstacle-free world kept those mismatched, causing an infinite "Waiting for Gazebo world..." hang.</p>
+      </div>
+
+      <h4 style="font-family:'IBM Plex Sans Condensed',sans-serif;font-size:0.85rem;letter-spacing:0.04em;text-transform:uppercase;color:var(--ink-3);margin:1.5rem 0 0.5rem;">STAGE R2-0 -- closed-loop baseline, no contention (8 runs) -- EARLY-STOP GATE</h4>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>mean divergence</th><th>max divergence</th><th>runaway rate</th><th>ev_pos/ev_hgt fused</th><th>ev_yaw fused</th></tr></thead>
+          <tbody>
+            <tr><td>0.0296m &plusmn; 0.0216m</td><td>0.0350m &plusmn; 0.0204m</td><td>0/8 (0%)</td><td>96.4% / 99.6%</td><td>0.0%</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout good">
+        <p><strong>STABLE.</strong> Divergence is tiny, nowhere close to the 10m abort threshold; zero runaways. Per the gate's own logic this is not "unstable at none," so the probe proceeded to R2-1 rather than stopping. <strong>Yaw fusion never engages (0% across every run, R2-0 and R2-1 combined)</strong> -- not a bug: <code>visual_odometry_bridge.py</code>'s own docstring documents cuVSLAM's odometry as <code>POSE_FRAME_FRD</code> (relative, arbitrary yaw origin), not <code>POSE_FRAME_NED</code> (absolute, North-referenced) -- position/height fusion (the primary spatial estimate) worked well throughout (96-100% fused) regardless. Reported as a finding, not investigated further (out of scope for a bounded probe).</p>
+      </div>
+
+      <h4 style="font-family:'IBM Plex Sans Condensed',sans-serif;font-size:0.85rem;letter-spacing:0.04em;text-transform:uppercase;color:var(--ink-3);margin:1.5rem 0 0.5rem;">STAGE R2-1 -- contention probe, powered (none/medium/high, n=40/level, 120 runs)</h4>
+      <p>Randomized order (seed <code>20260906</code>), not blocked by level. Two real robustness-check halts during this stage, both root-caused and fixed live, batch resumed from the same manifest with no data lost: (1) <code>run_r2_probe.sh</code>'s own precondition check (cuVSLAM odometry present) had no retry and failed twice at the identical manifest position -- run.sh's health check verifies generic <code>/fmu/*</code> topics but never specifically waits on this one; fixed with a 20&times;1s retry. (2) <code>fast_planner_trigger</code> survived its own 15s <code>timeout</code> once (hung, empty log) -- the foreground <code>timeout ... || true</code> pattern only reached the <code>ros2 run</code> wrapper, not the real grandchild (reparented to PID 1) -- the same class of bug this project already hardened other children against; fixed with <code>setsid</code> + tracked PID + <code>kill_group()</code>. A large zombie-process backlog (this container's already-documented PID 1-doesn't-reap limitation) also required one full container restart mid-batch -- all data survived (<code>/workspaces</code> and <code>/tmp</code> are both bind-mounted/volume-backed).</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Level</th><th>mean divergence</th><th>max divergence</th><th>runaway rate</th><th>ev_pos fused</th></tr></thead>
+          <tbody>
+            <tr><td class="label">none</td><td>0.0306m &plusmn; 0.0175m</td><td>0.0346m &plusmn; 0.0180m</td><td>0/40 (0%)</td><td>97.2%</td></tr>
+            <tr><td class="label">medium</td><td>0.0236m &plusmn; 0.0134m</td><td>0.0283m &plusmn; 0.0150m</td><td>1/40 (2.5%)</td><td>97.9%</td></tr>
+            <tr><td class="label">high</td><td>0.0285m &plusmn; 0.0147m</td><td>0.0329m &plusmn; 0.0145m</td><td>0/40 (0%)</td><td>97.6%</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>Trend test (mean divergence ~ level, OLS): slope=&minus;0.00107/level, r=&minus;0.057, <b>p=0.540</b>, bootstrap 95% CI (&minus;0.0046, 0.0024) -- crosses zero. Cohen's d (none&rarr;high) = <b>&minus;0.132</b> (negligible). Runaway rate 0/1/0 across none/medium/high -- a single isolated event, at <em>medium</em> (not the highest level), no directional pattern. That one event (<code>medium_r106</code>) was an <code>altitude_low</code> breach at -0.52m (just past the ground-punch-through floor), consistent with a routine landing/settling overshoot -- a <code>divergence</code>-kind breach (the mechanism specific to this probe) never fired once across all 128 runs.</p>
+
+      <div class="callout bad">
+        <p><strong>STAGE R2-2 NOT RUN (wall-clock cap).</strong> Setup + two live infrastructure incidents + a container restart consumed the available budget. This is a disclosed gap, not a hidden one: R2-2 (nvblox concurrent + original-style cruise trajectory, none vs. high, n=22/level) was specifically designed to reproduce the <em>actual</em> Phase 6 incident conditions -- a synthetic PyTorch stressor and a simple climb (what R2-0/R2-1 tested) are not the same as nvblox's own concurrent CUDA context and a lateral cruise near obstacles. The result below applies only to the tested conditions.</p>
+      </div>
+
+      <div class="callout accent">
+        <p><strong>Provisional decision, scoped to what was tested: NO-GO (robust).</strong> No meaningful divergence across 128 closed-loop runs, no contention-linked trend in divergence (p=0.540) or runaway rate, no <code>divergence</code>-kind trigger ever fired. Under a synthetic GPU stressor, an obstacle-free world, and a simple climb-and-hover trajectory, this closed-loop configuration is stable regardless of contention level tested. <strong>This does not rule out the original hypothesis under the specific conditions that produced the incident</strong> (nvblox's own concurrent CUDA context, a lateral cruise near obstacles) -- those were never tested here; R2-2 exists precisely to close that gap. Recommendation: run R2-2 before treating Route 2 as closed -- if it's also negative, "55m was a one-off/mundane bug" becomes a much stronger claim than it is today. <code>EKF2_EV_CTRL</code> reverted to 0 in the default working config, confirmed live (zero data flow on EV aid-source topics under the unmodified 4022 airframe, no env overrides) -- the invariant holds for every other experiment in this repo; the EV-on config exists only on <code>r2-closedloop-probe</code>. Full reasoning in <code>results/route2_probe/REPORT.md</code> (local draft, gitignored). <b>This is a draft for review, not a final decision.</b></p>
+      </div>
+    </section>
+
+    <section id="route2-r2-2">
+      <div class="section-head"><span class="idx">53</span><h2>Route 2 R2-2: the decisive 55m-regime test — Route 2 CLOSED (2026-09-07)</h2></div>
+      <p class="section-intro">The last open Route 2 question: does closed-loop divergence reproduce under REAL nvblox contention on the demanding near-obstacle cruise trajectory that produced the original Phase 6 incident? Full coupled stack this time: cuVSLAM&rarr;EKF&rarr;control <b>and</b> nvblox ESDF&rarr;<code>reactive_esdf_avoidance</code>&rarr;control -- Phase 6's actual original-incident control node (self-contained arm/climb/potential-field avoidance), not Fast-Planner's separate kinodynamic planner used everywhere else in this project -- against the OBSTACLE world (<code>vio_test.sdf</code>, real markers/pillars, not R2-0/R2-1's obstacle-free variant). Its own goal, (7,0,5) ENU, is deliberately set past <code>pillar_01</code> so a straight line is blocked -- this <i>is</i> the original cruise-near-obstacle trajectory. SIM ONLY, airframe 4900 (<code>EKF2_EV_CTRL=11</code>).</p>
+
+      <h4 style="font-family:'IBM Plex Sans Condensed',sans-serif;font-size:0.85rem;letter-spacing:0.04em;text-transform:uppercase;color:var(--ink-3);margin-bottom:0.5rem;">Contention + design</h4>
+      <p>Contention is REAL nvblox load (<code>integrate_depth_rate_hz</code>), not a synthetic stand-in: L0=40Hz (light), L1=640Hz (heavy), L2=640Hz + synthetic extreme stressor on top (worst-case combined). n=20/level, randomized order (seed <code>20260907</code>), 60 runs, zero halts (one container restart for the same pre-existing zombie-process limitation as R2-1 -- all data survived, <code>/workspaces</code> and <code>/tmp</code> bind-mounted/volume-backed). New for this stage: EV message age (<code>timestamp - timestamp_sample</code>, the timing-mechanism signal) and a post-hoc min-obstacle-clearance/collision flag computed from recorded ground truth against <code>vio_test.sdf</code>'s known, fixed obstacle geometry -- no live collision sensor needed, <code>reactive_esdf_avoidance.py</code> itself untouched.</p>
+      <div class="callout bad">
+        <p><strong>One analysis bug caught and fixed before trusting any number:</strong> the analysis script's bag-path construction used the wrong directory-naming template (missing a "2_" segment specific to this stage's exp_id convention) -- every one of the 60 runs silently reported "no usable data" on the first pass, even though all 60 bags were valid and complete. The earlier single manual test run happened to work by accident (its own ad-hoc exp_id already included the extra segment), which is exactly why the bug wasn't caught until the real batch. Fixed, verified against the full dataset before drawing any conclusion below.</p>
+      </div>
+
+      <h4 style="font-family:'IBM Plex Sans Condensed',sans-serif;font-size:0.85rem;letter-spacing:0.04em;text-transform:uppercase;color:var(--ink-3);margin:1.5rem 0 0.5rem;">Result</h4>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Condition</th><th>mean divergence</th><th>large-div (&gt;1m) rate</th><th>runaway rate</th><th>collision rate</th><th>ev_pos msg age</th><th>ev_pos rejected%</th></tr></thead>
+          <tbody>
+            <tr><td class="label">L0 (light)</td><td>0.0243m &plusmn; 0.0167m</td><td>0/20 (0%)</td><td>2/20 (10%)</td><td>2/20 (10%)</td><td>157.1ms</td><td>0.17%</td></tr>
+            <tr><td class="label">L1 (heavy)</td><td>0.0315m &plusmn; 0.0182m</td><td>0/20 (0%)</td><td>4/20 (20%)</td><td>1/20 (5%)</td><td>155.8ms</td><td>0.16%</td></tr>
+            <tr><td class="label">L2 (heavy+synthetic)</td><td>0.0314m &plusmn; 0.0141m</td><td>0/20 (0%)</td><td>4/20 (20%)</td><td>0/20 (0%)</td><td>157.6ms</td><td>0.03%</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>Trend tests (OLS, condition coded L0/L1/L2=0/1/2, n=55-60): mean divergence slope=0.00337/level, p=<b>0.235</b>, bootstrap 95% CI (&minus;0.00129, 0.00813) -- crosses zero. EV message age slope=0.211ms/level, p=<b>0.593</b> -- flat, no timing degradation with real nvblox load. EV rejected% slope=&minus;0.071%/level, p=<b>0.449</b> -- flat, if anything slightly negative.</p>
+      <div class="callout good">
+        <p><strong>Zero large-divergence (&gt;1m) reproductions at any level, across 60 runs -- the 55m regime did not reproduce even once.</strong> All 10 runaway events were <code>descent_rate</code>-kind killswitch breaches (mostly marginal, 1.50-1.55m/s against the 1.5m/s threshold; one at 3.77m/s) -- <b>zero were <code>divergence</code>-kind</b>, the exact mechanism this probe exists to detect. The two physical collisions (post-hoc geometric clearance = 0) both occurred at <b>L0</b>, the lightest-contention condition, and neither triggered the killswitch at all (no accompanying geofence/divergence anomaly) -- both consistent with <code>reactive_esdf_avoidance</code>'s own documented limitation ("No planning ahead -- reactive only": a pure potential-field controller can graze an obstacle without any estimator-visible flight-dynamics anomaly), not an EKF/estimator event. The direction (collisions decreasing with load, not increasing) runs opposite to a contention-driven hypothesis.</p>
+      </div>
+
+      <div class="callout accent">
+        <p><strong>DECISION R2: NO-GO (robust). Route 2 is CLOSED.</strong> Across all three closed-loop stages (200 total runs: 8 baseline + 120 synthetic-stressor-powered + 60 real-nvblox-load-powered against the actual obstacle world and the actual original control node), no meaningful divergence, no contention-linked trend in divergence/timing/rejection-rate, and zero <code>divergence</code>-kind killswitch triggers anywhere. R2-2 specifically closed the gap R2-0/R2-1 left open: real nvblox contention (not synthetic), the actual incident's control node (<code>reactive_esdf_avoidance</code>, not Fast-Planner), and the actual obstacle-laden cruise trajectory all failed to reproduce anything resembling the original 55m divergence, at any tested load level up to and including the worst-case combined condition. Combined with the open-loop gate's own negative finding (&sect;45-51: no contention-linked cuVSLAM tracking-accuracy effect either), <b>the original ~55m incident was not reproducible under any contention mechanism this project tested, and is best explained as a one-off, a mundane bug, or a condition outside the range this stack was probed across</b> -- not evidence that GPU contention is irrelevant to this stack in every conceivable configuration, only that the increasingly faithful attempts made across this whole engagement (G3.3 rich, G3.4 texture-poor, R2-0/R2-1 synthetic-closed-loop, R2-2 real-nvblox-closed-loop) never found it.</p>
+        <p><strong>Recommendation:</strong> close Route 2 -- the evidence across 200 closed-loop runs plus the open-loop gate's own 200 runs does not support a contention-gated divergence/runaway mechanism in this stack. Separately worth noting for future closed-loop navigation work (a navigation-algorithm finding, not an estimator one): <code>reactive_esdf_avoidance</code>'s pure potential-field approach can graze obstacles or produce marginal descent-rate transients on its own, independent of GPU load. <code>EKF2_EV_CTRL</code> reverted to 0 in the default working config, confirmed live (zero data flow on any EV aid-source topic under the unmodified 4022 airframe, no env overrides) -- the invariant holds for every other experiment in this repo; the EV-on config exists only on <code>r2-closedloop-probe</code>. Full reasoning in <code>results/route2_probe/REPORT.md</code> (local draft, gitignored). <b>This is a draft finding for review, not a final decision.</b></p>
+      </div>
+    </section>
+
+    <section id="verdict-consolidated">
+      <div class="section-head"><span class="idx">54</span><h2>Consolidated gate verdict &amp; where the project stands (2026-09-09)</h2></div>
+      <p class="section-intro">Synthesized from <code>plan/dfrog_comprehensive_report.md</code> (2026-09-09), which reviewed this entire record end to end. Nothing here is a new experiment -- it is the rollup of &sect;42-53, stated once in one place for a reader who wants the bottom line without the run-by-run detail.</p>
+
+      <div class="callout accent">
+        <p><strong>GATE VERDICT: NEGATIVE. Across ~400 total automated runs</strong> -- open-loop and closed-loop, synthetic and real nvblox contention, obstacle-free and obstacle-laden worlds, two textures -- <b>no contention-gated phenomenon was found under any tested condition.</b> The original ~55m incident is best explained as a one-off, a mundane bug, or a condition outside everything this stack tested. Scene <b>texture</b>, not GPU contention, is the operative driver of localization degradation. This is a <em>well-powered</em> null (adequate to detect the effect size that would have mattered), not an underpowered "cannot tell" -- the distinction the whole gate discipline (&sect;45-47's power analysis, &sect;46's small-sample false positive) exists to earn.</p>
+      </div>
+
+      <h4 style="font-family:'IBM Plex Sans Condensed',sans-serif;font-size:0.85rem;letter-spacing:0.04em;text-transform:uppercase;color:var(--ink-3);margin-bottom:0.5rem;">The result, in one table</h4>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Regime</th><th>Contention result</th><th>Notes</th></tr></thead>
+          <tbody>
+            <tr><td class="label">Open-loop, rich texture</td><td>null -- trend p=0.66, d&asymp;&minus;0.06</td><td>flat, non-monotonic</td></tr>
+            <tr><td class="label">Open-loop, poor texture</td><td>null -- trend p=0.42</td><td>contention flat again</td></tr>
+            <tr><td class="label">Closed-loop, synthetic (R2-1)</td><td>null -- trend p=0.54, d&asymp;&minus;0.13</td><td>runaways not contention-driven</td></tr>
+            <tr><td class="label">Closed-loop, real nvblox (R2-2)</td><td>null -- 0/60 large-divergence</td><td>the decisive test; message-age p=0.59, rejection p=0.45</td></tr>
+            <tr><td class="label"><b>Texture main effect</b></td><td><b>LARGE</b> -- RPE &asymp;2.1&times;, dropout &asymp;7&times;, features 0.40&times;</td><td>the variable that <em>does</em> drive degradation</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>A reusable methodological lesson sits underneath this table, not just the result itself: the pilot n=5 signal (&sect;46, d&asymp;1.0, apparently monotonic) <b>collapsed to a null</b> under n=20 + randomization -- a cautionary result about pilot-scale inference in high-variance robotic sims, and the direct justification for running the gate before committing months to a larger study built on noise.</p>
+
+      <h4 style="font-family:'IBM Plex Sans Condensed',sans-serif;font-size:0.85rem;letter-spacing:0.04em;text-transform:uppercase;color:var(--ink-3);margin:1.5rem 0 0.5rem;">Consolidated list of issues addressed</h4>
+      <p><b>Methodological:</b> endpoint/ATE metric unusable (22&times; baseline variance) &rarr; adopted RPE-1s (&sect;46); pilot n=5 false positive identified and explained; power analysis sized the real sweep (&sect;47); <code>nvidia-smi</code> shown inadequate as a treatment metric &rarr; nsys/pynvml preset characterization (&sect;47-48); randomized run order defended against thermal/time-drift confounds; texture confound separated via a factorial design with its own manipulation check (&sect;50-51).</p>
+      <p><b>Engineering / infrastructure (fixed for the whole project, not just one run):</b> <code>nvblox_node</code> missing <code>use_sim_time</code> (would have corrupted every timestamp-alignment join); recording trimmed 530MB &rarr; 8.4MB/run (removed the disk blocker for the sweep, &sect;48); <code>run_gate.sh</code> cleanup hardened (setsid/process-group kill + <code>pkill</code> net + unconditional force-disarm) after leftover-armed-vehicle events, &sect;44/49; batch robustness check given a settle-and-retry (a false-alarm fix, without weakening the safety guard) &sect;49; a proportional-to-distance bug in <code>triage_incident.py</code> &sect;43; a texture-poor-world PX4 boot hang from a world-name/filename mismatch &sect;50; an unregistered <code>4022</code> airframe that only worked via a stale build artifact &sect;52; a bag-path template bug in the R2-2 analysis &sect;53; zombie-process buildup identified and handled via container restarts &sect;52-53.</p>
+      <p><b>Safety / integrity:</b> a GitHub token pasted into chat during an earlier push was flagged as compromised, with rotation advised -- neither the manager conversation nor Claude Code ever embedded it; the alarming "2.3m" baseline drift figure was caught as a measurement artifact (a logger running past bag end on an unsupervised armed vehicle), real value 0.85m &sect;43; the closed-loop probe was confined to an isolated airframe/branch throughout, with the <code>EKF2_EV_CTRL=0</code> invariant restored and verified live after every stage &sect;52-53; every experimental claim in this log was verified against the repo before being treated as done, per this project's own "done" definition (&sect;P2).</p>
+
+      <h4 style="font-family:'IBM Plex Sans Condensed',sans-serif;font-size:0.85rem;letter-spacing:0.04em;text-transform:uppercase;color:var(--ink-3);margin:1.5rem 0 0.5rem;">Where the project stands</h4>
+      <p>The exciting hypothesis is definitively dead, open-loop and closed-loop. This is not an execution failure -- it is the feasibility gate working exactly as intended: a plausible, anecdote-backed effect was disproven cheaply, in about a week, before months were spent building on it. Two framings separate cleanly:</p>
+      <ul>
+        <li><b style="color:var(--ink)">Capstone (degree deliverable):</b> graded on rigor, not on whether the effect exists. <b>Secured.</b> The material exists in full: a comprehensive well-powered null, the texture&gt;&gt;contention finding, the methodology contributions, a reproducible harness, failure analysis, and closed-loop coverage.</li>
+        <li><b style="color:var(--ink)">Paper (contribution to the field):</b> the positive version is gone. As of this entry's own writing the viable path identified was "Route 3" (negative result + methodology + benchmark) -- superseded the same day by a more developed analysis; see &sect;55.</li>
+      </ul>
+      <div class="callout good">
+        <p><strong>Deliverables produced:</strong> in the companion planning workspace -- a formal research plan, a novelty-check literature review, a master Gate&rarr;M0-M6 task list, an executor prompt, and a negative-result paper/thesis outline. In this repo -- <code>plan/plan.md</code>, <code>tools/feasibility_gate/*</code>, <code>tools/route2_probe/*</code>, this log's &sect;42-53, <code>results/feasibility_gate/REPORT.md</code>, <code>results/route2_probe/REPORT.md</code>, and branches <code>feasibility-gate</code> and <code>r2-closedloop-probe</code> (the latter a strict superset of the former, both fully pushed to <code>origin</code> -- confirmed 2026-09-09 while integrating this entry).</p>
+      </div>
+    </section>
+
+    <section id="direction-pivot">
+      <div class="section-head"><span class="idx">55</span><h2>Research direction report: literature review &amp; the pivot to Direction E (2026-09-09)</h2></div>
+      <p class="section-intro">Synthesized from <code>plan/Dfrog_research_direction_report.md</code> (2026-09-09), a full literature-review pass done in the companion planning conversation once &sect;54's verdict was in hand. Question addressed: given a well-powered null plus a large texture effect plus a methodology story, what is actually publishable -- not what to run next.</p>
+
+      <h4 style="font-family:'IBM Plex Sans Condensed',sans-serif;font-size:0.85rem;letter-spacing:0.04em;text-transform:uppercase;color:var(--ink-3);margin-bottom:0.5rem;">Candidate directions, and why each was set aside</h4>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Direction</th><th>Pitch</th><th>Verdict</th></tr></thead>
+          <tbody>
+            <tr><td class="label">A1</td><td>Publish the null as-is</td><td>Weak -- OV&sup2;SLAM (below) shows contention <em>does</em> degrade accuracy under memory pressure, so "nobody checked" is false. Workshop-only.</td></tr>
+            <tr><td class="label">A2</td><td>Texture-dominant positive reframe</td><td>Thinner than first assessed -- both legs have close, recent prior art. Only the controlled head-to-head + the false-positive lesson survive.</td></tr>
+            <tr><td class="label">A3</td><td>Methodology / rigor paper</td><td>Narrow -- the "<code>nvidia-smi</code> is inadequate" insight is already established in GPU systems; the "common practice is underpowered" claim needs a 20-40 paper survey not yet done.</td></tr>
+            <tr><td class="label">B</td><td>Jetson Orin Nano replay</td><td>Re-scoped, not abandoned -- folds into Direction E as the second platform (below).</td></tr>
+            <tr><td class="label">C</td><td>Texture-health runtime monitor</td><td><b>Drop.</b> All three functional pieces (health signal, lead-time predictor, closed-loop response) are separately occupied in the literature; the lead-time differentiator specifically by SUPER (arXiv 2512.14189, 2026).</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h4 style="font-family:'IBM Plex Sans Condensed',sans-serif;font-size:0.85rem;letter-spacing:0.04em;text-transform:uppercase;color:var(--ink-3);margin:1.5rem 0 0.5rem;">The apparent contradiction with OV&sup2;SLAM -- resolved, not reconciled</h4>
+      <p>A key complication surfaced during the review: <em>Analysis and Mitigation of Shared Resource Contention on Heterogeneous Multicore</em> (arXiv 2304.13110) co-schedules a DNN + memory-DoS against OV&sup2;SLAM and finds ATE rising from &asymp;0.03m (solo) to &gt;0.8m (+DNN, &asymp;27&times;) via <b>shared-DRAM contention</b> on an integrated-GPU SoC -- the opposite sign to this project's own null.</p>
+      <div class="callout good">
+        <p><strong>There is no real contradiction -- two different mechanisms, different regimes.</strong> Texture&rarr;accuracy is direct and always-on: fewer distinctive features means worse geometry for the pose solve, on any hardware. Contention&rarr;accuracy is indirect, via timing: contention doesn't change the computed math, it changes <em>when</em> it finishes -- under enough load, deadlines are missed and frames/keyframes drop, and <em>those drops</em> degrade accuracy (OV&sup2;SLAM's own shared-DRAM mechanism). This project's laptop (RTX&nbsp;4060, 8GB, discrete GPU) observed the model at a point where starvation never triggered -- headroom, so no drops, so no accuracy hit. OV&sup2;SLAM observed it on a weak SoC with unified DRAM, where it did. Same physics, different operating point. "Reconcile / rebut OV&sup2;SLAM" was an overstatement -- there was nothing to reconcile. The one genuinely unmeasured quantity that falls out of this: on a starved platform, does a feature-poor scene make things worse than additive, or less? That interaction is structurally invisible to both prior results and becomes an axis of Direction E, not a standalone claim.</p>
+      </div>
+
+      <h4 style="font-family:'IBM Plex Sans Condensed',sans-serif;font-size:0.85rem;letter-spacing:0.04em;text-transform:uppercase;color:var(--ink-3);margin:1.5rem 0 0.5rem;">Recommended direction: E -- the operating-envelope / transition-point paper</h4>
+      <p>The reframe: stop asking <em>which factor causes the error</em> (a closed question, and one this project's own &sect;54 verdict already answers for GPU contention specifically) and instead characterize <em>where the safe/unsafe operating boundary sits for the coupled localization + dense-mapping GPU workload, and how to predict it</em> -- a systems/deployment contribution that absorbs every existing asset instead of building five thin competing papers.</p>
+      <p><b>The claim:</b> for this class of coupled aerial stack, localization degradation under compute load is a <b>threshold phenomenon, not a smooth trade-off</b>; the threshold's location is a <b>predictable function</b> of the platform's timing margin and the scene's feature load; and there is a <b>protocol + predictor</b> that locates it without flying. The elegant version, if the data cooperates: <em>"accuracy fails as a cliff, not a slope, and we can predict the edge."</em></p>
+      <p><b>The gap:</b> SLAMBench and its lineage own accuracy/performance/energy design-space exploration, but tune one SLAM algorithm's own parameters in isolation, not contention between two co-running nodes sharing a GPU. Real-time co-scheduling work (Ali et al., ICRA 2025; RED; RTGPU) owns the timing half and the solution half, stopping at deadline/latency metrics. Nobody has drawn the mapped, predictive, safety-linked operating envelope for the coupled cuVSLAM+nvblox+planner deployment pattern specifically.</p>
+
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Existing asset</th><th>Role in Direction E</th></tr></thead>
+          <tbody>
+            <tr><td class="label">Texture main effect</td><td>The scene-difficulty axis of the envelope; home for the texture&times;contention interaction</td></tr>
+            <tr><td class="label">Contention null (this laptop)</td><td>The flat, safe anchor -- one end of the boundary on a headroom-rich board</td></tr>
+            <tr><td class="label"><code>nsys</code> load characterization + the false-positive lesson</td><td>The measurement protocol underpinning the envelope</td></tr>
+            <tr><td class="label">Jetson Orin Nano (old Direction B)</td><td>Platform #2, where the cliff is reachable and the prediction gets tested</td></tr>
+            <tr><td class="label">Fast-Planner in the loop</td><td>The safety-outcome axis -- what makes crossing the cliff a <em>robotics</em> failure, not just a higher RPE number</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>Minimum new work: port the stack to the Orin Nano and replay the same rosbags; deliberately push mapping load (nvblox voxel resolution, ESDF range, update rate) until the cliff is located; build and validate the offline predictor. No new flight risk -- <code>EKF2_EV_CTRL=0</code> for the accuracy sweeps, on only for navigation-outcome runs behind the existing safety harness (&sect;52's geofence, divergence abort, killswitch). Main risk: the cliff may be unreachable even on the Orin (a replay without Gazebo frees GPU the laptop spent on rendering) -- mitigated by pushing mapping config to its limit and, if still safe, reporting that itself as a deployment-relevant bound. Target venue: RA-L or an IROS/ICRA systems paper, with an RTAS/RTSS/ECRTS/TECS workshop as the safe floor.</p>
+
+      <div class="callout accent">
+        <p><strong>Cross-check against this repo's own record:</strong> the direction report's recommended sequencing (&sect;9 of that document) opens with a forensic-triage step to settle the 55m attribution via a Q1/Q2 data-level analysis (was it genuinely closed-loop and fused; did features collapse before or after pose error grew). That step is <b>already effectively answered</b> by work already in this log: no original-incident rosbag was ever found to exist (&sect;43), and the mechanism question was directly tested by R2-2's 60-run real-nvblox, real-obstacle, real-original-control-node reproduction attempt (&sect;53) -- which found zero <code>divergence</code>-kind events, only benign control-loop transients. The remaining open items from that sequencing (push tooling+data -- already done, both branches fully pushed; confirm Orin Nano access; fold A2/A3 into E; drop C) stand as written.</p>
+      </div>
+
+      <h4 style="font-family:'IBM Plex Sans Condensed',sans-serif;font-size:0.85rem;letter-spacing:0.04em;text-transform:uppercase;color:var(--ink-3);margin:1.5rem 0 0.5rem;">Open decisions -- pending the user, not yet answered here</h4>
+      <div class="issues">
+        <div class="issue deferred">
+          <div class="issue-bar"></div>
+          <div class="issue-body">
+            <div class="issue-top"><h3>Orin Nano access</h3><span class="pill neutral">Open question</span></div>
+            <p>Solid enough to make it the paper's centerpiece? Determines Direction E in full vs. a laptop-only fallback envelope (sweep mapping load to find the 4060's own cliff -- weaker but self-contained).</p>
+          </div>
+        </div>
+        <div class="issue deferred">
+          <div class="issue-bar"></div>
+          <div class="issue-body">
+            <div class="issue-top"><h3>Target and timeline</h3><span class="pill neutral">Open question</span></div>
+            <p>Workshop / RA-L this cycle, vs. a full conference or journal cycle -- affects how much of Direction E to attempt before a first submission.</p>
+          </div>
+        </div>
+        <div class="issue deferred">
+          <div class="issue-bar"></div>
+          <div class="issue-body">
+            <div class="issue-top"><h3>Thesis vs. external publication</h3><span class="pill neutral">Open question</span></div>
+            <p>A rigorous null/characterization is fully acceptable for the capstone as-is; external venues weight the predictor and the cross-platform cliff more heavily.</p>
+          </div>
+        </div>
+        <div class="issue deferred">
+          <div class="issue-bar"></div>
+          <div class="issue-body">
+            <div class="issue-top"><h3>Interaction interest</h3><span class="pill neutral">Open question</span></div>
+            <p>Is the texture&times;contention interaction (above) a quantity worth measuring directly, or is the applied operating-envelope/predictor the real target? Both live inside Direction E; this only sets the emphasis.</p>
+          </div>
+        </div>
+      </div>
+      <p>Caveats carried over from the source analysis, for anyone building on this section: several key papers (OV&sup2;SLAM, the Embry-Riddle texture thesis, SUPER) were read from abstracts/result snippets, not in full, and should be read end-to-end before being cited as closest prior art; the A3 "common practice is underpowered" claim needs a systematic survey not yet performed; a dedicated novelty search specifically for "laptop-vs-Jetson contention envelope for this stack" has not been exhaustively run.</p>
     </section>
 
     <footer>
