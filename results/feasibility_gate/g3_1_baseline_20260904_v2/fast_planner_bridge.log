@@ -1,0 +1,176 @@
+[INFO] [1788525943.500008860] [fast_planner_bridge]: fast_planner_bridge ready -- will capture home at arm time and climb (0.0, 0.0, -5.0) NED relative to it, then follow /planning/pos_cmd from Fast-Planner
+[INFO] [1788525943.500413813] [fast_planner_bridge]: >>> Press ENTER to arm and fly (or set OFFBOARD_AUTO_START=1) <<<
+[INFO] [1788525946.520741878] [fast_planner_bridge]: Requesting ARM... arming_state=1
+[INFO] [1788525946.570193607] [fast_planner_bridge]: OFFBOARD + ARMED confirmed -- home_ned=(0.007935107685625553, 0.01587004028260708, 0.016280651092529297), climbing to (0.007935107685625553, 0.01587004028260708, -4.983719348907471).
+[INFO] [1788525947.470208332] [fast_planner_bridge]: [CLIMBING] pos_ned=(0.01,0.01,0.02) dist=5.01m
+[INFO] [1788525948.470548312] [fast_planner_bridge]: [CLIMBING] pos_ned=(0.02,0.01,0.04) dist=5.02m
+[INFO] [1788525949.470396285] [fast_planner_bridge]: [CLIMBING] pos_ned=(0.03,0.01,0.04) dist=5.02m
+[INFO] [1788525950.470477657] [fast_planner_bridge]: [CLIMBING] pos_ned=(0.02,0.03,0.04) dist=5.02m
+[INFO] [1788525951.470569955] [fast_planner_bridge]: [CLIMBING] pos_ned=(0.04,0.13,-0.01) dist=4.98m
+[INFO] [1788525952.470391124] [fast_planner_bridge]: [CLIMBING] pos_ned=(-0.04,0.08,-0.56) dist=4.42m
+[INFO] [1788525953.470325529] [fast_planner_bridge]: [CLIMBING] pos_ned=(-0.15,0.03,-1.75) dist=3.24m
+[INFO] [1788525954.470199755] [fast_planner_bridge]: [CLIMBING] pos_ned=(-0.10,0.00,-2.99) dist=2.00m
+[INFO] [1788525955.470130311] [fast_planner_bridge]: [CLIMBING] pos_ned=(-0.04,-0.03,-3.63) dist=1.35m
+[INFO] [1788525956.470320262] [fast_planner_bridge]: [CLIMBING] pos_ned=(0.01,-0.04,-4.02) dist=0.97m
+[INFO] [1788525957.470308341] [fast_planner_bridge]: [CLIMBING] pos_ned=(0.05,-0.02,-4.37) dist=0.62m
+[INFO] [1788525958.470130756] [fast_planner_bridge]: [CLIMBING] pos_ned=(0.07,-0.03,-4.56) dist=0.43m
+[INFO] [1788525959.470408980] [fast_planner_bridge]: [CLIMBING] pos_ned=(0.07,-0.03,-4.67) dist=0.32m
+[INFO] [1788525959.720213549] [fast_planner_bridge]: Climb complete (dist=0.30m) -- following Fast-Planner.
+[INFO] [1788525960.470553498] [fast_planner_bridge]: [FOLLOWING] pos_ned=(0.05,-0.00,-4.63) target_ned=(0.07,-0.03,-4.58) pos_cmd_age=0.00s
+[INFO] [1788525961.470447863] [fast_planner_bridge]: [FOLLOWING] pos_ned=(0.08,-0.01,-4.55) target_ned=(0.16,-0.07,-4.58) pos_cmd_age=0.00s
+[INFO] [1788525962.470422358] [fast_planner_bridge]: [FOLLOWING] pos_ned=(0.36,-0.18,-4.56) target_ned=(0.58,-0.26,-4.58) pos_cmd_age=0.00s
+[INFO] [1788525963.470372790] [fast_planner_bridge]: [FOLLOWING] pos_ned=(1.04,-0.48,-4.58) target_ned=(1.26,-0.50,-4.60) pos_cmd_age=0.00s
+[INFO] [1788525964.470356817] [fast_planner_bridge]: [FOLLOWING] pos_ned=(1.92,-0.77,-4.61) target_ned=(2.07,-0.74,-4.64) pos_cmd_age=0.00s
+[INFO] [1788525965.470626063] [fast_planner_bridge]: [FOLLOWING] pos_ned=(2.56,-0.95,-4.64) target_ned=(2.83,-0.93,-4.68) pos_cmd_age=0.00s
+[INFO] [1788525966.470523649] [fast_planner_bridge]: [FOLLOWING] pos_ned=(2.99,-0.94,-4.66) target_ned=(2.80,-1.02,-4.66) pos_cmd_age=0.00s
+[INFO] [1788525967.470377224] [fast_planner_bridge]: [FOLLOWING] pos_ned=(3.19,-1.15,-4.65) target_ned=(3.07,-1.37,-4.68) pos_cmd_age=0.00s
+[INFO] [1788525968.470534753] [fast_planner_bridge]: [FOLLOWING] pos_ned=(3.58,-1.63,-4.71) target_ned=(3.58,-2.01,-4.74) pos_cmd_age=0.00s
+[INFO] [1788525969.470242676] [fast_planner_bridge]: [FOLLOWING] pos_ned=(3.95,-2.17,-4.77) target_ned=(4.04,-2.50,-4.78) pos_cmd_age=0.00s
+[INFO] [1788525970.470173783] [fast_planner_bridge]: [FOLLOWING] pos_ned=(4.24,-2.50,-4.77) target_ned=(4.53,-2.82,-4.78) pos_cmd_age=0.00s
+[INFO] [1788525971.470343332] [fast_planner_bridge]: [FOLLOWING] pos_ned=(4.68,-2.80,-4.79) target_ned=(5.16,-3.14,-4.77) pos_cmd_age=0.00s
+[INFO] [1788525972.470290677] [fast_planner_bridge]: [FOLLOWING] pos_ned=(5.23,-3.09,-4.82) target_ned=(4.69,-2.80,-4.79) pos_cmd_age=0.00s
+[INFO] [1788525973.470392045] [fast_planner_bridge]: [FOLLOWING] pos_ned=(5.22,-3.07,-4.79) target_ned=(4.69,-2.80,-4.79) pos_cmd_age=0.00s
+[INFO] [1788525974.470211739] [fast_planner_bridge]: [FOLLOWING] pos_ned=(4.97,-2.90,-4.78) target_ned=(4.73,-2.83,-4.79) pos_cmd_age=0.00s
+[INFO] [1788525975.470303916] [fast_planner_bridge]: [FOLLOWING] pos_ned=(4.97,-2.96,-4.79) target_ned=(5.05,-3.06,-4.80) pos_cmd_age=0.00s
+[INFO] [1788525976.470195999] [fast_planner_bridge]: [FOLLOWING] pos_ned=(5.31,-3.21,-4.83) target_ned=(5.69,-3.39,-4.82) pos_cmd_age=0.00s
+[INFO] [1788525977.470371616] [fast_planner_bridge]: [FOLLOWING] pos_ned=(5.87,-3.50,-4.88) target_ned=(6.50,-3.67,-4.86) pos_cmd_age=0.00s
+[INFO] [1788525978.470472461] [fast_planner_bridge]: [FOLLOWING] pos_ned=(6.64,-3.62,-4.93) target_ned=(7.32,-3.67,-4.91) pos_cmd_age=0.00s
+[INFO] [1788525979.470674190] [fast_planner_bridge]: [FOLLOWING] pos_ned=(7.43,-3.55,-4.94) target_ned=(7.96,-3.48,-4.93) pos_cmd_age=0.00s
+[INFO] [1788525980.470496710] [fast_planner_bridge]: [FOLLOWING] pos_ned=(7.93,-3.42,-4.92) target_ned=(8.25,-3.33,-4.94) pos_cmd_age=0.00s
+[INFO] [1788525981.470615226] [fast_planner_bridge]: [FOLLOWING] pos_ned=(8.09,-3.40,-4.90) target_ned=(8.21,-3.37,-4.93) pos_cmd_age=0.00s
+[INFO] [1788525982.470512747] [fast_planner_bridge]: [FOLLOWING] pos_ned=(8.13,-3.45,-4.88) target_ned=(8.23,-3.47,-4.91) pos_cmd_age=0.00s
+[INFO] [1788525983.470680355] [fast_planner_bridge]: [FOLLOWING] pos_ned=(8.43,-3.36,-4.88) target_ned=(8.56,-3.39,-4.88) pos_cmd_age=0.00s
+[INFO] [1788525984.470391500] [fast_planner_bridge]: [FOLLOWING] pos_ned=(9.09,-3.06,-4.89) target_ned=(9.16,-2.99,-4.89) pos_cmd_age=0.00s
+[INFO] [1788525985.470289928] [fast_planner_bridge]: [FOLLOWING] pos_ned=(9.61,-2.69,-4.92) target_ned=(9.65,-2.52,-4.93) pos_cmd_age=0.00s
+[INFO] [1788525986.470159897] [fast_planner_bridge]: [FOLLOWING] pos_ned=(9.78,-2.39,-4.97) target_ned=(9.88,-2.12,-4.98) pos_cmd_age=0.00s
+[INFO] [1788525987.470789433] [fast_planner_bridge]: [FOLLOWING] pos_ned=(9.85,-1.95,-5.03) target_ned=(9.89,-1.63,-5.03) pos_cmd_age=0.00s
+[INFO] [1788525988.470400870] [fast_planner_bridge]: [FOLLOWING] pos_ned=(9.88,-1.33,-5.06) target_ned=(9.76,-1.03,-5.05) pos_cmd_age=0.00s
+[INFO] [1788525989.470431179] [fast_planner_bridge]: [FOLLOWING] pos_ned=(9.72,-0.72,-5.05) target_ned=(9.54,-0.40,-5.04) pos_cmd_age=0.00s
+[INFO] [1788525990.470447626] [fast_planner_bridge]: [FOLLOWING] pos_ned=(9.44,-0.03,-5.04) target_ned=(9.21,0.24,-5.04) pos_cmd_age=0.00s
+[INFO] [1788525991.470354132] [fast_planner_bridge]: [FOLLOWING] pos_ned=(9.13,0.45,-5.01) target_ned=(8.91,0.60,-5.01) pos_cmd_age=0.00s
+[INFO] [1788525992.470285066] [fast_planner_bridge]: [FOLLOWING] pos_ned=(8.92,0.58,-5.00) target_ned=(8.83,0.64,-5.00) pos_cmd_age=0.00s
+[INFO] [1788525993.470409393] [fast_planner_bridge]: [FOLLOWING] pos_ned=(8.67,0.47,-5.01) target_ned=(8.56,0.43,-5.00) pos_cmd_age=0.00s
+[INFO] [1788525994.470267657] [fast_planner_bridge]: [FOLLOWING] pos_ned=(8.16,0.25,-5.02) target_ned=(8.13,0.10,-5.00) pos_cmd_age=0.00s
+[INFO] [1788525995.470653090] [fast_planner_bridge]: [FOLLOWING] pos_ned=(7.96,0.11,-5.01) target_ned=(8.00,0.00,-5.00) pos_cmd_age=0.00s
+[INFO] [1788525996.470478389] [fast_planner_bridge]: [FOLLOWING] pos_ned=(8.01,0.11,-4.99) target_ned=(8.00,0.00,-5.00) pos_cmd_age=0.00s
+[INFO] [1788525997.470385264] [fast_planner_bridge]: [FOLLOWING] pos_ned=(8.03,0.00,-4.98) target_ned=(8.00,0.00,-5.00) pos_cmd_age=0.00s
+[INFO] [1788525998.470394222] [fast_planner_bridge]: [FOLLOWING] pos_ned=(8.00,-0.07,-4.97) target_ned=(8.00,0.00,-5.00) pos_cmd_age=0.00s
+[INFO] [1788525999.470336057] [fast_planner_bridge]: [FOLLOWING] pos_ned=(7.97,-0.06,-4.98) target_ned=(8.00,0.00,-5.00) pos_cmd_age=0.00s
+[INFO] [1788526000.470390772] [fast_planner_bridge]: [FOLLOWING] pos_ned=(7.96,-0.02,-4.99) target_ned=(8.00,0.00,-5.00) pos_cmd_age=0.00s
+[INFO] [1788526001.470191844] [fast_planner_bridge]: [FOLLOWING] pos_ned=(7.98,-0.00,-4.99) target_ned=(8.00,0.00,-5.00) pos_cmd_age=0.00s
+[INFO] [1788526002.470682270] [fast_planner_bridge]: [FOLLOWING] pos_ned=(8.01,-0.01,-5.01) target_ned=(8.00,0.00,-5.00) pos_cmd_age=0.00s
+[INFO] [1788526003.470216780] [fast_planner_bridge]: [FOLLOWING] pos_ned=(8.00,-0.01,-5.00) target_ned=(8.00,0.00,-5.00) pos_cmd_age=0.00s
+[INFO] [1788526004.470477408] [fast_planner_bridge]: [FOLLOWING] pos_ned=(7.99,-0.01,-4.98) target_ned=(8.00,0.00,-5.00) pos_cmd_age=0.00s
+[INFO] [1788526005.470590603] [fast_planner_bridge]: [FOLLOWING] pos_ned=(8.00,-0.02,-4.98) target_ned=(8.00,0.00,-5.00) pos_cmd_age=0.00s
+[INFO] [1788526006.470548519] [fast_planner_bridge]: [FOLLOWING] pos_ned=(7.99,0.01,-5.00) target_ned=(8.00,0.00,-5.00) pos_cmd_age=0.00s
+[INFO] [1788526007.470476783] [fast_planner_bridge]: [FOLLOWING] pos_ned=(7.98,0.03,-4.99) target_ned=(8.00,0.00,-5.00) pos_cmd_age=0.00s
+[INFO] [1788526008.470244897] [fast_planner_bridge]: [FOLLOWING] pos_ned=(7.97,0.04,-5.00) target_ned=(8.00,0.00,-5.00) pos_cmd_age=0.00s
+[INFO] [1788526009.470351806] [fast_planner_bridge]: [FOLLOWING] pos_ned=(7.99,0.03,-5.00) target_ned=(8.00,0.00,-5.00) pos_cmd_age=0.00s
+[INFO] [1788526010.470662363] [fast_planner_bridge]: [FOLLOWING] pos_ned=(8.02,0.03,-4.98) target_ned=(8.00,0.00,-5.00) pos_cmd_age=0.00s
+[INFO] [1788526011.470339171] [fast_planner_bridge]: [FOLLOWING] pos_ned=(8.03,0.00,-4.99) target_ned=(8.00,0.00,-5.00) pos_cmd_age=0.00s
+[INFO] [1788526012.470477934] [fast_planner_bridge]: [FOLLOWING] pos_ned=(7.99,-0.01,-5.00) target_ned=(8.00,0.00,-5.00) pos_cmd_age=0.00s
+[INFO] [1788526013.470415540] [fast_planner_bridge]: [FOLLOWING] pos_ned=(7.98,0.00,-5.00) target_ned=(8.00,0.00,-5.00) pos_cmd_age=0.00s
+[INFO] [1788526014.470806655] [fast_planner_bridge]: [FOLLOWING] pos_ned=(7.98,0.01,-5.00) target_ned=(8.00,0.00,-5.00) pos_cmd_age=0.00s
+[INFO] [1788526015.470431267] [fast_planner_bridge]: [FOLLOWING] pos_ned=(7.99,-0.01,-5.00) target_ned=(8.00,0.00,-5.00) pos_cmd_age=0.00s
+[INFO] [1788526016.470239727] [fast_planner_bridge]: [FOLLOWING] pos_ned=(7.98,-0.01,-5.01) target_ned=(8.00,0.00,-5.00) pos_cmd_age=0.00s
+[INFO] [1788526017.470484974] [fast_planner_bridge]: [FOLLOWING] pos_ned=(7.99,-0.02,-4.99) target_ned=(8.00,0.00,-5.00) pos_cmd_age=0.00s
+[INFO] [1788526018.470501451] [fast_planner_bridge]: [FOLLOWING] pos_ned=(7.98,-0.01,-4.98) target_ned=(8.00,0.00,-5.00) pos_cmd_age=0.00s
+[INFO] [1788526019.470494949] [fast_planner_bridge]: [FOLLOWING] pos_ned=(7.98,0.02,-5.00) target_ned=(8.00,0.00,-5.00) pos_cmd_age=0.00s
+[INFO] [1788526020.470595825] [fast_planner_bridge]: [FOLLOWING] pos_ned=(7.98,0.02,-5.00) target_ned=(8.00,0.00,-5.00) pos_cmd_age=0.00s
+[INFO] [1788526021.470232952] [fast_planner_bridge]: [FOLLOWING] pos_ned=(7.98,0.01,-5.00) target_ned=(8.00,0.00,-5.00) pos_cmd_age=0.01s
+[INFO] [1788526022.470494332] [fast_planner_bridge]: [FOLLOWING] pos_ned=(7.99,0.01,-4.99) target_ned=(8.00,0.00,-5.00) pos_cmd_age=0.01s
+[INFO] [1788526023.470180339] [fast_planner_bridge]: [FOLLOWING] pos_ned=(7.99,0.02,-4.99) target_ned=(8.00,0.00,-5.00) pos_cmd_age=0.00s
+[INFO] [1788526024.470316493] [fast_planner_bridge]: [FOLLOWING] pos_ned=(7.98,0.00,-5.00) target_ned=(8.00,0.00,-5.00) pos_cmd_age=0.00s
+[INFO] [1788526025.470310509] [fast_planner_bridge]: [FOLLOWING] pos_ned=(7.97,-0.00,-4.99) target_ned=(8.00,0.00,-5.00) pos_cmd_age=0.01s
+[INFO] [1788526026.470623181] [fast_planner_bridge]: [FOLLOWING] pos_ned=(8.00,-0.01,-5.00) target_ned=(8.00,0.00,-5.00) pos_cmd_age=0.01s
+[INFO] [1788526027.470565780] [fast_planner_bridge]: [FOLLOWING] pos_ned=(8.01,-0.02,-5.01) target_ned=(8.00,0.00,-5.00) pos_cmd_age=0.01s
+[INFO] [1788526028.470528803] [fast_planner_bridge]: [FOLLOWING] pos_ned=(8.01,-0.01,-5.02) target_ned=(8.00,0.00,-5.00) pos_cmd_age=0.01s
+[INFO] [1788526029.470611881] [fast_planner_bridge]: [FOLLOWING] pos_ned=(7.98,-0.01,-5.01) target_ned=(8.00,0.00,-5.00) pos_cmd_age=0.01s
+[INFO] [1788526030.470193054] [fast_planner_bridge]: [FOLLOWING] pos_ned=(8.00,0.00,-5.02) target_ned=(8.00,0.00,-5.00) pos_cmd_age=0.01s
+[INFO] [1788526031.470573273] [fast_planner_bridge]: [FOLLOWING] pos_ned=(8.01,0.01,-5.01) target_ned=(8.00,0.00,-5.00) pos_cmd_age=0.01s
+[INFO] [1788526032.470465370] [fast_planner_bridge]: [FOLLOWING] pos_ned=(8.00,0.03,-5.00) target_ned=(8.00,0.00,-5.00) pos_cmd_age=0.01s
+[INFO] [1788526033.470631139] [fast_planner_bridge]: [FOLLOWING] pos_ned=(7.99,0.02,-5.00) target_ned=(8.00,0.00,-5.00) pos_cmd_age=0.01s
+[INFO] [1788526034.470675300] [fast_planner_bridge]: [FOLLOWING] pos_ned=(7.99,0.01,-4.99) target_ned=(8.00,0.00,-5.00) pos_cmd_age=0.01s
+[INFO] [1788526035.470722761] [fast_planner_bridge]: [FOLLOWING] pos_ned=(8.01,-0.01,-5.01) target_ned=(8.00,0.00,-5.00) pos_cmd_age=0.01s
+[INFO] [1788526036.470386787] [fast_planner_bridge]: [FOLLOWING] pos_ned=(8.02,0.00,-5.00) target_ned=(8.00,0.00,-5.00) pos_cmd_age=0.01s
+[INFO] [1788526037.470829739] [fast_planner_bridge]: [FOLLOWING] pos_ned=(8.03,0.00,-5.00) target_ned=(8.00,0.00,-5.00) pos_cmd_age=0.01s
+[INFO] [1788526038.470777994] [fast_planner_bridge]: [FOLLOWING] pos_ned=(8.02,0.02,-5.00) target_ned=(8.00,0.00,-5.00) pos_cmd_age=0.01s
+[INFO] [1788526039.470626489] [fast_planner_bridge]: [FOLLOWING] pos_ned=(8.00,0.02,-5.01) target_ned=(8.00,0.00,-5.00) pos_cmd_age=0.01s
+[INFO] [1788526040.470523110] [fast_planner_bridge]: [FOLLOWING] pos_ned=(7.98,0.02,-5.01) target_ned=(8.00,0.00,-5.00) pos_cmd_age=0.01s
+[INFO] [1788526041.470970321] [fast_planner_bridge]: [FOLLOWING] pos_ned=(7.98,-0.00,-5.00) target_ned=(8.00,0.00,-5.00) pos_cmd_age=0.01s
+[INFO] [1788526042.470341134] [fast_planner_bridge]: [FOLLOWING] pos_ned=(7.97,-0.01,-5.01) target_ned=(8.00,0.00,-5.00) pos_cmd_age=0.01s
+[INFO] [1788526043.470759088] [fast_planner_bridge]: [FOLLOWING] pos_ned=(7.98,-0.03,-4.99) target_ned=(8.00,0.00,-5.00) pos_cmd_age=0.01s
+[INFO] [1788526044.470188282] [fast_planner_bridge]: [FOLLOWING] pos_ned=(7.98,-0.05,-5.00) target_ned=(8.00,0.00,-5.00) pos_cmd_age=0.01s
+[INFO] [1788526045.470715258] [fast_planner_bridge]: [FOLLOWING] pos_ned=(7.97,-0.03,-4.99) target_ned=(8.00,0.00,-5.00) pos_cmd_age=0.01s
+[INFO] [1788526046.471035945] [fast_planner_bridge]: [FOLLOWING] pos_ned=(7.98,-0.02,-4.99) target_ned=(8.00,0.00,-5.00) pos_cmd_age=0.01s
+[INFO] [1788526047.470781753] [fast_planner_bridge]: [FOLLOWING] pos_ned=(8.00,-0.00,-4.98) target_ned=(8.00,0.00,-5.00) pos_cmd_age=0.01s
+[INFO] [1788526048.471080320] [fast_planner_bridge]: [FOLLOWING] pos_ned=(8.02,0.01,-4.98) target_ned=(8.00,0.00,-5.00) pos_cmd_age=0.01s
+[INFO] [1788526049.470448330] [fast_planner_bridge]: [FOLLOWING] pos_ned=(8.02,0.01,-5.00) target_ned=(8.00,0.00,-5.00) pos_cmd_age=0.01s
+[INFO] [1788526050.470228913] [fast_planner_bridge]: [FOLLOWING] pos_ned=(8.01,0.01,-5.01) target_ned=(8.00,0.00,-5.00) pos_cmd_age=0.01s
+[INFO] [1788526051.470500913] [fast_planner_bridge]: [FOLLOWING] pos_ned=(7.99,0.04,-5.01) target_ned=(8.00,0.00,-5.00) pos_cmd_age=0.01s
+[INFO] [1788526052.470238223] [fast_planner_bridge]: [FOLLOWING] pos_ned=(8.00,0.02,-5.02) target_ned=(8.00,0.00,-5.00) pos_cmd_age=0.01s
+[INFO] [1788526053.470359884] [fast_planner_bridge]: [FOLLOWING] pos_ned=(8.00,0.00,-5.02) target_ned=(8.00,0.00,-5.00) pos_cmd_age=0.01s
+[INFO] [1788526054.470414023] [fast_planner_bridge]: [FOLLOWING] pos_ned=(7.98,-0.01,-5.02) target_ned=(8.00,0.00,-5.00) pos_cmd_age=0.01s
+[INFO] [1788526055.470494340] [fast_planner_bridge]: [FOLLOWING] pos_ned=(7.99,-0.01,-5.00) target_ned=(8.00,0.00,-5.00) pos_cmd_age=0.01s
+[INFO] [1788526056.470369705] [fast_planner_bridge]: [FOLLOWING] pos_ned=(8.00,0.01,-4.99) target_ned=(8.00,0.00,-5.00) pos_cmd_age=0.01s
+[INFO] [1788526057.470456143] [fast_planner_bridge]: [FOLLOWING] pos_ned=(8.02,0.03,-4.99) target_ned=(8.00,0.00,-5.00) pos_cmd_age=0.01s
+[INFO] [1788526058.470260847] [fast_planner_bridge]: [FOLLOWING] pos_ned=(8.02,0.01,-5.00) target_ned=(8.00,0.00,-5.00) pos_cmd_age=0.01s
+[INFO] [1788526059.470621982] [fast_planner_bridge]: [FOLLOWING] pos_ned=(8.00,-0.00,-5.00) target_ned=(8.00,0.00,-5.00) pos_cmd_age=0.01s
+[INFO] [1788526060.470639209] [fast_planner_bridge]: [FOLLOWING] pos_ned=(7.99,-0.01,-4.98) target_ned=(8.00,0.00,-5.00) pos_cmd_age=0.01s
+[INFO] [1788526061.470590603] [fast_planner_bridge]: [FOLLOWING] pos_ned=(8.00,-0.02,-4.98) target_ned=(8.00,0.00,-5.00) pos_cmd_age=0.01s
+[INFO] [1788526062.470456909] [fast_planner_bridge]: [FOLLOWING] pos_ned=(8.01,0.00,-4.99) target_ned=(8.00,0.00,-5.00) pos_cmd_age=0.01s
+[INFO] [1788526063.470563939] [fast_planner_bridge]: [FOLLOWING] pos_ned=(8.00,0.01,-5.00) target_ned=(8.00,0.00,-5.00) pos_cmd_age=0.01s
+[INFO] [1788526064.470797685] [fast_planner_bridge]: [FOLLOWING] pos_ned=(8.01,0.02,-4.99) target_ned=(8.00,0.00,-5.00) pos_cmd_age=0.01s
+[INFO] [1788526065.470397282] [fast_planner_bridge]: [FOLLOWING] pos_ned=(8.02,0.03,-4.99) target_ned=(8.00,0.00,-5.00) pos_cmd_age=0.01s
+[INFO] [1788526066.470560859] [fast_planner_bridge]: [FOLLOWING] pos_ned=(8.01,0.01,-4.99) target_ned=(8.00,0.00,-5.00) pos_cmd_age=0.01s
+[INFO] [1788526067.470525438] [fast_planner_bridge]: [FOLLOWING] pos_ned=(8.00,-0.00,-5.00) target_ned=(8.00,0.00,-5.00) pos_cmd_age=0.01s
+[INFO] [1788526068.470242369] [fast_planner_bridge]: [FOLLOWING] pos_ned=(8.00,-0.02,-5.01) target_ned=(8.00,0.00,-5.00) pos_cmd_age=0.01s
+[INFO] [1788526069.470669296] [fast_planner_bridge]: [FOLLOWING] pos_ned=(7.98,-0.03,-5.00) target_ned=(8.00,0.00,-5.00) pos_cmd_age=0.01s
+[INFO] [1788526070.470244343] [fast_planner_bridge]: [FOLLOWING] pos_ned=(8.00,-0.03,-5.00) target_ned=(8.00,0.00,-5.00) pos_cmd_age=0.01s
+[INFO] [1788526071.470428341] [fast_planner_bridge]: [FOLLOWING] pos_ned=(8.00,-0.00,-5.01) target_ned=(8.00,0.00,-5.00) pos_cmd_age=0.01s
+[INFO] [1788526072.470347948] [fast_planner_bridge]: [FOLLOWING] pos_ned=(8.00,0.01,-5.00) target_ned=(8.00,0.00,-5.00) pos_cmd_age=0.01s
+[INFO] [1788526073.470846972] [fast_planner_bridge]: [FOLLOWING] pos_ned=(7.98,0.03,-4.98) target_ned=(8.00,0.00,-5.00) pos_cmd_age=0.01s
+[INFO] [1788526074.470707381] [fast_planner_bridge]: [FOLLOWING] pos_ned=(7.99,0.02,-4.99) target_ned=(8.00,0.00,-5.00) pos_cmd_age=0.01s
+[INFO] [1788526075.470691255] [fast_planner_bridge]: [FOLLOWING] pos_ned=(8.01,0.01,-5.00) target_ned=(8.00,0.00,-5.00) pos_cmd_age=0.01s
+[INFO] [1788526076.470342121] [fast_planner_bridge]: [FOLLOWING] pos_ned=(8.01,0.01,-5.01) target_ned=(8.00,0.00,-5.00) pos_cmd_age=0.01s
+[INFO] [1788526077.470323517] [fast_planner_bridge]: [FOLLOWING] pos_ned=(8.00,0.02,-5.00) target_ned=(8.00,0.00,-5.00) pos_cmd_age=0.01s
+[INFO] [1788526078.470221418] [fast_planner_bridge]: [FOLLOWING] pos_ned=(8.01,0.01,-5.00) target_ned=(8.00,0.00,-5.00) pos_cmd_age=0.01s
+[INFO] [1788526079.470315554] [fast_planner_bridge]: [FOLLOWING] pos_ned=(7.99,0.01,-5.00) target_ned=(8.00,0.00,-5.00) pos_cmd_age=0.01s
+[INFO] [1788526080.470559169] [fast_planner_bridge]: [FOLLOWING] pos_ned=(7.99,-0.01,-4.99) target_ned=(8.00,0.00,-5.00) pos_cmd_age=0.01s
+[INFO] [1788526081.470503074] [fast_planner_bridge]: [FOLLOWING] pos_ned=(7.98,-0.02,-4.99) target_ned=(8.00,0.00,-5.00) pos_cmd_age=0.01s
+[INFO] [1788526082.470967253] [fast_planner_bridge]: [FOLLOWING] pos_ned=(7.97,-0.02,-4.99) target_ned=(8.00,0.00,-5.00) pos_cmd_age=0.01s
+[INFO] [1788526083.470250324] [fast_planner_bridge]: [FOLLOWING] pos_ned=(7.99,-0.02,-4.99) target_ned=(8.00,0.00,-5.00) pos_cmd_age=0.01s
+[INFO] [1788526084.470898909] [fast_planner_bridge]: [FOLLOWING] pos_ned=(8.02,-0.01,-4.99) target_ned=(8.00,0.00,-5.00) pos_cmd_age=0.01s
+[INFO] [1788526085.470432214] [fast_planner_bridge]: [FOLLOWING] pos_ned=(8.02,0.01,-4.99) target_ned=(8.00,0.00,-5.00) pos_cmd_age=0.01s
+[INFO] [1788526086.470539048] [fast_planner_bridge]: [FOLLOWING] pos_ned=(8.01,-0.00,-4.99) target_ned=(8.00,0.00,-5.00) pos_cmd_age=0.01s
+[INFO] [1788526087.470307518] [fast_planner_bridge]: [FOLLOWING] pos_ned=(8.01,-0.02,-4.99) target_ned=(8.00,0.00,-5.00) pos_cmd_age=0.01s
+[INFO] [1788526088.470549324] [fast_planner_bridge]: [FOLLOWING] pos_ned=(8.00,-0.01,-4.98) target_ned=(8.00,0.00,-5.00) pos_cmd_age=0.01s
+[INFO] [1788526089.470709503] [fast_planner_bridge]: [FOLLOWING] pos_ned=(8.00,0.01,-4.99) target_ned=(8.00,0.00,-5.00) pos_cmd_age=0.01s
+[INFO] [1788526090.470568954] [fast_planner_bridge]: [FOLLOWING] pos_ned=(7.98,0.03,-4.99) target_ned=(8.00,0.00,-5.00) pos_cmd_age=0.01s
+[INFO] [1788526091.470649120] [fast_planner_bridge]: [FOLLOWING] pos_ned=(7.97,0.04,-5.00) target_ned=(8.00,0.00,-5.00) pos_cmd_age=0.01s
+[INFO] [1788526092.470328594] [fast_planner_bridge]: [FOLLOWING] pos_ned=(7.98,0.00,-5.00) target_ned=(8.00,0.00,-5.00) pos_cmd_age=0.01s
+[INFO] [1788526093.470337179] [fast_planner_bridge]: [FOLLOWING] pos_ned=(8.00,-0.02,-5.01) target_ned=(8.00,0.00,-5.00) pos_cmd_age=0.01s
+[INFO] [1788526094.470354038] [fast_planner_bridge]: [FOLLOWING] pos_ned=(8.00,-0.01,-5.00) target_ned=(8.00,0.00,-5.00) pos_cmd_age=0.01s
+[INFO] [1788526095.470499069] [fast_planner_bridge]: [FOLLOWING] pos_ned=(8.01,-0.02,-4.99) target_ned=(8.00,0.00,-5.00) pos_cmd_age=0.01s
+[INFO] [1788526096.470900447] [fast_planner_bridge]: [FOLLOWING] pos_ned=(8.01,-0.01,-5.00) target_ned=(8.00,0.00,-5.00) pos_cmd_age=0.01s
+[INFO] [1788526097.470458514] [fast_planner_bridge]: [FOLLOWING] pos_ned=(8.01,0.00,-5.00) target_ned=(8.00,0.00,-5.00) pos_cmd_age=0.01s
+[INFO] [1788526098.470522220] [fast_planner_bridge]: [FOLLOWING] pos_ned=(8.01,-0.00,-5.01) target_ned=(8.00,0.00,-5.00) pos_cmd_age=0.01s
+[INFO] [1788526099.470658115] [fast_planner_bridge]: [FOLLOWING] pos_ned=(7.98,0.01,-5.00) target_ned=(8.00,0.00,-5.00) pos_cmd_age=0.01s
+[INFO] [1788526100.470796341] [fast_planner_bridge]: [FOLLOWING] pos_ned=(7.98,0.01,-5.00) target_ned=(8.00,0.00,-5.00) pos_cmd_age=0.01s
+[INFO] [1788526101.470474904] [fast_planner_bridge]: [FOLLOWING] pos_ned=(7.98,0.00,-5.00) target_ned=(8.00,0.00,-5.00) pos_cmd_age=0.01s
+[INFO] [1788526102.470608692] [fast_planner_bridge]: [FOLLOWING] pos_ned=(7.99,0.00,-5.02) target_ned=(8.00,0.00,-5.00) pos_cmd_age=0.01s
+[INFO] [1788526103.470684640] [fast_planner_bridge]: [FOLLOWING] pos_ned=(8.01,0.00,-5.00) target_ned=(8.00,0.00,-5.00) pos_cmd_age=0.01s
+[INFO] [1788526104.470571808] [fast_planner_bridge]: [FOLLOWING] pos_ned=(8.02,0.02,-5.01) target_ned=(8.00,0.00,-5.00) pos_cmd_age=0.01s
+[INFO] [1788526105.470765419] [fast_planner_bridge]: [FOLLOWING] pos_ned=(8.02,0.01,-5.01) target_ned=(8.00,0.00,-5.00) pos_cmd_age=0.01s
+[INFO] [1788526106.470526914] [fast_planner_bridge]: [FOLLOWING] pos_ned=(8.00,0.01,-5.01) target_ned=(8.00,0.00,-5.00) pos_cmd_age=0.01s
+[INFO] [1788526107.470366465] [fast_planner_bridge]: [FOLLOWING] pos_ned=(8.00,0.01,-5.01) target_ned=(8.00,0.00,-5.00) pos_cmd_age=0.01s
+[INFO] [1788526108.470686285] [fast_planner_bridge]: [FOLLOWING] pos_ned=(7.98,0.00,-5.00) target_ned=(8.00,0.00,-5.00) pos_cmd_age=0.01s
+[INFO] [1788526109.470257370] [fast_planner_bridge]: [FOLLOWING] pos_ned=(7.99,0.01,-4.99) target_ned=(8.00,0.00,-5.00) pos_cmd_age=0.01s
+[INFO] [1788526110.470414286] [fast_planner_bridge]: [FOLLOWING] pos_ned=(8.01,-0.00,-4.99) target_ned=(8.00,0.00,-5.00) pos_cmd_age=0.01s
+[INFO] [1788526111.470256077] [fast_planner_bridge]: [FOLLOWING] pos_ned=(8.00,-0.01,-4.99) target_ned=(8.00,0.00,-5.00) pos_cmd_age=0.01s
+[INFO] [1788526112.470471642] [fast_planner_bridge]: [FOLLOWING] pos_ned=(8.00,-0.02,-4.99) target_ned=(8.00,0.00,-5.00) pos_cmd_age=0.00s
+[INFO] [1788526113.471092277] [fast_planner_bridge]: [FOLLOWING] pos_ned=(8.00,-0.01,-5.00) target_ned=(8.00,0.00,-5.00) pos_cmd_age=0.00s
+[INFO] [1788526114.470948896] [fast_planner_bridge]: [FOLLOWING] pos_ned=(8.01,0.00,-5.01) target_ned=(8.00,0.00,-5.00) pos_cmd_age=0.00s
+[INFO] [1788526115.470542152] [fast_planner_bridge]: [FOLLOWING] pos_ned=(8.02,0.01,-5.01) target_ned=(8.00,0.00,-5.00) pos_cmd_age=0.01s
+[INFO] [1788526116.470325515] [fast_planner_bridge]: [FOLLOWING] pos_ned=(8.02,0.01,-5.00) target_ned=(8.00,0.00,-5.00) pos_cmd_age=0.01s
+[INFO] [1788526117.470816718] [fast_planner_bridge]: [FOLLOWING] pos_ned=(7.98,0.01,-5.01) target_ned=(8.00,0.00,-5.00) pos_cmd_age=0.00s

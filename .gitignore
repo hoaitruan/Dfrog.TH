@@ -19,11 +19,14 @@
 /ros2_ws/run_logs_flight1_backup_*/
 /ros2_ws/*.log
 
-# feasibility-gate experiment outputs (rosbags + per-run CSVs/logs) --
-# same rationale as /ros2_ws/rosbags/ above: recorded data, not source.
-# triage_note.md/REPORT.md are regenerated from these by the tools in
-# tools/feasibility_gate/, not hand-authored, so they stay out too.
-/results/feasibility_gate/
+# feasibility-gate experiment outputs: raw rosbags stay out -- regenerable,
+# and several individual bags run 500MB-880MB, far past what belongs in
+# git (see results/feasibility_gate/README.md for total size, locations,
+# and how to regenerate). Per-run CSVs/logs, REPORT.md, and figures ARE
+# committed (docs/reconcile task, 2026-09-10) -- none exceeds ~50MB, and
+# committing them is what makes the ~400-run study reproducible from the
+# repo alone rather than only from this log's summary numbers.
+/results/feasibility_gate/*/rosbag/
 
 # Route 2 closed-loop probe experiment outputs -- same rationale as
 # /results/feasibility_gate/ above.

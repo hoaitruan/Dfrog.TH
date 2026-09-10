@@ -1,0 +1,50 @@
+[INFO] [1788690542.931361147] [fast_planner_bridge]: fast_planner_bridge ready -- will capture home at arm time and climb (0.0, 0.0, -5.0) NED relative to it, then follow /planning/pos_cmd from Fast-Planner
+[INFO] [1788690542.931980229] [fast_planner_bridge]: >>> Press ENTER to arm and fly (or set OFFBOARD_AUTO_START=1) <<<
+[INFO] [1788690547.348914011] [fast_planner_bridge]: OFFBOARD + ARMED confirmed -- home_ned=(-0.013024800457060337, -0.027847355231642723, -0.05279389023780823), climbing to (-0.013024800457060337, -0.027847355231642723, -5.052793890237808).
+[INFO] [1788690547.898651568] [fast_planner_bridge]: [CLIMBING] pos_ned=(-0.00,-0.03,-0.05) dist=5.00m
+[INFO] [1788690548.899167197] [fast_planner_bridge]: [CLIMBING] pos_ned=(-0.01,-0.03,-0.05) dist=5.00m
+[INFO] [1788690549.898884993] [fast_planner_bridge]: [CLIMBING] pos_ned=(-0.02,-0.04,-0.05) dist=5.00m
+[INFO] [1788690550.898943862] [fast_planner_bridge]: [CLIMBING] pos_ned=(-0.03,-0.05,-0.05) dist=5.00m
+[INFO] [1788690551.898816846] [fast_planner_bridge]: [CLIMBING] pos_ned=(-0.02,0.03,-0.06) dist=4.99m
+[INFO] [1788690552.898840031] [fast_planner_bridge]: [CLIMBING] pos_ned=(-0.02,0.04,-0.06) dist=4.99m
+[INFO] [1788690553.898752318] [fast_planner_bridge]: [CLIMBING] pos_ned=(-0.08,-0.09,-0.35) dist=4.70m
+[INFO] [1788690554.899007614] [fast_planner_bridge]: [CLIMBING] pos_ned=(-0.35,-0.31,-1.83) dist=3.25m
+[INFO] [1788690555.899008470] [fast_planner_bridge]: [CLIMBING] pos_ned=(-0.35,-0.13,-3.30) dist=1.79m
+[INFO] [1788690556.898763314] [fast_planner_bridge]: [CLIMBING] pos_ned=(-0.18,-0.04,-3.97) dist=1.09m
+[INFO] [1788690557.898788876] [fast_planner_bridge]: [CLIMBING] pos_ned=(-0.03,-0.01,-4.34) dist=0.72m
+[INFO] [1788690558.898764990] [fast_planner_bridge]: [CLIMBING] pos_ned=(0.05,0.00,-4.55) dist=0.50m
+[INFO] [1788690559.898922799] [fast_planner_bridge]: [CLIMBING] pos_ned=(0.08,-0.02,-4.70) dist=0.37m
+[INFO] [1788690560.598656567] [fast_planner_bridge]: Climb complete (dist=0.30m) -- following Fast-Planner.
+[INFO] [1788690560.898998517] [fast_planner_bridge]: [FOLLOWING] pos_ned=(0.10,-0.02,-4.79) target_ned=(0.05,0.00,-4.54) pos_cmd_age=0.01s
+[INFO] [1788690561.899026882] [fast_planner_bridge]: [FOLLOWING] pos_ned=(0.12,-0.02,-4.58) target_ned=(0.12,-0.01,-4.66) pos_cmd_age=0.01s
+[INFO] [1788690562.898746493] [fast_planner_bridge]: [FOLLOWING] pos_ned=(0.35,0.15,-4.61) target_ned=(0.39,0.12,-4.66) pos_cmd_age=0.01s
+[INFO] [1788690563.898818223] [fast_planner_bridge]: [FOLLOWING] pos_ned=(0.88,0.41,-4.62) target_ned=(0.93,0.32,-4.66) pos_cmd_age=0.01s
+[INFO] [1788690564.899311697] [fast_planner_bridge]: [FOLLOWING] pos_ned=(1.53,0.67,-4.65) target_ned=(1.50,0.63,-4.69) pos_cmd_age=0.01s
+[INFO] [1788690565.898890705] [fast_planner_bridge]: [FOLLOWING] pos_ned=(1.88,0.95,-4.71) target_ned=(1.90,0.92,-4.73) pos_cmd_age=0.01s
+[INFO] [1788690566.898724201] [fast_planner_bridge]: [FOLLOWING] pos_ned=(2.23,1.08,-4.74) target_ned=(2.33,1.10,-4.75) pos_cmd_age=0.01s
+[INFO] [1788690567.898949153] [fast_planner_bridge]: [FOLLOWING] pos_ned=(2.77,1.26,-4.75) target_ned=(2.83,1.25,-4.76) pos_cmd_age=0.01s
+[INFO] [1788690568.898848851] [fast_planner_bridge]: [FOLLOWING] pos_ned=(3.27,1.43,-4.75) target_ned=(3.26,1.41,-4.77) pos_cmd_age=0.01s
+[INFO] [1788690569.898890347] [fast_planner_bridge]: [FOLLOWING] pos_ned=(3.79,1.57,-4.76) target_ned=(3.80,1.58,-4.78) pos_cmd_age=0.01s
+[INFO] [1788690570.899000779] [fast_planner_bridge]: [FOLLOWING] pos_ned=(4.42,1.77,-4.78) target_ned=(4.43,1.75,-4.80) pos_cmd_age=0.01s
+[INFO] [1788690571.898731271] [fast_planner_bridge]: [FOLLOWING] pos_ned=(4.99,1.89,-4.81) target_ned=(5.03,1.86,-4.83) pos_cmd_age=0.01s
+[INFO] [1788690572.898878389] [fast_planner_bridge]: [FOLLOWING] pos_ned=(5.70,1.93,-4.82) target_ned=(5.71,1.91,-4.83) pos_cmd_age=0.01s
+[INFO] [1788690573.898693431] [fast_planner_bridge]: [FOLLOWING] pos_ned=(6.45,1.98,-4.86) target_ned=(6.45,1.94,-4.86) pos_cmd_age=0.01s
+[INFO] [1788690574.898835914] [fast_planner_bridge]: [FOLLOWING] pos_ned=(6.96,1.85,-4.90) target_ned=(6.91,1.79,-4.89) pos_cmd_age=0.01s
+[INFO] [1788690575.899131509] [fast_planner_bridge]: [FOLLOWING] pos_ned=(7.14,1.67,-4.90) target_ned=(7.05,1.67,-4.91) pos_cmd_age=0.01s
+[INFO] [1788690576.899046143] [fast_planner_bridge]: [FOLLOWING] pos_ned=(7.08,1.69,-4.90) target_ned=(7.04,1.69,-4.90) pos_cmd_age=0.01s
+[INFO] [1788690577.898799235] [fast_planner_bridge]: [FOLLOWING] pos_ned=(7.18,1.47,-4.90) target_ned=(7.20,1.44,-4.89) pos_cmd_age=0.01s
+[INFO] [1788690578.899060553] [fast_planner_bridge]: [FOLLOWING] pos_ned=(7.50,1.04,-4.91) target_ned=(7.43,1.04,-4.91) pos_cmd_age=0.01s
+[INFO] [1788690579.898898016] [fast_planner_bridge]: [FOLLOWING] pos_ned=(7.69,0.62,-4.96) target_ned=(7.65,0.60,-4.96) pos_cmd_age=0.01s
+[INFO] [1788690580.898549751] [fast_planner_bridge]: [FOLLOWING] pos_ned=(7.94,0.16,-4.99) target_ned=(7.92,0.13,-4.99) pos_cmd_age=0.01s
+[INFO] [1788690581.898787864] [fast_planner_bridge]: [FOLLOWING] pos_ned=(8.01,0.01,-4.99) target_ned=(8.00,0.00,-5.00) pos_cmd_age=0.01s
+[INFO] [1788690582.898954773] [fast_planner_bridge]: [FOLLOWING] pos_ned=(7.95,0.07,-4.99) target_ned=(8.00,0.00,-5.00) pos_cmd_age=0.01s
+[INFO] [1788690583.899033473] [fast_planner_bridge]: [FOLLOWING] pos_ned=(7.97,0.04,-4.99) target_ned=(8.00,0.00,-5.00) pos_cmd_age=0.01s
+[INFO] [1788690584.898947006] [fast_planner_bridge]: [FOLLOWING] pos_ned=(8.01,-0.03,-4.99) target_ned=(8.00,0.00,-5.00) pos_cmd_age=0.01s
+[INFO] [1788690585.898874701] [fast_planner_bridge]: [FOLLOWING] pos_ned=(8.03,-0.04,-4.99) target_ned=(8.00,0.00,-5.00) pos_cmd_age=0.01s
+[INFO] [1788690586.898846858] [fast_planner_bridge]: [FOLLOWING] pos_ned=(8.01,-0.01,-4.99) target_ned=(8.00,0.00,-5.00) pos_cmd_age=0.01s
+[INFO] [1788690587.898918524] [fast_planner_bridge]: [FOLLOWING] pos_ned=(8.00,0.01,-5.00) target_ned=(8.00,0.00,-5.00) pos_cmd_age=0.01s
+[WARN] [1788690588.461956387] [fast_planner_bridge]: Shutdown signal 15 received -- ceasing ARM requests, commanding AUTO.LAND, will disarm and exit once landed. If this doesn't complete and the vehicle needs to come down NOW, use emergency_stop.py instead of repeating this signal.
+[INFO] [1788690588.648551592] [fast_planner_bridge]: Requesting AUTO.LAND... nav_state=14
+[INFO] [1788690588.898766480] [fast_planner_bridge]: Requesting AUTO.LAND... nav_state=14
+[INFO] [1788690588.948517625] [fast_planner_bridge]: AUTO.LAND confirmed -- ceasing offboard setpoints, handing off to the autopilot.
+[INFO] [1788690590.898920912] [fast_planner_bridge]: Waiting for disarm (backstop disarm sent)... arming_state=2

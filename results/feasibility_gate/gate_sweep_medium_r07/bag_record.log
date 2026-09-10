@@ -1,0 +1,13 @@
+stdin is not a terminal device. Keyboard handling disabled.[INFO] [1788598710.942656070] [rosbag2_recorder]: Press SPACE for pausing/resuming
+[INFO] [1788598710.944232490] [rosbag2_storage]: Opened database '/workspaces/isaac_ros-dev/results/feasibility_gate/gate_sweep_medium_r07/rosbag/rosbag_0.db3' for READ_WRITE.
+[INFO] [1788598710.944842177] [rosbag2_recorder]: Listening for topics...
+[INFO] [1788598710.944854951] [rosbag2_recorder]: Event publisher thread: Starting
+[INFO] [1788598710.945002992] [rosbag2_recorder]: Recording...
+[INFO] [1788598711.147762929] [rosbag2_recorder]: Subscribed to topic '/visual_slam/status'
+[INFO] [1788598711.148885117] [rosbag2_recorder]: Subscribed to topic '/visual_slam/tracking/odometry'
+[INFO] [1788598711.149957351] [rosbag2_recorder]: Subscribed to topic '/visual_slam/vis/observations_cloud'
+[INFO] [1788598711.858547510] [rosbag2_recorder]: Subscribed to topic '/ground_truth/odom'
+[INFO] [1788598711.858587436] [rosbag2_recorder]: All requested topics are subscribed. Stopping discovery...
+[INFO] [1788598754.391383893] [rosbag2_cpp]: Writing remaining messages from cache to the bag. It may take a while
+[INFO] [1788598754.392307245] [rosbag2_recorder]: Event publisher thread: Exiting
+[INFO] [1788598754.392351048] [rosbag2_recorder]: Recording stopped

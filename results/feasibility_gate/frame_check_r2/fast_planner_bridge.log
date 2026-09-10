@@ -1,0 +1,30 @@
+[INFO] [1788706522.172255918] [fast_planner_bridge]: fast_planner_bridge ready -- will capture home at arm time and climb (0.0, 0.0, -5.0) NED relative to it, then follow /planning/pos_cmd from Fast-Planner
+[INFO] [1788706522.172739798] [fast_planner_bridge]: >>> Press ENTER to arm and fly (or set OFFBOARD_AUTO_START=1) <<<
+[INFO] [1788706526.389987028] [fast_planner_bridge]: OFFBOARD + ARMED confirmed -- home_ned=(-0.008791857399046421, -0.01559517253190279, -0.01709282398223877), climbing to (-0.008791857399046421, -0.01559517253190279, -5.017092823982239).
+[INFO] [1788706527.140021249] [fast_planner_bridge]: [CLIMBING] pos_ned=(-0.00,-0.01,-0.03) dist=4.99m
+[INFO] [1788706528.140181980] [fast_planner_bridge]: [CLIMBING] pos_ned=(-0.00,-0.01,-0.03) dist=4.99m
+[INFO] [1788706529.140109878] [fast_planner_bridge]: [CLIMBING] pos_ned=(-0.02,0.00,-0.02) dist=5.00m
+[INFO] [1788706530.140259511] [fast_planner_bridge]: [CLIMBING] pos_ned=(-0.02,0.03,-0.02) dist=5.00m
+[INFO] [1788706531.140445759] [fast_planner_bridge]: [CLIMBING] pos_ned=(0.01,0.12,-0.10) dist=4.92m
+[INFO] [1788706532.140334035] [fast_planner_bridge]: [CLIMBING] pos_ned=(-0.02,0.07,-1.33) dist=3.68m
+[INFO] [1788706533.140231066] [fast_planner_bridge]: [CLIMBING] pos_ned=(-0.09,-0.03,-3.17) dist=1.85m
+[INFO] [1788706534.140205494] [fast_planner_bridge]: [CLIMBING] pos_ned=(-0.07,-0.10,-4.03) dist=0.99m
+[INFO] [1788706535.140287206] [fast_planner_bridge]: [CLIMBING] pos_ned=(-0.01,-0.09,-4.40) dist=0.62m
+[INFO] [1788706536.140177875] [fast_planner_bridge]: [CLIMBING] pos_ned=(0.01,-0.06,-4.63) dist=0.39m
+[INFO] [1788706536.840049231] [fast_planner_bridge]: Climb complete (dist=0.29m) -- following Fast-Planner.
+[INFO] [1788706537.140159666] [fast_planner_bridge]: [FOLLOWING] pos_ned=(0.02,-0.04,-4.74) target_ned=(0.01,-0.07,-4.57) pos_cmd_age=0.01s
+[INFO] [1788706538.140283551] [fast_planner_bridge]: [FOLLOWING] pos_ned=(0.03,-0.03,-4.56) target_ned=(0.02,-0.07,-4.57) pos_cmd_age=0.01s
+[INFO] [1788706539.140129855] [fast_planner_bridge]: [FOLLOWING] pos_ned=(0.22,-0.12,-4.50) target_ned=(0.32,-0.15,-4.53) pos_cmd_age=0.01s
+[INFO] [1788706540.139985470] [fast_planner_bridge]: [FOLLOWING] pos_ned=(0.82,-0.30,-4.43) target_ned=(0.90,-0.26,-4.46) pos_cmd_age=0.01s
+[INFO] [1788706541.140504685] [fast_planner_bridge]: [FOLLOWING] pos_ned=(1.61,-0.46,-4.43) target_ned=(1.69,-0.41,-4.45) pos_cmd_age=0.01s
+[INFO] [1788706542.140113605] [fast_planner_bridge]: [FOLLOWING] pos_ned=(2.36,-0.64,-4.51) target_ned=(2.42,-0.58,-4.52) pos_cmd_age=0.01s
+[INFO] [1788706543.140401154] [fast_planner_bridge]: [FOLLOWING] pos_ned=(2.97,-0.72,-4.55) target_ned=(2.99,-0.70,-4.58) pos_cmd_age=0.01s
+[INFO] [1788706544.139983849] [fast_planner_bridge]: [FOLLOWING] pos_ned=(3.20,-0.70,-4.56) target_ned=(3.22,-0.81,-4.60) pos_cmd_age=0.01s
+[INFO] [1788706545.140296143] [fast_planner_bridge]: [FOLLOWING] pos_ned=(3.30,-1.02,-4.59) target_ned=(3.40,-1.20,-4.63) pos_cmd_age=0.01s
+[INFO] [1788706546.140450971] [fast_planner_bridge]: [FOLLOWING] pos_ned=(3.20,-2.05,-4.50) target_ned=(3.76,-1.93,-4.69) pos_cmd_age=0.01s
+[INFO] [1788706547.140246863] [fast_planner_bridge]: [FOLLOWING] pos_ned=(3.16,-2.67,-4.45) target_ned=(3.07,-2.25,-4.50) pos_cmd_age=0.01s
+[INFO] [1788706548.140435900] [fast_planner_bridge]: [FOLLOWING] pos_ned=(3.55,-3.00,-4.39) target_ned=(3.07,-2.25,-4.50) pos_cmd_age=0.01s
+[WARN] [1788706548.889893789] [fast_planner_bridge]: Shutdown signal 15 received -- ceasing ARM requests, commanding AUTO.LAND, will disarm and exit once landed. If this doesn't complete and the vehicle needs to come down NOW, use emergency_stop.py instead of repeating this signal.
+[INFO] [1788706548.890846285] [fast_planner_bridge]: Requesting AUTO.LAND... nav_state=14
+[INFO] [1788706548.940309996] [fast_planner_bridge]: AUTO.LAND confirmed -- ceasing offboard setpoints, handing off to the autopilot.
+[INFO] [1788706550.139905019] [fast_planner_bridge]: Waiting for disarm (backstop disarm sent)... arming_state=2
