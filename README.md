@@ -13,6 +13,15 @@ against a ROS 2 Jazzy-side reactive planner). That approach was abandoned in
 favor of the full-perception plan described below — see "Why the pivot"
 below for the reasoning, kept for context.
 
+> **Update (post-study, 2026-09-10):** the Phase 6 incident below was
+> originally attributed to GPU contention. A later ~400-run factorial study
+> (branches `feasibility-gate` / `r2-closedloop-probe`) found that
+> contention effect **null** and scene texture the dominant driver of
+> localization degradation instead. See `docs/research_log.md` for the full
+> study and `flight_test_log.html` §54-55 for the underlying data — the
+> specific cause of the original ~55m incident remains **pending forensic
+> triage** and is not established either way.
+
 ## Why the pivot
 
 The goal is for simulation to exercise the **same perception chain** that
@@ -269,6 +278,24 @@ wall-clock-stamped TF silently never matched sim-clock-stamped depth
 images — zero ESDF data, zero errors logged. Fixed by launching it with
 `use_sim_time:=true`.
 
+> **Update (post-study, 2026-09-10):** at the time, GPU contention was the
+> working explanation for the ~55m drift — it was the only variable
+> changed relative to earlier, clean standalone tests. A dedicated
+> ~400-run factorial later tested that hypothesis directly (open-loop
+> tracking-accuracy sweep, both synthetic and real nvblox contention
+> load, two scene textures) and found the contention→accuracy effect
+> **null** at every level tested (rich-texture trend p=0.663, poor-texture
+> trend p=0.415; scene texture, not contention, was the effect that
+> turned out large: poor-texture RPE-1s ≈2.1× rich's, tracking-loss rate
+> ≈7× higher). A follow-up 60-run **closed-loop** probe using the actual
+> original incident control node (`reactive_esdf_avoidance`) and real
+> nvblox contention against the real obstacle world also found zero
+> large-divergence reproductions. **The specific cause of this incident
+> has not been forensically triaged and is not established** — no rosbag
+> of the original event exists to examine directly. See
+> `docs/research_log.md` and `flight_test_log.html` §42-55 for the full
+> study, data, and open items.
+
 **Phase 7 — Fast-Planner (kinodynamic B-spline replanning).** Ported 8
 packages from a WIP Foxy community fork
 (`RohitPawar2406/Fast-Planner-ROS2`), fixing 5 build bugs (missing
@@ -366,6 +393,18 @@ even involved):
   Motion-Module lockup in-container (RSUSB backend vs. host kernel driver
   binding) — not yet root-caused, may be worth revisiting against actual
   Jetson USB controller/kernel before relying on it.
+  > **Update (post-study, 2026-09-10):** softening this claim — a
+  > ~400-run factorial (see the Phase 6 update above and
+  > `docs/research_log.md`) found **the accuracy effect was null on this
+  > discrete-GPU laptop** at every contention level tested, open-loop and
+  > closed-loop. GPS-only control (`EKF2_EV_CTRL 0`) remains the working
+  > default regardless — it was never re-enabled outside the isolated
+  > `r2-closedloop-probe` branch — but the reason is no longer "known
+  > unsafe under load," it's "not yet re-validated as the default."
+  > **Untested:** memory/timing risk on unified-memory embedded platforms
+  > (e.g. Jetson), where contention could plausibly behave differently
+  > than on this discrete 8GB laptop GPU — an open question, not a known
+  > failure.
 - **Fast-Planner's local-minimum behavior** near closely-packed obstacle
   clusters (seen in Phase 6's simpler reactive planner, largely but not
   fully resolved by Phase 7's kinodynamic search) hasn't been stress-tested

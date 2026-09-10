@@ -40,6 +40,18 @@ and is partly a hardware/GPU-scheduling concern that may not even fully
 resolve in this sim environment (untested whether Jetson's GPU contention
 behaves the same as this laptop's).
 
+> **Update (post-study, 2026-09-10):** this framing predates a ~400-run
+> factorial (branch `feasibility-gate`) and a 60-run closed-loop probe with
+> the original incident's control node (branch `r2-closedloop-probe`,
+> never merged here), both of which found the GPU-contention→accuracy
+> effect **null** rather than something to root-cause — scene texture was
+> the dominant driver instead. "Root-cause the GPU-contention drift" is no
+> longer the right framing for Milestone 2; the ~55m cause itself is
+> **pending forensic triage**, not attributed to contention or to anything
+> else. See `docs/research_log.md` for the full study and its open items,
+> including the proposed "Direction E" reframe this raises for what
+> Milestone 2 should actually investigate next.
+
 Any change to `EKF2_EV_CTRL`, GPU scheduling/priority, or CUDA MPS
 configuration belongs to Milestone 2, not Milestone 1. If a Milestone-1 task
 appears to require touching those, that's a signal to stop and re-scope,
@@ -56,6 +68,11 @@ not to proceed.
 - **Milestone 2 is done** when the same flight succeeds with
   `EKF2_EV_CTRL` nonzero and cuVSLAM actually driving control, without the
   GPU-contention drift recurring.
+  > **Update (post-study, 2026-09-10):** "without the GPU-contention drift
+  > recurring" is stated as originally written; contention was never shown
+  > to be the drift's cause (see the Milestone 2 update above), so this
+  > criterion should be read as "without divergence recurring," cause
+  > unspecified — pending forensic triage.
 
 Only when both are done does the original mission statement hold without
 caveats.
