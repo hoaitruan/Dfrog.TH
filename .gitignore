@@ -13,24 +13,16 @@
 /ros2_ws/install/
 /ros2_ws/log/
 
-# Recorded bags and ad-hoc debug/session logs (not source)
-/ros2_ws/rosbags/
+# Ad-hoc debug/session logs (not source, not simulation data)
 /ros2_ws/run_logs/
 /ros2_ws/run_logs_flight1_backup_*/
 /ros2_ws/*.log
 
-# feasibility-gate experiment outputs: raw rosbags stay out -- regenerable,
-# and several individual bags run 500MB-880MB, far past what belongs in
-# git (see results/feasibility_gate/README.md for total size, locations,
-# and how to regenerate). Per-run CSVs/logs, REPORT.md, and figures ARE
-# committed (docs/reconcile task, 2026-09-10) -- none exceeds ~50MB, and
-# committing them is what makes the ~400-run study reproducible from the
-# repo alone rather than only from this log's summary numbers.
-/results/feasibility_gate/*/rosbag/
-
-# Route 2 closed-loop probe experiment outputs -- same rationale as
-# /results/feasibility_gate/ above.
-/results/route2_probe/
+# Simulation data (rosbags under /ros2_ws/rosbags/, /results/feasibility_gate/,
+# /results/route2_probe/) is committed via Git LFS (*.db3 tracked in
+# .gitattributes, 2026-09-11) rather than gitignored -- see
+# results/feasibility_gate/README.md and docs/reconcile/RECONCILE_SUMMARY.md
+# for why this is a deliberate exception to "regenerable data stays out."
 
 # Python
 __pycache__/
