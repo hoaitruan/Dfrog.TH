@@ -1,0 +1,2 @@
+gpu_stressor: matrix_size=3072 streams=4 duty_cycle=0.9 duration=35.0s
+gpu_stressor: stopped after 41.1s, 1263 matmul batches issued.

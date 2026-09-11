@@ -1,0 +1,1488 @@
+[INFO] [launch]: All log files can be found below /home/admin/.ros/log/2026-09-07-11-30-36-957522-T21-A15-271760
+[INFO] [launch]: Default logging verbosity is set to INFO
+[INFO] [component_container_mt-1]: process started with pid [271809]
+[component_container_mt-1] [INFO] [1788755437.367126955] [nvblox_container]: Load Library: /workspaces/isaac_ros-dev/ros2_ws/install/nvblox_ros/lib/libnvblox_ros_lib.so
+[component_container_mt-1] [INFO] [1788755437.408952458] [nvblox_container]: Found class: rclcpp_components::NodeFactoryTemplate<nvblox::NvbloxNode>
+[component_container_mt-1] [INFO] [1788755437.408994197] [nvblox_container]: Instantiate class: rclcpp_components::NodeFactoryTemplate<nvblox::NvbloxNode>
+[component_container_mt-1] [INFO] [1788755437.527325931] [nvblox_node]: Create nvblox cuda stream with type: kBlocking
+[component_container_mt-1] WARNING: Logging before InitGoogleLogging() is written to STDERR
+[component_container_mt-1] I0907 11:30:37.546528 271837 block_memory_pool_impl.h:65] Expanding the memory pool with 2048 blocks. Number of allocated blocks: 2048
+[component_container_mt-1] I0907 11:30:37.553112 271837 gpu_hash_interface_impl.cuh:83] Creating a GPUHashImpl with requested capacity of 4096 blocks. Real capacity: 4096
+[component_container_mt-1] I0907 11:30:37.555739 271837 layer_cake_impl.h:32] Adding Layer with type: N6nvblox15VoxelBlockLayerINS_9TsdfVoxelEEE, voxel_size: 0.05, and memory_type: kDevice to LayerCake.
+[component_container_mt-1] I0907 11:30:37.563282 271837 block_memory_pool_impl.h:65] Expanding the memory pool with 2048 blocks. Number of allocated blocks: 2048
+[component_container_mt-1] I0907 11:30:37.563467 271837 gpu_hash_interface_impl.cuh:83] Creating a GPUHashImpl with requested capacity of 4096 blocks. Real capacity: 4096
+[component_container_mt-1] I0907 11:30:37.566139 271837 layer_cake_impl.h:32] Adding Layer with type: N6nvblox15VoxelBlockLayerINS_10ColorVoxelEEE, voxel_size: 0.05, and memory_type: kDevice to LayerCake.
+[component_container_mt-1] I0907 11:30:37.572719 271837 block_memory_pool_impl.h:65] Expanding the memory pool with 2048 blocks. Number of allocated blocks: 2048
+[component_container_mt-1] I0907 11:30:37.572870 271837 gpu_hash_interface_impl.cuh:83] Creating a GPUHashImpl with requested capacity of 4096 blocks. Real capacity: 4096
+[component_container_mt-1] I0907 11:30:37.572923 271837 layer_cake_impl.h:32] Adding Layer with type: N6nvblox15VoxelBlockLayerINS_14FreespaceVoxelEEE, voxel_size: 0.05, and memory_type: kDevice to LayerCake.
+[component_container_mt-1] I0907 11:30:37.578670 271837 block_memory_pool_impl.h:65] Expanding the memory pool with 2048 blocks. Number of allocated blocks: 2048
+[component_container_mt-1] I0907 11:30:37.578878 271837 gpu_hash_interface_impl.cuh:83] Creating a GPUHashImpl with requested capacity of 4096 blocks. Real capacity: 4096
+[component_container_mt-1] I0907 11:30:37.581768 271837 layer_cake_impl.h:32] Adding Layer with type: N6nvblox15VoxelBlockLayerINS_14OccupancyVoxelEEE, voxel_size: 0.05, and memory_type: kDevice to LayerCake.
+[component_container_mt-1] I0907 11:30:37.589552 271837 block_memory_pool_impl.h:65] Expanding the memory pool with 2048 blocks. Number of allocated blocks: 2048
+[component_container_mt-1] I0907 11:30:37.591087 271837 gpu_hash_interface_impl.cuh:83] Creating a GPUHashImpl with requested capacity of 4096 blocks. Real capacity: 4096
+[component_container_mt-1] I0907 11:30:37.591158 271837 layer_cake_impl.h:32] Adding Layer with type: N6nvblox15VoxelBlockLayerINS_9EsdfVoxelEEE, voxel_size: 0.05, and memory_type: kDevice to LayerCake.
+[component_container_mt-1] I0907 11:30:37.591605 271837 block_memory_pool_impl.h:65] Expanding the memory pool with 2048 blocks. Number of allocated blocks: 2048
+[component_container_mt-1] I0907 11:30:37.591777 271837 gpu_hash_interface_impl.cuh:83] Creating a GPUHashImpl with requested capacity of 4096 blocks. Real capacity: 4096
+[component_container_mt-1] I0907 11:30:37.591822 271837 layer_cake_impl.h:32] Adding Layer with type: N6nvblox10BlockLayerINS_9MeshBlockEEE, voxel_size: 0.05, and memory_type: kDevice to LayerCake.
+[component_container_mt-1] I0907 11:30:37.591838 271837 layer_cake_streamer_impl.h:79] Adding Streamer with type: N6nvblox25LayerStreamerOldestBlocksINS_15VoxelBlockLayerINS_9TsdfVoxelEEEEE to LayerCake.
+[component_container_mt-1] I0907 11:30:37.591843 271837 layer_cake_streamer_impl.h:79] Adding Streamer with type: N6nvblox25LayerStreamerOldestBlocksINS_15VoxelBlockLayerINS_10ColorVoxelEEEEE to LayerCake.
+[component_container_mt-1] I0907 11:30:37.591848 271837 layer_cake_streamer_impl.h:79] Adding Streamer with type: N6nvblox25LayerStreamerOldestBlocksINS_15VoxelBlockLayerINS_14FreespaceVoxelEEEEE to LayerCake.
+[component_container_mt-1] I0907 11:30:37.591853 271837 layer_cake_streamer_impl.h:79] Adding Streamer with type: N6nvblox25LayerStreamerOldestBlocksINS_15VoxelBlockLayerINS_14OccupancyVoxelEEEEE to LayerCake.
+[component_container_mt-1] I0907 11:30:37.591856 271837 layer_cake_streamer_impl.h:79] Adding Streamer with type: N6nvblox25LayerStreamerOldestBlocksINS_15VoxelBlockLayerINS_9EsdfVoxelEEEEE to LayerCake.
+[component_container_mt-1] I0907 11:30:37.591862 271837 layer_cake_streamer_impl.h:79] Adding Streamer with type: N6nvblox25LayerStreamerOldestBlocksINS_10BlockLayerINS_9MeshBlockEEEEE to LayerCake.
+[component_container_mt-1] I0907 11:30:37.598392 271837 block_memory_pool_impl.h:65] Expanding the memory pool with 2048 blocks. Number of allocated blocks: 2048
+[component_container_mt-1] I0907 11:30:37.598555 271837 gpu_hash_interface_impl.cuh:83] Creating a GPUHashImpl with requested capacity of 4096 blocks. Real capacity: 4096
+[component_container_mt-1] I0907 11:30:37.598593 271837 layer_cake_impl.h:32] Adding Layer with type: N6nvblox15VoxelBlockLayerINS_9TsdfVoxelEEE, voxel_size: 0.05, and memory_type: kDevice to LayerCake.
+[component_container_mt-1] I0907 11:30:37.605557 271837 block_memory_pool_impl.h:65] Expanding the memory pool with 2048 blocks. Number of allocated blocks: 2048
+[component_container_mt-1] I0907 11:30:37.606022 271837 gpu_hash_interface_impl.cuh:83] Creating a GPUHashImpl with requested capacity of 4096 blocks. Real capacity: 4096
+[component_container_mt-1] I0907 11:30:37.606068 271837 layer_cake_impl.h:32] Adding Layer with type: N6nvblox15VoxelBlockLayerINS_10ColorVoxelEEE, voxel_size: 0.05, and memory_type: kDevice to LayerCake.
+[component_container_mt-1] I0907 11:30:37.612604 271837 block_memory_pool_impl.h:65] Expanding the memory pool with 2048 blocks. Number of allocated blocks: 2048
+[component_container_mt-1] I0907 11:30:37.612753 271837 gpu_hash_interface_impl.cuh:83] Creating a GPUHashImpl with requested capacity of 4096 blocks. Real capacity: 4096
+[component_container_mt-1] I0907 11:30:37.612785 271837 layer_cake_impl.h:32] Adding Layer with type: N6nvblox15VoxelBlockLayerINS_14FreespaceVoxelEEE, voxel_size: 0.05, and memory_type: kDevice to LayerCake.
+[component_container_mt-1] I0907 11:30:37.618032 271837 block_memory_pool_impl.h:65] Expanding the memory pool with 2048 blocks. Number of allocated blocks: 2048
+[component_container_mt-1] I0907 11:30:37.618188 271837 gpu_hash_interface_impl.cuh:83] Creating a GPUHashImpl with requested capacity of 4096 blocks. Real capacity: 4096
+[component_container_mt-1] I0907 11:30:37.618222 271837 layer_cake_impl.h:32] Adding Layer with type: N6nvblox15VoxelBlockLayerINS_14OccupancyVoxelEEE, voxel_size: 0.05, and memory_type: kDevice to LayerCake.
+[component_container_mt-1] I0907 11:30:37.625273 271837 block_memory_pool_impl.h:65] Expanding the memory pool with 2048 blocks. Number of allocated blocks: 2048
+[component_container_mt-1] I0907 11:30:37.625481 271837 gpu_hash_interface_impl.cuh:83] Creating a GPUHashImpl with requested capacity of 4096 blocks. Real capacity: 4096
+[component_container_mt-1] I0907 11:30:37.625523 271837 layer_cake_impl.h:32] Adding Layer with type: N6nvblox15VoxelBlockLayerINS_9EsdfVoxelEEE, voxel_size: 0.05, and memory_type: kDevice to LayerCake.
+[component_container_mt-1] I0907 11:30:37.625945 271837 block_memory_pool_impl.h:65] Expanding the memory pool with 2048 blocks. Number of allocated blocks: 2048
+[component_container_mt-1] I0907 11:30:37.626091 271837 gpu_hash_interface_impl.cuh:83] Creating a GPUHashImpl with requested capacity of 4096 blocks. Real capacity: 4096
+[component_container_mt-1] I0907 11:30:37.626121 271837 layer_cake_impl.h:32] Adding Layer with type: N6nvblox10BlockLayerINS_9MeshBlockEEE, voxel_size: 0.05, and memory_type: kDevice to LayerCake.
+[component_container_mt-1] I0907 11:30:37.626128 271837 layer_cake_streamer_impl.h:79] Adding Streamer with type: N6nvblox25LayerStreamerOldestBlocksINS_15VoxelBlockLayerINS_9TsdfVoxelEEEEE to LayerCake.
+[component_container_mt-1] I0907 11:30:37.626132 271837 layer_cake_streamer_impl.h:79] Adding Streamer with type: N6nvblox25LayerStreamerOldestBlocksINS_15VoxelBlockLayerINS_10ColorVoxelEEEEE to LayerCake.
+[component_container_mt-1] I0907 11:30:37.626134 271837 layer_cake_streamer_impl.h:79] Adding Streamer with type: N6nvblox25LayerStreamerOldestBlocksINS_15VoxelBlockLayerINS_14FreespaceVoxelEEEEE to LayerCake.
+[component_container_mt-1] I0907 11:30:37.626137 271837 layer_cake_streamer_impl.h:79] Adding Streamer with type: N6nvblox25LayerStreamerOldestBlocksINS_15VoxelBlockLayerINS_14OccupancyVoxelEEEEE to LayerCake.
+[component_container_mt-1] I0907 11:30:37.626139 271837 layer_cake_streamer_impl.h:79] Adding Streamer with type: N6nvblox25LayerStreamerOldestBlocksINS_15VoxelBlockLayerINS_9EsdfVoxelEEEEE to LayerCake.
+[component_container_mt-1] I0907 11:30:37.626147 271837 layer_cake_streamer_impl.h:79] Adding Streamer with type: N6nvblox25LayerStreamerOldestBlocksINS_10BlockLayerINS_9MeshBlockEEEEE to LayerCake.
+[component_container_mt-1] [INFO] [1788755437.627645132] [nvblox_node]: Initialize Mapper:
+[component_container_mt-1] [INFO] [1788755437.627691490] [nvblox_node]: static_mapper.do_depth_preprocessing: 0
+[component_container_mt-1] [INFO] [1788755437.627704444] [nvblox_node]: static_mapper.depth_preprocessing_num_dilations: 3
+[component_container_mt-1] [INFO] [1788755437.627717779] [nvblox_node]: static_mapper.esdf_slice_min_height: 0
+[component_container_mt-1] [INFO] [1788755437.627723290] [nvblox_node]: static_mapper.esdf_slice_max_height: 1
+[component_container_mt-1] [INFO] [1788755437.627728400] [nvblox_node]: static_mapper.esdf_slice_height: 1
+[component_container_mt-1] [INFO] [1788755437.627733299] [nvblox_node]: static_mapper.exclude_last_view_from_decay: 1
+[component_container_mt-1] [INFO] [1788755437.627738238] [nvblox_node]: static_mapper.projective_integrator_max_integration_distance_m: 5
+[component_container_mt-1] [INFO] [1788755437.627744500] [nvblox_node]: static_mapper.lidar_projective_integrator_max_integration_distance_m: 10
+[component_container_mt-1] [INFO] [1788755437.627749650] [nvblox_node]: static_mapper.projective_integrator_truncation_distance_vox: 4
+[component_container_mt-1] [INFO] [1788755437.627758126] [nvblox_node]: static_mapper.projective_integrator_weighting_mode: inverse_square_tsdf_distance_penalty
+[component_container_mt-1] [INFO] [1788755437.627766141] [nvblox_node]: static_mapper.projective_integrator_max_weight: 5
+[component_container_mt-1] [INFO] [1788755437.627771100] [nvblox_node]: static_mapper.projective_tsdf_integrator_invalid_depth_decay_factor: -1
+[component_container_mt-1] [INFO] [1788755437.627776190] [nvblox_node]: static_mapper.free_region_occupancy_probability: 0.45
+[component_container_mt-1] [INFO] [1788755437.627781761] [nvblox_node]: static_mapper.occupied_region_occupancy_probability: 0.55
+[component_container_mt-1] [INFO] [1788755437.627786810] [nvblox_node]: static_mapper.unobserved_region_occupancy_probability: 0.5
+[component_container_mt-1] [INFO] [1788755437.627791820] [nvblox_node]: static_mapper.occupied_region_half_width_m: 0.1
+[component_container_mt-1] [INFO] [1788755437.627796649] [nvblox_node]: static_mapper.raycast_subsampling_factor: 4
+[component_container_mt-1] [INFO] [1788755437.627801198] [nvblox_node]: static_mapper.workspace_bounds_type: unbounded
+[component_container_mt-1] [INFO] [1788755437.627808231] [nvblox_node]: static_mapper.workspace_bounds_min_height_m: -0.5
+[component_container_mt-1] [INFO] [1788755437.627813311] [nvblox_node]: static_mapper.workspace_bounds_max_height_m: 2
+[component_container_mt-1] [INFO] [1788755437.627818019] [nvblox_node]: static_mapper.workspace_bounds_min_corner_x_m: 0
+[component_container_mt-1] [INFO] [1788755437.627823029] [nvblox_node]: static_mapper.workspace_bounds_max_corner_x_m: 0
+[component_container_mt-1] [INFO] [1788755437.627827978] [nvblox_node]: static_mapper.workspace_bounds_min_corner_y_m: 0
+[component_container_mt-1] [INFO] [1788755437.627832677] [nvblox_node]: static_mapper.workspace_bounds_max_corner_y_m: 0
+[component_container_mt-1] [INFO] [1788755437.627837336] [nvblox_node]: static_mapper.esdf_integrator_min_weight: 0.1
+[component_container_mt-1] [INFO] [1788755437.627842065] [nvblox_node]: static_mapper.esdf_integrator_max_site_distance_vox: 2
+[component_container_mt-1] [INFO] [1788755437.627846874] [nvblox_node]: static_mapper.esdf_integrator_max_distance_m: 2
+[component_container_mt-1] [INFO] [1788755437.627851753] [nvblox_node]: static_mapper.mesh_integrator_min_weight: 0.1
+[component_container_mt-1] [INFO] [1788755437.627856362] [nvblox_node]: static_mapper.mesh_integrator_weld_vertices: 1
+[component_container_mt-1] [INFO] [1788755437.627861311] [nvblox_node]: static_mapper.decay_integrator_deallocate_decayed_blocks: 1
+[component_container_mt-1] [INFO] [1788755437.627866391] [nvblox_node]: static_mapper.tsdf_decay_factor: 0.95
+[component_container_mt-1] [INFO] [1788755437.627871361] [nvblox_node]: static_mapper.tsdf_decayed_weight_threshold: 0.001
+[component_container_mt-1] [INFO] [1788755437.627875969] [nvblox_node]: static_mapper.tsdf_set_free_distance_on_decayed: 0
+[component_container_mt-1] [INFO] [1788755437.627880658] [nvblox_node]: static_mapper.tsdf_decayed_free_distance_vox: 4
+[component_container_mt-1] [INFO] [1788755437.627885407] [nvblox_node]: static_mapper.free_region_decay_probability: 0.55
+[component_container_mt-1] [INFO] [1788755437.627890447] [nvblox_node]: static_mapper.occupied_region_decay_probability: 0.4
+[component_container_mt-1] [INFO] [1788755437.627894975] [nvblox_node]: static_mapper.occupancy_decay_to_free: 0
+[component_container_mt-1] [INFO] [1788755437.627926515] [nvblox_node]: static_mapper.max_tsdf_distance_for_occupancy_m: 0.15
+[component_container_mt-1] [INFO] [1788755437.627937636] [nvblox_node]: static_mapper.max_unobserved_to_keep_consecutive_occupancy_ms: 200
+[component_container_mt-1] [INFO] [1788755437.627942525] [nvblox_node]: static_mapper.min_duration_since_occupied_for_freespace_ms: 1000
+[component_container_mt-1] [INFO] [1788755437.627947194] [nvblox_node]: static_mapper.min_consecutive_occupancy_duration_for_reset_ms: 2000
+[component_container_mt-1] [INFO] [1788755437.627951843] [nvblox_node]: static_mapper.check_neighborhood: 1
+[component_container_mt-1] [INFO] [1788755437.627956241] [nvblox_node]: Initialize Mapper:
+[component_container_mt-1] [INFO] [1788755437.627961632] [nvblox_node]: dynamic_mapper.do_depth_preprocessing: 0
+[component_container_mt-1] [INFO] [1788755437.627966351] [nvblox_node]: dynamic_mapper.depth_preprocessing_num_dilations: 4
+[component_container_mt-1] [INFO] [1788755437.627971360] [nvblox_node]: dynamic_mapper.esdf_slice_min_height: 0
+[component_container_mt-1] [INFO] [1788755437.627975979] [nvblox_node]: dynamic_mapper.esdf_slice_max_height: 1
+[component_container_mt-1] [INFO] [1788755437.627980437] [nvblox_node]: dynamic_mapper.esdf_slice_height: 1
+[component_container_mt-1] [INFO] [1788755437.627984856] [nvblox_node]: dynamic_mapper.exclude_last_view_from_decay: 0
+[component_container_mt-1] [INFO] [1788755437.627989705] [nvblox_node]: dynamic_mapper.projective_integrator_max_integration_distance_m: 7
+[component_container_mt-1] [INFO] [1788755437.627994684] [nvblox_node]: dynamic_mapper.lidar_projective_integrator_max_integration_distance_m: 10
+[component_container_mt-1] [INFO] [1788755437.627999704] [nvblox_node]: dynamic_mapper.projective_integrator_truncation_distance_vox: 4
+[component_container_mt-1] [INFO] [1788755437.628004242] [nvblox_node]: dynamic_mapper.projective_integrator_weighting_mode: kInverseSquareWeight
+[component_container_mt-1] [WARN] [1788755437.628009072] [nvblox_node]: Requested weighting function: "kInverseSquareWeight" not recognized. Defaulting to: kInverseSquareWeight
+[component_container_mt-1] [INFO] [1788755437.628014883] [nvblox_node]: dynamic_mapper.projective_integrator_max_weight: 5
+[component_container_mt-1] [INFO] [1788755437.628019712] [nvblox_node]: dynamic_mapper.projective_tsdf_integrator_invalid_depth_decay_factor: -1
+[component_container_mt-1] [INFO] [1788755437.628024521] [nvblox_node]: dynamic_mapper.free_region_occupancy_probability: 0.3
+[component_container_mt-1] [INFO] [1788755437.628029300] [nvblox_node]: dynamic_mapper.occupied_region_occupancy_probability: 0.7
+[component_container_mt-1] [INFO] [1788755437.628034009] [nvblox_node]: dynamic_mapper.unobserved_region_occupancy_probability: 0.5
+[component_container_mt-1] [INFO] [1788755437.628038958] [nvblox_node]: dynamic_mapper.occupied_region_half_width_m: 0.1
+[component_container_mt-1] [INFO] [1788755437.628043316] [nvblox_node]: dynamic_mapper.raycast_subsampling_factor: 4
+[component_container_mt-1] [INFO] [1788755437.628047925] [nvblox_node]: dynamic_mapper.workspace_bounds_type: kUnbounded
+[component_container_mt-1] [WARN] [1788755437.628052734] [nvblox_node]: Requested workspace bounds type: "kUnbounded" not recognized. Defaulting to: kUnbounded
+[component_container_mt-1] [INFO] [1788755437.628058255] [nvblox_node]: dynamic_mapper.workspace_bounds_min_height_m: 0
+[component_container_mt-1] [INFO] [1788755437.628063154] [nvblox_node]: dynamic_mapper.workspace_bounds_max_height_m: 1
+[component_container_mt-1] [INFO] [1788755437.628067763] [nvblox_node]: dynamic_mapper.workspace_bounds_min_corner_x_m: 0
+[component_container_mt-1] [INFO] [1788755437.628072662] [nvblox_node]: dynamic_mapper.workspace_bounds_max_corner_x_m: 0
+[component_container_mt-1] [INFO] [1788755437.628078924] [nvblox_node]: dynamic_mapper.workspace_bounds_min_corner_y_m: 2
+[component_container_mt-1] [INFO] [1788755437.628083753] [nvblox_node]: dynamic_mapper.workspace_bounds_max_corner_y_m: 2
+[component_container_mt-1] [INFO] [1788755437.628089003] [nvblox_node]: dynamic_mapper.esdf_integrator_min_weight: 0.0001
+[component_container_mt-1] [INFO] [1788755437.628093802] [nvblox_node]: dynamic_mapper.esdf_integrator_max_site_distance_vox: 1
+[component_container_mt-1] [INFO] [1788755437.628098391] [nvblox_node]: dynamic_mapper.esdf_integrator_max_distance_m: 2
+[component_container_mt-1] [INFO] [1788755437.628103150] [nvblox_node]: dynamic_mapper.mesh_integrator_min_weight: 0.0001
+[component_container_mt-1] [INFO] [1788755437.628107779] [nvblox_node]: dynamic_mapper.mesh_integrator_weld_vertices: 1
+[component_container_mt-1] [INFO] [1788755437.628112317] [nvblox_node]: dynamic_mapper.decay_integrator_deallocate_decayed_blocks: 1
+[component_container_mt-1] [INFO] [1788755437.628117156] [nvblox_node]: dynamic_mapper.tsdf_decay_factor: 0.95
+[component_container_mt-1] [INFO] [1788755437.628121976] [nvblox_node]: dynamic_mapper.tsdf_decayed_weight_threshold: 0.001
+[component_container_mt-1] [INFO] [1788755437.628126725] [nvblox_node]: dynamic_mapper.tsdf_set_free_distance_on_decayed: 0
+[component_container_mt-1] [INFO] [1788755437.628131403] [nvblox_node]: dynamic_mapper.tsdf_decayed_free_distance_vox: 4
+[component_container_mt-1] [INFO] [1788755437.628143717] [nvblox_node]: dynamic_mapper.free_region_decay_probability: 0.55
+[component_container_mt-1] [INFO] [1788755437.628149077] [nvblox_node]: dynamic_mapper.occupied_region_decay_probability: 0.4
+[component_container_mt-1] [INFO] [1788755437.628153656] [nvblox_node]: dynamic_mapper.occupancy_decay_to_free: 0
+[component_container_mt-1] [INFO] [1788755437.628158314] [nvblox_node]: dynamic_mapper.max_tsdf_distance_for_occupancy_m: 0.15
+[component_container_mt-1] [INFO] [1788755437.628162773] [nvblox_node]: dynamic_mapper.max_unobserved_to_keep_consecutive_occupancy_ms: 200
+[component_container_mt-1] [INFO] [1788755437.628167462] [nvblox_node]: dynamic_mapper.min_duration_since_occupied_for_freespace_ms: 1000
+[component_container_mt-1] [INFO] [1788755437.628171910] [nvblox_node]: dynamic_mapper.min_consecutive_occupancy_duration_for_reset_ms: 2000
+[component_container_mt-1] [INFO] [1788755437.628176509] [nvblox_node]: dynamic_mapper.check_neighborhood: 1
+[component_container_mt-1] [INFO] [1788755437.628182039] [nvblox_node]: Initialize MultiMapper:
+[component_container_mt-1] [INFO] [1788755437.628187199] [nvblox_node]: multi_mapper.connected_mask_component_size_threshold: 2000
+[component_container_mt-1] [INFO] [1788755437.628191908] [nvblox_node]: multi_mapper.remove_small_connected_components: 1
+[component_container_mt-1] [INFO] [1788755437.628283632] [nvblox_node]: NvbloxNode::subscribeToTopics()
+[component_container_mt-1] [INFO] [1788755437.628537283] [nvblox_node]: Subscribing input topics with QoS: SYSTEM_DEFAULT
+[component_container_mt-1] [INFO] [1788755437.630037767] [NitrosContext]: [NitrosContext] Loading extension: gxf/lib/std/libgxf_std.so
+[component_container_mt-1] [INFO] [1788755437.631284340] [NitrosContext]: [NitrosContext] Loading extension: gxf/lib/libgxf_isaac_gxf_helpers.so
+[component_container_mt-1] [INFO] [1788755437.634357575] [NitrosContext]: [NitrosContext] Loading extension: gxf/lib/libgxf_isaac_sight.so
+[component_container_mt-1] [INFO] [1788755437.637075237] [NitrosContext]: [NitrosContext] Loading extension: gxf/lib/libgxf_isaac_atlas.so
+[component_container_mt-1] [33m2026-09-07 11:30:37.643 WARN  external/com_nvidia_gxf/gxf/std/program.cpp@538: No GXF scheduler specified.[0m
+[component_container_mt-1] [INFO] [1788755437.643950569] [NitrosContext]: [NitrosContext] Loading extension: gxf/lib/multimedia/libgxf_multimedia.so
+[component_container_mt-1] [INFO] [1788755437.647436978] [nvblox_node.ManagedNitrosSubscriber]: Starting Managed Nitros Subscriber
+[component_container_mt-1] [INFO] [1788755437.648295896] [nvblox_node]: NvbloxNode::setupTimers()
+[component_container_mt-1] [INFO] [1788755437.648346422] [nvblox_node]: NvbloxNode::advertiseTopics()
+[component_container_mt-1] [INFO] [1788755437.652079829] [nvblox_node]: NvbloxNode::advertiseServices()
+[component_container_mt-1] [INFO] [1788755437.654510236] [nvblox_node]: Started up nvblox node in frame map and voxel size 0.05
+[component_container_mt-1] [INFO] [1788755437.654528420] [nvblox_node]: Mapping type: kStaticTsdf
+[component_container_mt-1] [INFO] [1788755437.655194162] [nvblox_node]: nvblox parameters:
+[component_container_mt-1] nvblox_node
+[component_container_mt-1]     cuda_stream_type: kBlocking
+[component_container_mt-1]     global_frame: map
+[component_container_mt-1]     voxel_size: 0.050000
+[component_container_mt-1]     max_back_projection_distance: 7.000000
+[component_container_mt-1]     layer_visualization_min_tsdf_weight: 0.100000
+[component_container_mt-1]     layer_visualization_exclusion_height_m: 2.000000
+[component_container_mt-1]     layer_visualization_exclusion_radius_m: 7.000000
+[component_container_mt-1]     layer_streamer_bandwidth_limit_mbps: -1.000000
+[component_container_mt-1]     distance_map_unknown_value_optimistic: 1000.000000
+[component_container_mt-1]     distance_map_unknown_value_pessimistic: -1000.000000
+[component_container_mt-1]     esdf_mode: 3d
+[component_container_mt-1]     mapping_type: static_tsdf
+[component_container_mt-1]     pose_frame: camera_link_optical_gt
+[component_container_mt-1]     map_clearing_frame_id: base_link_gt
+[component_container_mt-1]     after_shutdown_map_save_path: 
+[component_container_mt-1]     esdf_slice_bounds_visualization_attachment_frame_id: base_link
+[component_container_mt-1]     workspace_height_bounds_visualization_attachment_frame_id: base_link
+[component_container_mt-1]     publish_esdf_distance_slice: 1
+[component_container_mt-1]     use_color: 0
+[component_container_mt-1]     use_depth: 1
+[component_container_mt-1]     use_segmentation: 0
+[component_container_mt-1]     use_lidar: 0
+[component_container_mt-1]     use_non_equal_vertical_fov_lidar_params: 0
+[component_container_mt-1]     print_timings_to_console: 0
+[INFO] [launch_ros.actions.load_composable_nodes]: Loaded node '/nvblox_node' in container '/nvblox_container'
+[component_container_mt-1]     print_rates_to_console: 0
+[component_container_mt-1]     print_queue_drops_to_console: 0
+[component_container_mt-1]     print_delays_to_console: 0
+[component_container_mt-1]     layer_visualization_undo_gamma_correction: 0
+[component_container_mt-1]     output_pessimistic_distance_map: 1
+[component_container_mt-1]     num_cameras: 1
+[component_container_mt-1]     lidar_width: 1800
+[component_container_mt-1]     lidar_height: 31
+[component_container_mt-1]     tick_period_ms: 10
+[component_container_mt-1]     print_statistics_on_console_period_ms: 10000
+[component_container_mt-1]     maximum_input_queue_length: 10
+[component_container_mt-1]     back_projection_subsampling: 1
+[component_container_mt-1]     lidar_vertical_fov_rad: 0.523599
+[component_container_mt-1]     lidar_min_valid_range_m: 0.100000
+[component_container_mt-1]     lidar_max_valid_range_m: 50.000000
+[component_container_mt-1]     min_angle_below_zero_elevation_rad: 0.349066
+[component_container_mt-1]     max_angle_above_zero_elevation_rad: 0.261799
+[component_container_mt-1]     esdf_slice_bounds_visualization_side_length: 10.000000
+[component_container_mt-1]     workspace_height_bounds_visualization_side_length: 10.000000
+[component_container_mt-1]     integrate_depth_rate_hz: 640.000000
+[component_container_mt-1]     integrate_color_rate_hz: 5.000000
+[component_container_mt-1]     integrate_lidar_rate_hz: 40.000000
+[component_container_mt-1]     update_mesh_rate_hz: 5.000000
+[component_container_mt-1]     update_esdf_rate_hz: 10.000000
+[component_container_mt-1]     publish_layer_rate_hz: 2.000000
+[component_container_mt-1]     publish_debug_vis_rate_hz: 2.000000
+[component_container_mt-1]     decay_tsdf_rate_hz: 5.000000
+[component_container_mt-1]     decay_dynamic_occupancy_rate_hz: 10.000000
+[component_container_mt-1]     clear_map_outside_radius_rate_hz: 1.000000
+[component_container_mt-1]     map_clearing_radius_m: 7.000000
+[component_container_mt-1]     esdf_and_gradients_unobserved_value: -1000.000000
+[component_container_mt-1]     multi_mapper
+[component_container_mt-1]         connected_mask_component_size_threshold: 2000
+[component_container_mt-1]         background_mapper
+[component_container_mt-1]             voxel_size_m: 0.050000
+[component_container_mt-1]             memory_type: kDevice
+[component_container_mt-1]             projective_layer_type: kTsdf
+[component_container_mt-1]             esdf_mode: kUnset
+[component_container_mt-1]             do_depth_preprocessing: 0
+[component_container_mt-1]             depth_preprocessing_num_dilations: 3
+[component_container_mt-1]             exclude_last_view_from_decay: 1
+[component_container_mt-1]             camera_tsdf_integrator
+[component_container_mt-1]                 max_weight:: 5.000000
+[component_container_mt-1]                 marked_unobserved_voxels_distance_m:: -1.000000
+[component_container_mt-1]                 marked_unobserved_voxels_weight:: 0.100000
+[component_container_mt-1]                 weighting_function_type:: kInverseSquareTsdfDistancePenalty
+[component_container_mt-1]                 invalid_depth_decay_factor:: -1.000000
+[component_container_mt-1]                 projective_integrator
+[component_container_mt-1]                     lidar_linear_interpolation_max_allowable_difference_vox:: 2.000000
+[component_container_mt-1]                     lidar_nearest_interpolation_max_allowable_dist_to_ray_vox:: 0.500000
+[component_container_mt-1]                     truncation_distance_vox:: 4.000000
+[component_container_mt-1]                     max_integration_distance_m:: 5.000000
+[component_container_mt-1]                     view_calculator
+[component_container_mt-1]                         raycast_subsampling_factor: 4
+[component_container_mt-1]                         workspace_bounds_type: kUnbounded
+[component_container_mt-1]                         workspace_bounds_min_height_m: -0.500000
+[component_container_mt-1]                         workspace_bounds_max_height_m: 2.000000
+[component_container_mt-1]                         workspace_bounds_min_corner_x_m: 0.000000
+[component_container_mt-1]                         workspace_bounds_max_corner_x_m: 0.000000
+[component_container_mt-1]                         workspace_bounds_min_corner_y_m: 0.000000
+[component_container_mt-1]                         workspace_bounds_max_corner_y_m: 0.000000
+[component_container_mt-1]             lidar_tsdf_integrator
+[component_container_mt-1]                 max_weight:: 5.000000
+[component_container_mt-1]                 marked_unobserved_voxels_distance_m:: -1.000000
+[component_container_mt-1]                 marked_unobserved_voxels_weight:: 0.100000
+[component_container_mt-1]                 weighting_function_type:: kInverseSquareWeight
+[component_container_mt-1]                 invalid_depth_decay_factor:: -1.000000
+[component_container_mt-1]                 projective_integrator
+[component_container_mt-1]                     lidar_linear_interpolation_max_allowable_difference_vox:: 2.000000
+[component_container_mt-1]                     lidar_nearest_interpolation_max_allowable_dist_to_ray_vox:: 0.500000
+[component_container_mt-1]                     truncation_distance_vox:: 4.000000
+[component_container_mt-1]                     max_integration_distance_m:: 10.000000
+[component_container_mt-1]                     view_calculator
+[component_container_mt-1]                         raycast_subsampling_factor: 4
+[component_container_mt-1]                         workspace_bounds_type: kUnbounded
+[component_container_mt-1]                         workspace_bounds_min_height_m: 0.000000
+[component_container_mt-1]                         workspace_bounds_max_height_m: 1.000000
+[component_container_mt-1]                         workspace_bounds_min_corner_x_m: 0.000000
+[component_container_mt-1]                         workspace_bounds_max_corner_x_m: 0.000000
+[component_container_mt-1]                         workspace_bounds_min_corner_y_m: 2.000000
+[component_container_mt-1]                         workspace_bounds_max_corner_y_m: 2.000000
+[component_container_mt-1]             projective_color_integrator
+[component_container_mt-1]                 sphere_tracing_ray_subsampling_factor:: 4
+[component_container_mt-1]                 max_weight:: 5.000000
+[component_container_mt-1]                 weighting_function_type:: kInverseSquareTsdfDistancePenalty
+[component_container_mt-1]                 projective_integrator
+[component_container_mt-1]                     lidar_linear_interpolation_max_allowable_difference_vox:: 2.000000
+[component_container_mt-1]                     lidar_nearest_interpolation_max_allowable_dist_to_ray_vox:: 0.500000
+[component_container_mt-1]                     truncation_distance_vox:: 4.000000
+[component_container_mt-1]                     max_integration_distance_m:: 5.000000
+[component_container_mt-1]                     view_calculator
+[component_container_mt-1]                         raycast_subsampling_factor: 4
+[component_container_mt-1]                         workspace_bounds_type: kUnbounded
+[component_container_mt-1]                         workspace_bounds_min_height_m: 0.000000
+[component_container_mt-1]                         workspace_bounds_max_height_m: 1.000000
+[component_container_mt-1]                         workspace_bounds_min_corner_x_m: 0.000000
+[component_container_mt-1]                         workspace_bounds_max_corner_x_m: 0.000000
+[component_container_mt-1]                         workspace_bounds_min_corner_y_m: 2.000000
+[component_container_mt-1]                         workspace_bounds_max_corner_y_m: 2.000000
+[component_container_mt-1]                 view_calculator
+[component_container_mt-1]                     raycast_subsampling_factor: 4
+[component_container_mt-1]                     workspace_bounds_type: kUnbounded
+[component_container_mt-1]                     workspace_bounds_min_height_m: -0.500000
+[component_container_mt-1]                     workspace_bounds_max_height_m: 2.000000
+[component_container_mt-1]                     workspace_bounds_min_corner_x_m: 0.000000
+[component_container_mt-1]                     workspace_bounds_max_corner_x_m: 0.000000
+[component_container_mt-1]                     workspace_bounds_min_corner_y_m: 0.000000
+[component_container_mt-1]                     workspace_bounds_max_corner_y_m: 0.000000
+[component_container_mt-1]             camera_occupancy_integrator
+[component_container_mt-1]                 free_region_log_odds:: -0.200671
+[component_container_mt-1]                 occupied_region_log_odds:: 0.200671
+[component_container_mt-1]                 unobserved_region_log_odds:: 0.000000
+[component_container_mt-1]                 occupied_region_half_width_m:: 0.100000
+[component_container_mt-1]                 projective_integrator
+[component_container_mt-1]                     lidar_linear_interpolation_max_allowable_difference_vox:: 2.000000
+[component_container_mt-1]                     lidar_nearest_interpolation_max_allowable_dist_to_ray_vox:: 0.500000
+[component_container_mt-1]                     truncation_distance_vox:: 4.000000
+[component_container_mt-1]                     max_integration_distance_m:: 5.000000
+[component_container_mt-1]                     view_calculator
+[component_container_mt-1]                         raycast_subsampling_factor: 4
+[component_container_mt-1]                         workspace_bounds_type: kUnbounded
+[component_container_mt-1]                         workspace_bounds_min_height_m: 0.000000
+[component_container_mt-1]                         workspace_bounds_max_height_m: 1.000000
+[component_container_mt-1]                         workspace_bounds_min_corner_x_m: 0.000000
+[component_container_mt-1]                         workspace_bounds_max_corner_x_m: 0.000000
+[component_container_mt-1]                         workspace_bounds_min_corner_y_m: 2.000000
+[component_container_mt-1]                         workspace_bounds_max_corner_y_m: 2.000000
+[component_container_mt-1]             lidar_occupancy_integrator
+[component_container_mt-1]                 free_region_log_odds:: -0.200671
+[component_container_mt-1]                 occupied_region_log_odds:: 0.200671
+[component_container_mt-1]                 unobserved_region_log_odds:: 0.000000
+[component_container_mt-1]                 occupied_region_half_width_m:: 0.100000
+[component_container_mt-1]                 projective_integrator
+[component_container_mt-1]                     lidar_linear_interpolation_max_allowable_difference_vox:: 2.000000
+[component_container_mt-1]                     lidar_nearest_interpolation_max_allowable_dist_to_ray_vox:: 0.500000
+[component_container_mt-1]                     truncation_distance_vox:: 4.000000
+[component_container_mt-1]                     max_integration_distance_m:: 10.000000
+[component_container_mt-1]                     view_calculator
+[component_container_mt-1]                         raycast_subsampling_factor: 4
+[component_container_mt-1]                         workspace_bounds_type: kUnbounded
+[component_container_mt-1]                         workspace_bounds_min_height_m: 0.000000
+[component_container_mt-1]                         workspace_bounds_max_height_m: 1.000000
+[component_container_mt-1]                         workspace_bounds_min_corner_x_m: 0.000000
+[component_container_mt-1]                         workspace_bounds_max_corner_x_m: 0.000000
+[component_container_mt-1]                         workspace_bounds_min_corner_y_m: 2.000000
+[component_container_mt-1]                         workspace_bounds_max_corner_y_m: 2.000000
+[component_container_mt-1]             esdf_integrator
+[component_container_mt-1]                 max_esdf_distance_m:: 2.000000
+[component_container_mt-1]                 max_tsdf_site_distance_vox:: 2.000000
+[component_container_mt-1]                 tsdf_min_weight:: 0.100000
+[component_container_mt-1]                 occupied_threshold_log_odds:: 0.000000
+[component_container_mt-1]                 esdf_slice_min_height:: 0.000000
+[component_container_mt-1]                 esdf_slice_max_height:: 1.000000
+[component_container_mt-1]                 esdf_slice_height:: 1.000000
+[component_container_mt-1]                 slice_height_above_plane_m:: 0.000000
+[component_container_mt-1]                 slice_height_thickness_m:: 0.100000
+[component_container_mt-1]             mesh_integrator
+[component_container_mt-1]                 min_weight:: 0.100000
+[component_container_mt-1]                 cutoff_distance_vox:: 5.000000
+[component_container_mt-1]                 weld_vertices:: 1
+[component_container_mt-1]             occupancy_decay_integrator
+[component_container_mt-1]                 free_space_decay_log_odds:: 0.200671
+[component_container_mt-1]                 occupied_space_decay_log_odds:: -0.405465
+[component_container_mt-1]                 decay_to_log_odds_:: 0.000000
+[component_container_mt-1]                 decay_integrator
+[component_container_mt-1]                     deallocate_decayed_blocks:: 1
+[component_container_mt-1]             tsdf_decay_integrator
+[component_container_mt-1]                 decay_factor:: 0.950000
+[component_container_mt-1]                 decayed_weight_theshold:: 0.001000
+[component_container_mt-1]                 set_free_distance_on_decayed:: 0
+[component_container_mt-1]                 free_distance_vox:: 4.000000
+[component_container_mt-1]                 decay_integrator
+[component_container_mt-1]                     deallocate_decayed_blocks:: 1
+[component_container_mt-1]             freespace_integrator
+[component_container_mt-1]                 max_tsdf_distance_for_occupancy_m:: 0.150000
+[component_container_mt-1]                 max_unobserved_to_keep_consecutive_occupancy_ms:: 200
+[component_container_mt-1]                 min_duration_since_occupied_for_freespace_ms:: 1000
+[component_container_mt-1]                 min_consecutive_occupancy_duration_for_reset_ms:: 2000
+[component_container_mt-1]                 check_neighborhood:: 1
+[component_container_mt-1]         foreground_mapper
+[component_container_mt-1]             voxel_size_m: 0.050000
+[component_container_mt-1]             memory_type: kDevice
+[component_container_mt-1]             projective_layer_type: kNone
+[component_container_mt-1]             esdf_mode: kUnset
+[component_container_mt-1]             do_depth_preprocessing: 0
+[component_container_mt-1]             depth_preprocessing_num_dilations: 4
+[component_container_mt-1]             exclude_last_view_from_decay: 0
+[component_container_mt-1]             camera_tsdf_integrator
+[component_container_mt-1]                 max_weight:: 5.000000
+[component_container_mt-1]                 marked_unobserved_voxels_distance_m:: -1.000000
+[component_container_mt-1]                 marked_unobserved_voxels_weight:: 0.100000
+[component_container_mt-1]                 weighting_function_type:: kInverseSquareWeight
+[component_container_mt-1]                 invalid_depth_decay_factor:: -1.000000
+[component_container_mt-1]                 projective_integrator
+[component_container_mt-1]                     lidar_linear_interpolation_max_allowable_difference_vox:: 2.000000
+[component_container_mt-1]                     lidar_nearest_interpolation_max_allowable_dist_to_ray_vox:: 0.500000
+[component_container_mt-1]                     truncation_distance_vox:: 4.000000
+[component_container_mt-1]                     max_integration_distance_m:: 7.000000
+[component_container_mt-1]                     view_calculator
+[component_container_mt-1]                         raycast_subsampling_factor: 4
+[component_container_mt-1]                         workspace_bounds_type: kUnbounded
+[component_container_mt-1]                         workspace_bounds_min_height_m: 0.000000
+[component_container_mt-1]                         workspace_bounds_max_height_m: 1.000000
+[component_container_mt-1]                         workspace_bounds_min_corner_x_m: 0.000000
+[component_container_mt-1]                         workspace_bounds_max_corner_x_m: 0.000000
+[component_container_mt-1]                         workspace_bounds_min_corner_y_m: 2.000000
+[component_container_mt-1]                         workspace_bounds_max_corner_y_m: 2.000000
+[component_container_mt-1]             lidar_tsdf_integrator
+[component_container_mt-1]                 max_weight:: 5.000000
+[component_container_mt-1]                 marked_unobserved_voxels_distance_m:: -1.000000
+[component_container_mt-1]                 marked_unobserved_voxels_weight:: 0.100000
+[component_container_mt-1]                 weighting_function_type:: kInverseSquareWeight
+[component_container_mt-1]                 invalid_depth_decay_factor:: -1.000000
+[component_container_mt-1]                 projective_integrator
+[component_container_mt-1]                     lidar_linear_interpolation_max_allowable_difference_vox:: 2.000000
+[component_container_mt-1]                     lidar_nearest_interpolation_max_allowable_dist_to_ray_vox:: 0.500000
+[component_container_mt-1]                     truncation_distance_vox:: 4.000000
+[component_container_mt-1]                     max_integration_distance_m:: 10.000000
+[component_container_mt-1]                     view_calculator
+[component_container_mt-1]                         raycast_subsampling_factor: 4
+[component_container_mt-1]                         workspace_bounds_type: kUnbounded
+[component_container_mt-1]                         workspace_bounds_min_height_m: 0.000000
+[component_container_mt-1]                         workspace_bounds_max_height_m: 1.000000
+[component_container_mt-1]                         workspace_bounds_min_corner_x_m: 0.000000
+[component_container_mt-1]                         workspace_bounds_max_corner_x_m: 0.000000
+[component_container_mt-1]                         workspace_bounds_min_corner_y_m: 2.000000
+[component_container_mt-1]                         workspace_bounds_max_corner_y_m: 2.000000
+[component_container_mt-1]             projective_color_integrator
+[component_container_mt-1]                 sphere_tracing_ray_subsampling_factor:: 4
+[component_container_mt-1]                 max_weight:: 5.000000
+[component_container_mt-1]                 weighting_function_type:: kInverseSquareWeight
+[component_container_mt-1]                 projective_integrator
+[component_container_mt-1]                     lidar_linear_interpolation_max_allowable_difference_vox:: 2.000000
+[component_container_mt-1]                     lidar_nearest_interpolation_max_allowable_dist_to_ray_vox:: 0.500000
+[component_container_mt-1]                     truncation_distance_vox:: 4.000000
+[component_container_mt-1]                     max_integration_distance_m:: 7.000000
+[component_container_mt-1]                     view_calculator
+[component_container_mt-1]                         raycast_subsampling_factor: 4
+[component_container_mt-1]                         workspace_bounds_type: kUnbounded
+[component_container_mt-1]                         workspace_bounds_min_height_m: 0.000000
+[component_container_mt-1]                         workspace_bounds_max_height_m: 1.000000
+[component_container_mt-1]                         workspace_bounds_min_corner_x_m: 0.000000
+[component_container_mt-1]                         workspace_bounds_max_corner_x_m: 0.000000
+[component_container_mt-1]                         workspace_bounds_min_corner_y_m: 2.000000
+[component_container_mt-1]                         workspace_bounds_max_corner_y_m: 2.000000
+[component_container_mt-1]                 view_calculator
+[component_container_mt-1]                     raycast_subsampling_factor: 4
+[component_container_mt-1]                     workspace_bounds_type: kUnbounded
+[component_container_mt-1]                     workspace_bounds_min_height_m: 0.000000
+[component_container_mt-1]                     workspace_bounds_max_height_m: 1.000000
+[component_container_mt-1]                     workspace_bounds_min_corner_x_m: 0.000000
+[component_container_mt-1]                     workspace_bounds_max_corner_x_m: 0.000000
+[component_container_mt-1]                     workspace_bounds_min_corner_y_m: 2.000000
+[component_container_mt-1]                     workspace_bounds_max_corner_y_m: 2.000000
+[component_container_mt-1]             camera_occupancy_integrator
+[component_container_mt-1]                 free_region_log_odds:: -0.847298
+[component_container_mt-1]                 occupied_region_log_odds:: 0.847298
+[component_container_mt-1]                 unobserved_region_log_odds:: 0.000000
+[component_container_mt-1]                 occupied_region_half_width_m:: 0.100000
+[component_container_mt-1]                 projective_integrator
+[component_container_mt-1]                     lidar_linear_interpolation_max_allowable_difference_vox:: 2.000000
+[component_container_mt-1]                     lidar_nearest_interpolation_max_allowable_dist_to_ray_vox:: 0.500000
+[component_container_mt-1]                     truncation_distance_vox:: 4.000000
+[component_container_mt-1]                     max_integration_distance_m:: 7.000000
+[component_container_mt-1]                     view_calculator
+[component_container_mt-1]                         raycast_subsampling_factor: 4
+[component_container_mt-1]                         workspace_bounds_type: kUnbounded
+[component_container_mt-1]                         workspace_bounds_min_height_m: 0.000000
+[component_container_mt-1]                         workspace_bounds_max_height_m: 1.000000
+[component_container_mt-1]                         workspace_bounds_min_corner_x_m: 0.000000
+[component_container_mt-1]                         workspace_bounds_max_corner_x_m: 0.000000
+[component_container_mt-1]                         workspace_bounds_min_corner_y_m: 2.000000
+[component_container_mt-1]                         workspace_bounds_max_corner_y_m: 2.000000
+[component_container_mt-1]             lidar_occupancy_integrator
+[component_container_mt-1]                 free_region_log_odds:: -0.847298
+[component_container_mt-1]                 occupied_region_log_odds:: 0.847298
+[component_container_mt-1]                 unobserved_region_log_odds:: 0.000000
+[component_container_mt-1]                 occupied_region_half_width_m:: 0.100000
+[component_container_mt-1]                 projective_integrator
+[component_container_mt-1]                     lidar_linear_interpolation_max_allowable_difference_vox:: 2.000000
+[component_container_mt-1]                     lidar_nearest_interpolation_max_allowable_dist_to_ray_vox:: 0.500000
+[component_container_mt-1]                     truncation_distance_vox:: 4.000000
+[component_container_mt-1]                     max_integration_distance_m:: 10.000000
+[component_container_mt-1]                     view_calculator
+[component_container_mt-1]                         raycast_subsampling_factor: 4
+[component_container_mt-1]                         workspace_bounds_type: kUnbounded
+[component_container_mt-1]                         workspace_bounds_min_height_m: 0.000000
+[component_container_mt-1]                         workspace_bounds_max_height_m: 1.000000
+[component_container_mt-1]                         workspace_bounds_min_corner_x_m: 0.000000
+[component_container_mt-1]                         workspace_bounds_max_corner_x_m: 0.000000
+[component_container_mt-1]                         workspace_bounds_min_corner_y_m: 2.000000
+[component_container_mt-1]                         workspace_bounds_max_corner_y_m: 2.000000
+[component_container_mt-1]             esdf_integrator
+[component_container_mt-1]                 max_esdf_distance_m:: 2.000000
+[component_container_mt-1]                 max_tsdf_site_distance_vox:: 1.000000
+[component_container_mt-1]                 tsdf_min_weight:: 0.000100
+[component_container_mt-1]                 occupied_threshold_log_odds:: 0.000000
+[component_container_mt-1]                 esdf_slice_min_height:: 0.000000
+[component_container_mt-1]                 esdf_slice_max_height:: 1.000000
+[component_container_mt-1]                 esdf_slice_height:: 1.000000
+[component_container_mt-1]                 slice_height_above_plane_m:: 0.000000
+[component_container_mt-1]                 slice_height_thickness_m:: 0.100000
+[component_container_mt-1]             mesh_integrator
+[component_container_mt-1]                 min_weight:: 0.000100
+[component_container_mt-1]                 cutoff_distance_vox:: 5.000000
+[component_container_mt-1]                 weld_vertices:: 1
+[component_container_mt-1]             occupancy_decay_integrator
+[component_container_mt-1]                 free_space_decay_log_odds:: 0.200671
+[component_container_mt-1]                 occupied_space_decay_log_odds:: -0.405465
+[component_container_mt-1]                 decay_to_log_odds_:: 0.000000
+[component_container_mt-1]                 decay_integrator
+[component_container_mt-1]                     deallocate_decayed_blocks:: 1
+[component_container_mt-1]             tsdf_decay_integrator
+[component_container_mt-1]                 decay_factor:: 0.950000
+[component_container_mt-1]                 decayed_weight_theshold:: 0.001000
+[component_container_mt-1]                 set_free_distance_on_decayed:: 0
+[component_container_mt-1]                 free_distance_vox:: 4.000000
+[component_container_mt-1]                 decay_integrator
+[component_container_mt-1]                     deallocate_decayed_blocks:: 1
+[component_container_mt-1]             freespace_integrator
+[component_container_mt-1]                 max_tsdf_distance_for_occupancy_m:: 0.150000
+[component_container_mt-1]                 max_unobserved_to_keep_consecutive_occupancy_ms:: 200
+[component_container_mt-1]                 min_duration_since_occupied_for_freespace_ms:: 1000
+[component_container_mt-1]                 min_consecutive_occupancy_duration_for_reset_ms:: 2000
+[component_container_mt-1]                 check_neighborhood:: 1
+[component_container_mt-1]         image_masker
+[component_container_mt-1]             occlusion_threshold_m:: 0.250000
+[component_container_mt-1]         ground_plane_estimator
+[component_container_mt-1]             ground_points_candidates_min_z_m:: -0.100000
+[component_container_mt-1]             ground_points_candidates_max_z_m:: 0.150000
+[component_container_mt-1]             ransac_plane_fitter
+[component_container_mt-1]                 num_ransac_iterations:: 1000
+[component_container_mt-1]                 ransac_distance_threshold_m:: 0.200000
+[component_container_mt-1]             tsdf_zero_crossings_extractor
+[component_container_mt-1]                 min_tsdf_weight:: 0.100000
+[component_container_mt-1]                 max_crossings:: 360000
+[component_container_mt-1] 
+[component_container_mt-1] [INFO] [1788755437.691811322] [nvblox_node]: 
+[component_container_mt-1] Received request for ESDF with:
+[component_container_mt-1] update_esdf: 1
+[component_container_mt-1] use_aabb: 1
+[component_container_mt-1] visualize_esdf: 0
+[component_container_mt-1] aabb_min_m: [-3.19, -3.16, -3.21],
+[component_container_mt-1] aabb_size_m: [6.40, 6.40, 6.40]
+[component_container_mt-1] [INFO] [1788755437.711680626] [nvblox_node]: Successfully wrote requested ESDF to MultiArrayMsg.
+[component_container_mt-1] I0907 11:30:37.729936 271832 mapper.cpp:304] Allocating space for last depth image
+[component_container_mt-1] [INFO] [1788755441.691798490] [nvblox_node]: 
+[component_container_mt-1] Received request for ESDF with:
+[component_container_mt-1] update_esdf: 1
+[component_container_mt-1] use_aabb: 1
+[component_container_mt-1] visualize_esdf: 0
+[component_container_mt-1] aabb_min_m: [-3.19, -3.16, -3.20],
+[component_container_mt-1] aabb_size_m: [6.40, 6.40, 6.40]
+[component_container_mt-1] [INFO] [1788755441.703520480] [nvblox_node]: Successfully wrote requested ESDF to MultiArrayMsg.
+[component_container_mt-1] [INFO] [1788755445.691803432] [nvblox_node]: 
+[component_container_mt-1] Received request for ESDF with:
+[component_container_mt-1] update_esdf: 1
+[component_container_mt-1] use_aabb: 1
+[component_container_mt-1] visualize_esdf: 0
+[component_container_mt-1] aabb_min_m: [-3.20, -3.16, -3.18],
+[component_container_mt-1] aabb_size_m: [6.40, 6.40, 6.40]
+[component_container_mt-1] [INFO] [1788755445.704726209] [nvblox_node]: Successfully wrote requested ESDF to MultiArrayMsg.
+[component_container_mt-1] [INFO] [1788755449.691995066] [nvblox_node]: 
+[component_container_mt-1] Received request for ESDF with:
+[component_container_mt-1] update_esdf: 1
+[component_container_mt-1] use_aabb: 1
+[component_container_mt-1] visualize_esdf: 0
+[component_container_mt-1] aabb_min_m: [-3.18, -3.15, -3.18],
+[component_container_mt-1] aabb_size_m: [6.40, 6.40, 6.40]
+[component_container_mt-1] [INFO] [1788755449.705194397] [nvblox_node]: Successfully wrote requested ESDF to MultiArrayMsg.
+[component_container_mt-1] I0907 11:30:51.489712 271826 block_memory_pool_impl.h:65] Expanding the memory pool with 4096 blocks. Number of allocated blocks: 6144
+[component_container_mt-1] I0907 11:30:51.489993 271826 gpu_layer_view_impl.cuh:100] Resizing GPU hash capacity from 4096 to 8192 in order to accomodate space for 175 new elements.
+[component_container_mt-1] I0907 11:30:51.490118 271826 gpu_hash_interface_impl.cuh:83] Creating a GPUHashImpl with requested capacity of 8192 blocks. Real capacity: 8192
+[component_container_mt-1] I0907 11:30:51.614992 271826 block_memory_pool_impl.h:65] Expanding the memory pool with 4096 blocks. Number of allocated blocks: 6144
+[component_container_mt-1] I0907 11:30:51.615248 271826 gpu_layer_view_impl.cuh:100] Resizing GPU hash capacity from 4096 to 8192 in order to accomodate space for 295 new elements.
+[component_container_mt-1] I0907 11:30:51.615444 271826 gpu_hash_interface_impl.cuh:83] Creating a GPUHashImpl with requested capacity of 8192 blocks. Real capacity: 8192
+[component_container_mt-1] [INFO] [1788755453.692060477] [nvblox_node]: 
+[component_container_mt-1] Received request for ESDF with:
+[component_container_mt-1] update_esdf: 1
+[component_container_mt-1] use_aabb: 1
+[component_container_mt-1] visualize_esdf: 0
+[component_container_mt-1] aabb_min_m: [-3.18, -3.21, -0.11],
+[component_container_mt-1] aabb_size_m: [6.40, 6.40, 6.40]
+[component_container_mt-1] [INFO] [1788755453.705527616] [nvblox_node]: Successfully wrote requested ESDF to MultiArrayMsg.
+[component_container_mt-1] I0907 11:30:54.379408 271826 gpu_layer_view_impl.cuh:100] Resizing GPU hash capacity from 8192 to 16384 in order to accomodate space for 22 new elements.
+[component_container_mt-1] I0907 11:30:54.379797 271826 gpu_hash_interface_impl.cuh:83] Creating a GPUHashImpl with requested capacity of 16384 blocks. Real capacity: 16384
+[component_container_mt-1] I0907 11:30:54.499948 271836 gpu_layer_view_impl.cuh:100] Resizing GPU hash capacity from 8192 to 16384 in order to accomodate space for 113 new elements.
+[component_container_mt-1] I0907 11:30:54.500097 271836 gpu_hash_interface_impl.cuh:83] Creating a GPUHashImpl with requested capacity of 16384 blocks. Real capacity: 16384
+[component_container_mt-1] [INFO] [1788755456.805177640] [nvblox_node]: 
+[component_container_mt-1] Received request for ESDF with:
+[component_container_mt-1] update_esdf: 1
+[component_container_mt-1] use_aabb: 1
+[component_container_mt-1] visualize_esdf: 0
+[component_container_mt-1] aabb_min_m: [-1.51, -1.47, 3.23],
+[component_container_mt-1] aabb_size_m: [3.00, 3.00, 3.00]
+[component_container_mt-1] [INFO] [1788755456.811458236] [nvblox_node]: Successfully wrote requested ESDF to MultiArrayMsg.
+[component_container_mt-1] [INFO] [1788755457.104984192] [nvblox_node]: 
+[component_container_mt-1] Received request for ESDF with:
+[component_container_mt-1] update_esdf: 1
+[component_container_mt-1] use_aabb: 1
+[component_container_mt-1] visualize_esdf: 0
+[component_container_mt-1] aabb_min_m: [-1.52, -1.47, 3.25],
+[component_container_mt-1] aabb_size_m: [3.00, 3.00, 3.00]
+[component_container_mt-1] [INFO] [1788755457.111086881] [nvblox_node]: Successfully wrote requested ESDF to MultiArrayMsg.
+[component_container_mt-1] [INFO] [1788755457.404922014] [nvblox_node]: 
+[component_container_mt-1] Received request for ESDF with:
+[component_container_mt-1] update_esdf: 1
+[component_container_mt-1] use_aabb: 1
+[component_container_mt-1] visualize_esdf: 0
+[component_container_mt-1] aabb_min_m: [-1.52, -1.48, 3.21],
+[component_container_mt-1] aabb_size_m: [3.00, 3.00, 3.00]
+[component_container_mt-1] [INFO] [1788755457.411409762] [nvblox_node]: Successfully wrote requested ESDF to MultiArrayMsg.
+[component_container_mt-1] [INFO] [1788755457.692130916] [nvblox_node]: 
+[component_container_mt-1] Received request for ESDF with:
+[component_container_mt-1] update_esdf: 1
+[component_container_mt-1] use_aabb: 1
+[component_container_mt-1] visualize_esdf: 0
+[component_container_mt-1] aabb_min_m: [-3.21, -3.20, 1.45],
+[component_container_mt-1] aabb_size_m: [6.40, 6.40, 6.40]
+[component_container_mt-1] [INFO] [1788755457.704971267] [nvblox_node]: Successfully wrote requested ESDF to MultiArrayMsg.
+[component_container_mt-1] [INFO] [1788755457.708880458] [nvblox_node]: 
+[component_container_mt-1] Received request for ESDF with:
+[component_container_mt-1] update_esdf: 1
+[component_container_mt-1] use_aabb: 1
+[component_container_mt-1] visualize_esdf: 0
+[component_container_mt-1] aabb_min_m: [-1.51, -1.51, 3.15],
+[component_container_mt-1] aabb_size_m: [3.00, 3.00, 3.00]
+[component_container_mt-1] [INFO] [1788755457.721010472] [nvblox_node]: Successfully wrote requested ESDF to MultiArrayMsg.
+[component_container_mt-1] [INFO] [1788755458.005011664] [nvblox_node]: 
+[component_container_mt-1] Received request for ESDF with:
+[component_container_mt-1] update_esdf: 1
+[component_container_mt-1] use_aabb: 1
+[component_container_mt-1] visualize_esdf: 0
+[component_container_mt-1] aabb_min_m: [-1.49, -1.54, 3.11],
+[component_container_mt-1] aabb_size_m: [3.00, 3.00, 3.00]
+[component_container_mt-1] [INFO] [1788755458.010987942] [nvblox_node]: Successfully wrote requested ESDF to MultiArrayMsg.
+[component_container_mt-1] [INFO] [1788755458.305087328] [nvblox_node]: 
+[component_container_mt-1] Received request for ESDF with:
+[component_container_mt-1] update_esdf: 1
+[component_container_mt-1] use_aabb: 1
+[component_container_mt-1] visualize_esdf: 0
+[component_container_mt-1] aabb_min_m: [-1.45, -1.59, 3.05],
+[component_container_mt-1] aabb_size_m: [3.00, 3.00, 3.00]
+[component_container_mt-1] [INFO] [1788755458.311322408] [nvblox_node]: Successfully wrote requested ESDF to MultiArrayMsg.
+[component_container_mt-1] [INFO] [1788755458.604969446] [nvblox_node]: 
+[component_container_mt-1] Received request for ESDF with:
+[component_container_mt-1] update_esdf: 1
+[component_container_mt-1] use_aabb: 1
+[component_container_mt-1] visualize_esdf: 0
+[component_container_mt-1] aabb_min_m: [-1.42, -1.63, 3.00],
+[component_container_mt-1] aabb_size_m: [3.00, 3.00, 3.00]
+[component_container_mt-1] [INFO] [1788755458.611447136] [nvblox_node]: Successfully wrote requested ESDF to MultiArrayMsg.
+[component_container_mt-1] [INFO] [1788755458.905652893] [nvblox_node]: 
+[component_container_mt-1] Received request for ESDF with:
+[component_container_mt-1] update_esdf: 1
+[component_container_mt-1] use_aabb: 1
+[component_container_mt-1] visualize_esdf: 0
+[component_container_mt-1] aabb_min_m: [-1.38, -1.68, 2.95],
+[component_container_mt-1] aabb_size_m: [3.00, 3.00, 3.00]
+[component_container_mt-1] [INFO] [1788755458.911738470] [nvblox_node]: Successfully wrote requested ESDF to MultiArrayMsg.
+[component_container_mt-1] [INFO] [1788755459.204697375] [nvblox_node]: 
+[component_container_mt-1] Received request for ESDF with:
+[component_container_mt-1] update_esdf: 1
+[component_container_mt-1] use_aabb: 1
+[component_container_mt-1] visualize_esdf: 0
+[component_container_mt-1] aabb_min_m: [-1.34, -1.73, 2.91],
+[component_container_mt-1] aabb_size_m: [3.00, 3.00, 3.00]
+[component_container_mt-1] [INFO] [1788755459.211735166] [nvblox_node]: Successfully wrote requested ESDF to MultiArrayMsg.
+[component_container_mt-1] [INFO] [1788755459.504718468] [nvblox_node]: 
+[component_container_mt-1] Received request for ESDF with:
+[component_container_mt-1] update_esdf: 1
+[component_container_mt-1] use_aabb: 1
+[component_container_mt-1] visualize_esdf: 0
+[component_container_mt-1] aabb_min_m: [-1.30, -1.77, 2.90],
+[component_container_mt-1] aabb_size_m: [3.00, 3.00, 3.00]
+[component_container_mt-1] [INFO] [1788755459.511618728] [nvblox_node]: Successfully wrote requested ESDF to MultiArrayMsg.
+[component_container_mt-1] [INFO] [1788755459.804968044] [nvblox_node]: 
+[component_container_mt-1] Received request for ESDF with:
+[component_container_mt-1] update_esdf: 1
+[component_container_mt-1] use_aabb: 1
+[component_container_mt-1] visualize_esdf: 0
+[component_container_mt-1] aabb_min_m: [-1.26, -1.82, 2.86],
+[component_container_mt-1] aabb_size_m: [3.00, 3.00, 3.00]
+[component_container_mt-1] [INFO] [1788755459.811576531] [nvblox_node]: Successfully wrote requested ESDF to MultiArrayMsg.
+[component_container_mt-1] [INFO] [1788755460.104923313] [nvblox_node]: 
+[component_container_mt-1] Received request for ESDF with:
+[component_container_mt-1] update_esdf: 1
+[component_container_mt-1] use_aabb: 1
+[component_container_mt-1] visualize_esdf: 0
+[component_container_mt-1] aabb_min_m: [-1.22, -1.86, 2.80],
+[component_container_mt-1] aabb_size_m: [3.00, 3.00, 3.00]
+[component_container_mt-1] [INFO] [1788755460.111317744] [nvblox_node]: Successfully wrote requested ESDF to MultiArrayMsg.
+[component_container_mt-1] [INFO] [1788755460.405033717] [nvblox_node]: 
+[component_container_mt-1] Received request for ESDF with:
+[component_container_mt-1] update_esdf: 1
+[component_container_mt-1] use_aabb: 1
+[component_container_mt-1] visualize_esdf: 0
+[component_container_mt-1] aabb_min_m: [-1.18, -1.90, 2.78],
+[component_container_mt-1] aabb_size_m: [3.00, 3.00, 3.00]
+[component_container_mt-1] [INFO] [1788755460.411687310] [nvblox_node]: Successfully wrote requested ESDF to MultiArrayMsg.
+[component_container_mt-1] [INFO] [1788755460.704793336] [nvblox_node]: 
+[component_container_mt-1] Received request for ESDF with:
+[component_container_mt-1] update_esdf: 1
+[component_container_mt-1] use_aabb: 1
+[component_container_mt-1] visualize_esdf: 0
+[component_container_mt-1] aabb_min_m: [-1.14, -1.93, 2.79],
+[component_container_mt-1] aabb_size_m: [3.00, 3.00, 3.00]
+[component_container_mt-1] [INFO] [1788755460.711665804] [nvblox_node]: Successfully wrote requested ESDF to MultiArrayMsg.
+[component_container_mt-1] [INFO] [1788755461.005131752] [nvblox_node]: 
+[component_container_mt-1] Received request for ESDF with:
+[component_container_mt-1] update_esdf: 1
+[component_container_mt-1] use_aabb: 1
+[component_container_mt-1] visualize_esdf: 0
+[component_container_mt-1] aabb_min_m: [-1.10, -1.97, 2.80],
+[component_container_mt-1] aabb_size_m: [3.00, 3.00, 3.00]
+[component_container_mt-1] [INFO] [1788755461.012246709] [nvblox_node]: Successfully wrote requested ESDF to MultiArrayMsg.
+[component_container_mt-1] [INFO] [1788755461.304908214] [nvblox_node]: 
+[component_container_mt-1] Received request for ESDF with:
+[component_container_mt-1] update_esdf: 1
+[component_container_mt-1] use_aabb: 1
+[component_container_mt-1] visualize_esdf: 0
+[component_container_mt-1] aabb_min_m: [-1.06, -2.01, 2.78],
+[component_container_mt-1] aabb_size_m: [3.00, 3.00, 3.00]
+[component_container_mt-1] [INFO] [1788755461.311220160] [nvblox_node]: Successfully wrote requested ESDF to MultiArrayMsg.
+[component_container_mt-1] [INFO] [1788755461.604908381] [nvblox_node]: 
+[component_container_mt-1] Received request for ESDF with:
+[component_container_mt-1] update_esdf: 1
+[component_container_mt-1] use_aabb: 1
+[component_container_mt-1] visualize_esdf: 0
+[component_container_mt-1] aabb_min_m: [-1.04, -2.06, 2.75],
+[component_container_mt-1] aabb_size_m: [3.00, 3.00, 3.00]
+[component_container_mt-1] [INFO] [1788755461.611239793] [nvblox_node]: Successfully wrote requested ESDF to MultiArrayMsg.
+[component_container_mt-1] [INFO] [1788755461.692298636] [nvblox_node]: 
+[component_container_mt-1] Received request for ESDF with:
+[component_container_mt-1] update_esdf: 1
+[component_container_mt-1] use_aabb: 1
+[component_container_mt-1] visualize_esdf: 0
+[component_container_mt-1] aabb_min_m: [-2.74, -3.78, 1.05],
+[component_container_mt-1] aabb_size_m: [6.40, 6.40, 6.40]
+[component_container_mt-1] [INFO] [1788755461.707224861] [nvblox_node]: Successfully wrote requested ESDF to MultiArrayMsg.
+[component_container_mt-1] [INFO] [1788755461.905636547] [nvblox_node]: 
+[component_container_mt-1] Received request for ESDF with:
+[component_container_mt-1] update_esdf: 1
+[component_container_mt-1] use_aabb: 1
+[component_container_mt-1] visualize_esdf: 0
+[component_container_mt-1] aabb_min_m: [-1.04, -2.12, 2.75],
+[component_container_mt-1] aabb_size_m: [3.00, 3.00, 3.00]
+[component_container_mt-1] [INFO] [1788755461.909418888] [nvblox_node]: Successfully wrote requested ESDF to MultiArrayMsg.
+[component_container_mt-1] [INFO] [1788755462.205117010] [nvblox_node]: 
+[component_container_mt-1] Received request for ESDF with:
+[component_container_mt-1] update_esdf: 1
+[component_container_mt-1] use_aabb: 1
+[component_container_mt-1] visualize_esdf: 0
+[component_container_mt-1] aabb_min_m: [-1.05, -2.18, 2.76],
+[component_container_mt-1] aabb_size_m: [3.00, 3.00, 3.00]
+[component_container_mt-1] [INFO] [1788755462.211258532] [nvblox_node]: Successfully wrote requested ESDF to MultiArrayMsg.
+[component_container_mt-1] [INFO] [1788755462.504847096] [nvblox_node]: 
+[component_container_mt-1] Received request for ESDF with:
+[component_container_mt-1] update_esdf: 1
+[component_container_mt-1] use_aabb: 1
+[component_container_mt-1] visualize_esdf: 0
+[component_container_mt-1] aabb_min_m: [-1.07, -2.25, 2.77],
+[component_container_mt-1] aabb_size_m: [3.00, 3.00, 3.00]
+[component_container_mt-1] [INFO] [1788755462.511963577] [nvblox_node]: Successfully wrote requested ESDF to MultiArrayMsg.
+[component_container_mt-1] [INFO] [1788755462.805021064] [nvblox_node]: 
+[component_container_mt-1] Received request for ESDF with:
+[component_container_mt-1] update_esdf: 1
+[component_container_mt-1] use_aabb: 1
+[component_container_mt-1] visualize_esdf: 0
+[component_container_mt-1] aabb_min_m: [-1.09, -2.31, 2.78],
+[component_container_mt-1] aabb_size_m: [3.00, 3.00, 3.00]
+[component_container_mt-1] [INFO] [1788755462.811200849] [nvblox_node]: Successfully wrote requested ESDF to MultiArrayMsg.
+[component_container_mt-1] [INFO] [1788755463.104988350] [nvblox_node]: 
+[component_container_mt-1] Received request for ESDF with:
+[component_container_mt-1] update_esdf: 1
+[component_container_mt-1] use_aabb: 1
+[component_container_mt-1] visualize_esdf: 0
+[component_container_mt-1] aabb_min_m: [-1.11, -2.38, 2.80],
+[component_container_mt-1] aabb_size_m: [3.00, 3.00, 3.00]
+[component_container_mt-1] [INFO] [1788755463.111543607] [nvblox_node]: Successfully wrote requested ESDF to MultiArrayMsg.
+[component_container_mt-1] [INFO] [1788755463.405266998] [nvblox_node]: 
+[component_container_mt-1] Received request for ESDF with:
+[component_container_mt-1] update_esdf: 1
+[component_container_mt-1] use_aabb: 1
+[component_container_mt-1] visualize_esdf: 0
+[component_container_mt-1] aabb_min_m: [-1.13, -2.44, 2.81],
+[component_container_mt-1] aabb_size_m: [3.00, 3.00, 3.00]
+[component_container_mt-1] [INFO] [1788755463.411684333] [nvblox_node]: Successfully wrote requested ESDF to MultiArrayMsg.
+[component_container_mt-1] [INFO] [1788755463.704849296] [nvblox_node]: 
+[component_container_mt-1] Received request for ESDF with:
+[component_container_mt-1] update_esdf: 1
+[component_container_mt-1] use_aabb: 1
+[component_container_mt-1] visualize_esdf: 0
+[component_container_mt-1] aabb_min_m: [-1.15, -2.50, 2.83],
+[component_container_mt-1] aabb_size_m: [3.00, 3.00, 3.00]
+[component_container_mt-1] [INFO] [1788755463.711474836] [nvblox_node]: Successfully wrote requested ESDF to MultiArrayMsg.
+[component_container_mt-1] [INFO] [1788755464.004806234] [nvblox_node]: 
+[component_container_mt-1] Received request for ESDF with:
+[component_container_mt-1] update_esdf: 1
+[component_container_mt-1] use_aabb: 1
+[component_container_mt-1] visualize_esdf: 0
+[component_container_mt-1] aabb_min_m: [-1.16, -2.56, 2.86],
+[component_container_mt-1] aabb_size_m: [3.00, 3.00, 3.00]
+[component_container_mt-1] [INFO] [1788755464.009280826] [nvblox_node]: Successfully wrote requested ESDF to MultiArrayMsg.
+[component_container_mt-1] [INFO] [1788755464.305395301] [nvblox_node]: 
+[component_container_mt-1] Received request for ESDF with:
+[component_container_mt-1] update_esdf: 1
+[component_container_mt-1] use_aabb: 1
+[component_container_mt-1] visualize_esdf: 0
+[component_container_mt-1] aabb_min_m: [-1.17, -2.62, 2.88],
+[component_container_mt-1] aabb_size_m: [3.00, 3.00, 3.00]
+[component_container_mt-1] [INFO] [1788755464.312208287] [nvblox_node]: Successfully wrote requested ESDF to MultiArrayMsg.
+[component_container_mt-1] [INFO] [1788755464.604909892] [nvblox_node]: 
+[component_container_mt-1] Received request for ESDF with:
+[component_container_mt-1] update_esdf: 1
+[component_container_mt-1] use_aabb: 1
+[component_container_mt-1] visualize_esdf: 0
+[component_container_mt-1] aabb_min_m: [-1.18, -2.68, 2.91],
+[component_container_mt-1] aabb_size_m: [3.00, 3.00, 3.00]
+[component_container_mt-1] [INFO] [1788755464.612817142] [nvblox_node]: Successfully wrote requested ESDF to MultiArrayMsg.
+[component_container_mt-1] [INFO] [1788755464.906105099] [nvblox_node]: 
+[component_container_mt-1] Received request for ESDF with:
+[component_container_mt-1] update_esdf: 1
+[component_container_mt-1] use_aabb: 1
+[component_container_mt-1] visualize_esdf: 0
+[component_container_mt-1] aabb_min_m: [-1.18, -2.73, 2.93],
+[component_container_mt-1] aabb_size_m: [3.00, 3.00, 3.00]
+[component_container_mt-1] [INFO] [1788755464.911789956] [nvblox_node]: Successfully wrote requested ESDF to MultiArrayMsg.
+[component_container_mt-1] [INFO] [1788755465.205040804] [nvblox_node]: 
+[component_container_mt-1] Received request for ESDF with:
+[component_container_mt-1] update_esdf: 1
+[component_container_mt-1] use_aabb: 1
+[component_container_mt-1] visualize_esdf: 0
+[component_container_mt-1] aabb_min_m: [-1.17, -2.79, 2.95],
+[component_container_mt-1] aabb_size_m: [3.00, 3.00, 3.00]
+[component_container_mt-1] [INFO] [1788755465.212174207] [nvblox_node]: Successfully wrote requested ESDF to MultiArrayMsg.
+[component_container_mt-1] [INFO] [1788755465.505389968] [nvblox_node]: 
+[component_container_mt-1] Received request for ESDF with:
+[component_container_mt-1] update_esdf: 1
+[component_container_mt-1] use_aabb: 1
+[component_container_mt-1] visualize_esdf: 0
+[component_container_mt-1] aabb_min_m: [-1.17, -2.86, 2.97],
+[component_container_mt-1] aabb_size_m: [3.00, 3.00, 3.00]
+[component_container_mt-1] [INFO] [1788755465.512442197] [nvblox_node]: Successfully wrote requested ESDF to MultiArrayMsg.
+[component_container_mt-1] [INFO] [1788755465.692328820] [nvblox_node]: 
+[component_container_mt-1] Received request for ESDF with:
+[component_container_mt-1] update_esdf: 1
+[component_container_mt-1] use_aabb: 1
+[component_container_mt-1] visualize_esdf: 0
+[component_container_mt-1] aabb_min_m: [-2.86, -4.60, 1.25],
+[component_container_mt-1] aabb_size_m: [6.40, 6.40, 6.40]
+[component_container_mt-1] [INFO] [1788755465.701703371] [nvblox_node]: Successfully wrote requested ESDF to MultiArrayMsg.
+[component_container_mt-1] [INFO] [1788755465.804852031] [nvblox_node]: 
+[component_container_mt-1] Received request for ESDF with:
+[component_container_mt-1] update_esdf: 1
+[component_container_mt-1] use_aabb: 1
+[component_container_mt-1] visualize_esdf: 0
+[component_container_mt-1] aabb_min_m: [-1.16, -2.92, 2.95],
+[component_container_mt-1] aabb_size_m: [3.00, 3.00, 3.00]
+[component_container_mt-1] [INFO] [1788755465.811963813] [nvblox_node]: Successfully wrote requested ESDF to MultiArrayMsg.
+[component_container_mt-1] [INFO] [1788755466.104868956] [nvblox_node]: 
+[component_container_mt-1] Received request for ESDF with:
+[component_container_mt-1] update_esdf: 1
+[component_container_mt-1] use_aabb: 1
+[component_container_mt-1] visualize_esdf: 0
+[component_container_mt-1] aabb_min_m: [-1.15, -2.98, 2.98],
+[component_container_mt-1] aabb_size_m: [3.00, 3.00, 3.00]
+[component_container_mt-1] [INFO] [1788755466.112536772] [nvblox_node]: Successfully wrote requested ESDF to MultiArrayMsg.
+[component_container_mt-1] [INFO] [1788755466.405249432] [nvblox_node]: 
+[component_container_mt-1] Received request for ESDF with:
+[component_container_mt-1] update_esdf: 1
+[component_container_mt-1] use_aabb: 1
+[component_container_mt-1] visualize_esdf: 0
+[component_container_mt-1] aabb_min_m: [-1.13, -3.03, 3.00],
+[component_container_mt-1] aabb_size_m: [3.00, 3.00, 3.00]
+[component_container_mt-1] [INFO] [1788755466.411925628] [nvblox_node]: Successfully wrote requested ESDF to MultiArrayMsg.
+[component_container_mt-1] [INFO] [1788755466.704922967] [nvblox_node]: 
+[component_container_mt-1] Received request for ESDF with:
+[component_container_mt-1] update_esdf: 1
+[component_container_mt-1] use_aabb: 1
+[component_container_mt-1] visualize_esdf: 0
+[component_container_mt-1] aabb_min_m: [-1.11, -3.08, 3.02],
+[component_container_mt-1] aabb_size_m: [3.00, 3.00, 3.00]
+[component_container_mt-1] [INFO] [1788755466.712306164] [nvblox_node]: Successfully wrote requested ESDF to MultiArrayMsg.
+[component_container_mt-1] [INFO] [1788755467.005042378] [nvblox_node]: 
+[component_container_mt-1] Received request for ESDF with:
+[component_container_mt-1] update_esdf: 1
+[component_container_mt-1] use_aabb: 1
+[component_container_mt-1] visualize_esdf: 0
+[component_container_mt-1] aabb_min_m: [-1.09, -3.12, 3.04],
+[component_container_mt-1] aabb_size_m: [3.00, 3.00, 3.00]
+[component_container_mt-1] [INFO] [1788755467.012487482] [nvblox_node]: Successfully wrote requested ESDF to MultiArrayMsg.
+[component_container_mt-1] [INFO] [1788755467.304845932] [nvblox_node]: 
+[component_container_mt-1] Received request for ESDF with:
+[component_container_mt-1] update_esdf: 1
+[component_container_mt-1] use_aabb: 1
+[component_container_mt-1] visualize_esdf: 0
+[component_container_mt-1] aabb_min_m: [-1.07, -3.16, 3.06],
+[component_container_mt-1] aabb_size_m: [3.00, 3.00, 3.00]
+[component_container_mt-1] [INFO] [1788755467.311914812] [nvblox_node]: Successfully wrote requested ESDF to MultiArrayMsg.
+[component_container_mt-1] [INFO] [1788755467.604822703] [nvblox_node]: 
+[component_container_mt-1] Received request for ESDF with:
+[component_container_mt-1] update_esdf: 1
+[component_container_mt-1] use_aabb: 1
+[component_container_mt-1] visualize_esdf: 0
+[component_container_mt-1] aabb_min_m: [-1.04, -3.20, 3.08],
+[component_container_mt-1] aabb_size_m: [3.00, 3.00, 3.00]
+[component_container_mt-1] [INFO] [1788755467.612136909] [nvblox_node]: Successfully wrote requested ESDF to MultiArrayMsg.
+[component_container_mt-1] [INFO] [1788755467.905770095] [nvblox_node]: 
+[component_container_mt-1] Received request for ESDF with:
+[component_container_mt-1] update_esdf: 1
+[component_container_mt-1] use_aabb: 1
+[component_container_mt-1] visualize_esdf: 0
+[component_container_mt-1] aabb_min_m: [-1.01, -3.23, 3.09],
+[component_container_mt-1] aabb_size_m: [3.00, 3.00, 3.00]
+[component_container_mt-1] [INFO] [1788755467.912412397] [nvblox_node]: Successfully wrote requested ESDF to MultiArrayMsg.
+[component_container_mt-1] [INFO] [1788755468.204844327] [nvblox_node]: 
+[component_container_mt-1] Received request for ESDF with:
+[component_container_mt-1] update_esdf: 1
+[component_container_mt-1] use_aabb: 1
+[component_container_mt-1] visualize_esdf: 0
+[component_container_mt-1] aabb_min_m: [-0.99, -3.26, 3.11],
+[component_container_mt-1] aabb_size_m: [3.00, 3.00, 3.00]
+[component_container_mt-1] [INFO] [1788755468.212304730] [nvblox_node]: Successfully wrote requested ESDF to MultiArrayMsg.
+[component_container_mt-1] [INFO] [1788755468.504897876] [nvblox_node]: 
+[component_container_mt-1] Received request for ESDF with:
+[component_container_mt-1] update_esdf: 1
+[component_container_mt-1] use_aabb: 1
+[component_container_mt-1] visualize_esdf: 0
+[component_container_mt-1] aabb_min_m: [-0.96, -3.28, 3.12],
+[component_container_mt-1] aabb_size_m: [3.00, 3.00, 3.00]
+[component_container_mt-1] [INFO] [1788755468.512141278] [nvblox_node]: Successfully wrote requested ESDF to MultiArrayMsg.
+[component_container_mt-1] [INFO] [1788755468.805331796] [nvblox_node]: 
+[component_container_mt-1] Received request for ESDF with:
+[component_container_mt-1] update_esdf: 1
+[component_container_mt-1] use_aabb: 1
+[component_container_mt-1] visualize_esdf: 0
+[component_container_mt-1] aabb_min_m: [-0.94, -3.30, 3.14],
+[component_container_mt-1] aabb_size_m: [3.00, 3.00, 3.00]
+[component_container_mt-1] [INFO] [1788755468.812620133] [nvblox_node]: Successfully wrote requested ESDF to MultiArrayMsg.
+[component_container_mt-1] [INFO] [1788755469.105020544] [nvblox_node]: 
+[component_container_mt-1] Received request for ESDF with:
+[component_container_mt-1] update_esdf: 1
+[component_container_mt-1] use_aabb: 1
+[component_container_mt-1] visualize_esdf: 0
+[component_container_mt-1] aabb_min_m: [-0.91, -3.32, 3.17],
+[component_container_mt-1] aabb_size_m: [3.00, 3.00, 3.00]
+[component_container_mt-1] [INFO] [1788755469.112256802] [nvblox_node]: Successfully wrote requested ESDF to MultiArrayMsg.
+[component_container_mt-1] [INFO] [1788755469.404688093] [nvblox_node]: 
+[component_container_mt-1] Received request for ESDF with:
+[component_container_mt-1] update_esdf: 1
+[component_container_mt-1] use_aabb: 1
+[component_container_mt-1] visualize_esdf: 0
+[component_container_mt-1] aabb_min_m: [-0.87, -3.34, 3.19],
+[component_container_mt-1] aabb_size_m: [3.00, 3.00, 3.00]
+[component_container_mt-1] [INFO] [1788755469.412129831] [nvblox_node]: Successfully wrote requested ESDF to MultiArrayMsg.
+[component_container_mt-1] [INFO] [1788755469.692413723] [nvblox_node]: 
+[component_container_mt-1] Received request for ESDF with:
+[component_container_mt-1] update_esdf: 1
+[component_container_mt-1] use_aabb: 1
+[component_container_mt-1] visualize_esdf: 0
+[component_container_mt-1] aabb_min_m: [-2.54, -5.06, 1.50],
+[component_container_mt-1] aabb_size_m: [6.40, 6.40, 6.40]
+[component_container_mt-1] [INFO] [1788755469.703861495] [nvblox_node]: Successfully wrote requested ESDF to MultiArrayMsg.
+[component_container_mt-1] [INFO] [1788755469.708617772] [nvblox_node]: 
+[component_container_mt-1] Received request for ESDF with:
+[component_container_mt-1] update_esdf: 1
+[component_container_mt-1] use_aabb: 1
+[component_container_mt-1] visualize_esdf: 0
+[component_container_mt-1] aabb_min_m: [-0.84, -3.36, 3.20],
+[component_container_mt-1] aabb_size_m: [3.00, 3.00, 3.00]
+[component_container_mt-1] [INFO] [1788755469.709388152] [nvblox_node]: Successfully wrote requested ESDF to MultiArrayMsg.
+[component_container_mt-1] [INFO] [1788755470.005082950] [nvblox_node]: 
+[component_container_mt-1] Received request for ESDF with:
+[component_container_mt-1] update_esdf: 1
+[component_container_mt-1] use_aabb: 1
+[component_container_mt-1] visualize_esdf: 0
+[component_container_mt-1] aabb_min_m: [-0.81, -3.39, 3.21],
+[component_container_mt-1] aabb_size_m: [3.00, 3.00, 3.00]
+[component_container_mt-1] [INFO] [1788755470.012141331] [nvblox_node]: Successfully wrote requested ESDF to MultiArrayMsg.
+[component_container_mt-1] [INFO] [1788755470.304942654] [nvblox_node]: 
+[component_container_mt-1] Received request for ESDF with:
+[component_container_mt-1] update_esdf: 1
+[component_container_mt-1] use_aabb: 1
+[component_container_mt-1] visualize_esdf: 0
+[component_container_mt-1] aabb_min_m: [-0.77, -3.41, 3.21],
+[component_container_mt-1] aabb_size_m: [3.00, 3.00, 3.00]
+[component_container_mt-1] [INFO] [1788755470.312259094] [nvblox_node]: Successfully wrote requested ESDF to MultiArrayMsg.
+[component_container_mt-1] [INFO] [1788755470.605127105] [nvblox_node]: 
+[component_container_mt-1] Received request for ESDF with:
+[component_container_mt-1] update_esdf: 1
+[component_container_mt-1] use_aabb: 1
+[component_container_mt-1] visualize_esdf: 0
+[component_container_mt-1] aabb_min_m: [-0.74, -3.43, 3.23],
+[component_container_mt-1] aabb_size_m: [3.00, 3.00, 3.00]
+[component_container_mt-1] [INFO] [1788755470.611801528] [nvblox_node]: Successfully wrote requested ESDF to MultiArrayMsg.
+[component_container_mt-1] [INFO] [1788755470.905448044] [nvblox_node]: 
+[component_container_mt-1] Received request for ESDF with:
+[component_container_mt-1] update_esdf: 1
+[component_container_mt-1] use_aabb: 1
+[component_container_mt-1] visualize_esdf: 0
+[component_container_mt-1] aabb_min_m: [-0.70, -3.45, 3.24],
+[component_container_mt-1] aabb_size_m: [3.00, 3.00, 3.00]
+[component_container_mt-1] [INFO] [1788755470.911803853] [nvblox_node]: Successfully wrote requested ESDF to MultiArrayMsg.
+[component_container_mt-1] [INFO] [1788755471.205030143] [nvblox_node]: 
+[component_container_mt-1] Received request for ESDF with:
+[component_container_mt-1] update_esdf: 1
+[component_container_mt-1] use_aabb: 1
+[component_container_mt-1] visualize_esdf: 0
+[component_container_mt-1] aabb_min_m: [-0.67, -3.46, 3.26],
+[component_container_mt-1] aabb_size_m: [3.00, 3.00, 3.00]
+[component_container_mt-1] [INFO] [1788755471.212202430] [nvblox_node]: Successfully wrote requested ESDF to MultiArrayMsg.
+[component_container_mt-1] [INFO] [1788755471.505045424] [nvblox_node]: 
+[component_container_mt-1] Received request for ESDF with:
+[component_container_mt-1] update_esdf: 1
+[component_container_mt-1] use_aabb: 1
+[component_container_mt-1] visualize_esdf: 0
+[component_container_mt-1] aabb_min_m: [-0.64, -3.47, 3.27],
+[component_container_mt-1] aabb_size_m: [3.00, 3.00, 3.00]
+[component_container_mt-1] [INFO] [1788755471.511857238] [nvblox_node]: Successfully wrote requested ESDF to MultiArrayMsg.
+[component_container_mt-1] [INFO] [1788755471.804971607] [nvblox_node]: 
+[component_container_mt-1] Received request for ESDF with:
+[component_container_mt-1] update_esdf: 1
+[component_container_mt-1] use_aabb: 1
+[component_container_mt-1] visualize_esdf: 0
+[component_container_mt-1] aabb_min_m: [-0.60, -3.49, 3.29],
+[component_container_mt-1] aabb_size_m: [3.00, 3.00, 3.00]
+[component_container_mt-1] [INFO] [1788755471.812682805] [nvblox_node]: Successfully wrote requested ESDF to MultiArrayMsg.
+[component_container_mt-1] [INFO] [1788755472.105213719] [nvblox_node]: 
+[component_container_mt-1] Received request for ESDF with:
+[component_container_mt-1] update_esdf: 1
+[component_container_mt-1] use_aabb: 1
+[component_container_mt-1] visualize_esdf: 0
+[component_container_mt-1] aabb_min_m: [-0.57, -3.50, 3.30],
+[component_container_mt-1] aabb_size_m: [3.00, 3.00, 3.00]
+[component_container_mt-1] [INFO] [1788755472.112310041] [nvblox_node]: Successfully wrote requested ESDF to MultiArrayMsg.
+[component_container_mt-1] [INFO] [1788755472.405132198] [nvblox_node]: 
+[component_container_mt-1] Received request for ESDF with:
+[component_container_mt-1] update_esdf: 1
+[component_container_mt-1] use_aabb: 1
+[component_container_mt-1] visualize_esdf: 0
+[component_container_mt-1] aabb_min_m: [-0.53, -3.52, 3.31],
+[component_container_mt-1] aabb_size_m: [3.00, 3.00, 3.00]
+[component_container_mt-1] [INFO] [1788755472.412141936] [nvblox_node]: Successfully wrote requested ESDF to MultiArrayMsg.
+[component_container_mt-1] [INFO] [1788755472.704984061] [nvblox_node]: 
+[component_container_mt-1] Received request for ESDF with:
+[component_container_mt-1] update_esdf: 1
+[component_container_mt-1] use_aabb: 1
+[component_container_mt-1] visualize_esdf: 0
+[component_container_mt-1] aabb_min_m: [-0.49, -3.53, 3.33],
+[component_container_mt-1] aabb_size_m: [3.00, 3.00, 3.00]
+[component_container_mt-1] [INFO] [1788755472.709564294] [nvblox_node]: Successfully wrote requested ESDF to MultiArrayMsg.
+[component_container_mt-1] [INFO] [1788755473.005196798] [nvblox_node]: 
+[component_container_mt-1] Received request for ESDF with:
+[component_container_mt-1] update_esdf: 1
+[component_container_mt-1] use_aabb: 1
+[component_container_mt-1] visualize_esdf: 0
+[component_container_mt-1] aabb_min_m: [-0.46, -3.54, 3.34],
+[component_container_mt-1] aabb_size_m: [3.00, 3.00, 3.00]
+[component_container_mt-1] [INFO] [1788755473.012183493] [nvblox_node]: Successfully wrote requested ESDF to MultiArrayMsg.
+[component_container_mt-1] [INFO] [1788755473.304916291] [nvblox_node]: 
+[component_container_mt-1] Received request for ESDF with:
+[component_container_mt-1] update_esdf: 1
+[component_container_mt-1] use_aabb: 1
+[component_container_mt-1] visualize_esdf: 0
+[component_container_mt-1] aabb_min_m: [-0.42, -3.55, 3.35],
+[component_container_mt-1] aabb_size_m: [3.00, 3.00, 3.00]
+[component_container_mt-1] [INFO] [1788755473.312241087] [nvblox_node]: Successfully wrote requested ESDF to MultiArrayMsg.
+[component_container_mt-1] [INFO] [1788755473.605109423] [nvblox_node]: 
+[component_container_mt-1] Received request for ESDF with:
+[component_container_mt-1] update_esdf: 1
+[component_container_mt-1] use_aabb: 1
+[component_container_mt-1] visualize_esdf: 0
+[component_container_mt-1] aabb_min_m: [-0.38, -3.56, 3.36],
+[component_container_mt-1] aabb_size_m: [3.00, 3.00, 3.00]
+[component_container_mt-1] [INFO] [1788755473.612768162] [nvblox_node]: Successfully wrote requested ESDF to MultiArrayMsg.
+[component_container_mt-1] [INFO] [1788755473.692391768] [nvblox_node]: 
+[component_container_mt-1] Received request for ESDF with:
+[component_container_mt-1] update_esdf: 1
+[component_container_mt-1] use_aabb: 1
+[component_container_mt-1] visualize_esdf: 0
+[component_container_mt-1] aabb_min_m: [-2.07, -5.26, 1.66],
+[component_container_mt-1] aabb_size_m: [6.40, 6.40, 6.40]
+[component_container_mt-1] [INFO] [1788755473.707892885] [nvblox_node]: Successfully wrote requested ESDF to MultiArrayMsg.
+[component_container_mt-1] [INFO] [1788755473.905461095] [nvblox_node]: 
+[component_container_mt-1] Received request for ESDF with:
+[component_container_mt-1] update_esdf: 1
+[component_container_mt-1] use_aabb: 1
+[component_container_mt-1] visualize_esdf: 0
+[component_container_mt-1] aabb_min_m: [-0.34, -3.57, 3.37],
+[component_container_mt-1] aabb_size_m: [3.00, 3.00, 3.00]
+[component_container_mt-1] [INFO] [1788755473.911467862] [nvblox_node]: Successfully wrote requested ESDF to MultiArrayMsg.
+[component_container_mt-1] [INFO] [1788755474.204747799] [nvblox_node]: 
+[component_container_mt-1] Received request for ESDF with:
+[component_container_mt-1] update_esdf: 1
+[component_container_mt-1] use_aabb: 1
+[component_container_mt-1] visualize_esdf: 0
+[component_container_mt-1] aabb_min_m: [-0.31, -3.58, 3.39],
+[component_container_mt-1] aabb_size_m: [3.00, 3.00, 3.00]
+[component_container_mt-1] [INFO] [1788755474.212649439] [nvblox_node]: Successfully wrote requested ESDF to MultiArrayMsg.
+[component_container_mt-1] [INFO] [1788755474.505521132] [nvblox_node]: 
+[component_container_mt-1] Received request for ESDF with:
+[component_container_mt-1] update_esdf: 1
+[component_container_mt-1] use_aabb: 1
+[component_container_mt-1] visualize_esdf: 0
+[component_container_mt-1] aabb_min_m: [-0.30, -3.60, 3.42],
+[component_container_mt-1] aabb_size_m: [3.00, 3.00, 3.00]
+[component_container_mt-1] [INFO] [1788755474.511943728] [nvblox_node]: Successfully wrote requested ESDF to MultiArrayMsg.
+[component_container_mt-1] [INFO] [1788755474.804997717] [nvblox_node]: 
+[component_container_mt-1] Received request for ESDF with:
+[component_container_mt-1] update_esdf: 1
+[component_container_mt-1] use_aabb: 1
+[component_container_mt-1] visualize_esdf: 0
+[component_container_mt-1] aabb_min_m: [-0.31, -3.64, 3.43],
+[component_container_mt-1] aabb_size_m: [3.00, 3.00, 3.00]
+[component_container_mt-1] [INFO] [1788755474.811824969] [nvblox_node]: Successfully wrote requested ESDF to MultiArrayMsg.
+[component_container_mt-1] [INFO] [1788755475.105059241] [nvblox_node]: 
+[component_container_mt-1] Received request for ESDF with:
+[component_container_mt-1] update_esdf: 1
+[component_container_mt-1] use_aabb: 1
+[component_container_mt-1] visualize_esdf: 0
+[component_container_mt-1] aabb_min_m: [-0.32, -3.69, 3.45],
+[component_container_mt-1] aabb_size_m: [3.00, 3.00, 3.00]
+[component_container_mt-1] [INFO] [1788755475.112001221] [nvblox_node]: Successfully wrote requested ESDF to MultiArrayMsg.
+[component_container_mt-1] [INFO] [1788755475.404807532] [nvblox_node]: 
+[component_container_mt-1] Received request for ESDF with:
+[component_container_mt-1] update_esdf: 1
+[component_container_mt-1] use_aabb: 1
+[component_container_mt-1] visualize_esdf: 0
+[component_container_mt-1] aabb_min_m: [-0.35, -3.74, 3.47],
+[component_container_mt-1] aabb_size_m: [3.00, 3.00, 3.00]
+[component_container_mt-1] [INFO] [1788755475.411777826] [nvblox_node]: Successfully wrote requested ESDF to MultiArrayMsg.
+[component_container_mt-1] [INFO] [1788755475.704932658] [nvblox_node]: 
+[component_container_mt-1] Received request for ESDF with:
+[component_container_mt-1] update_esdf: 1
+[component_container_mt-1] use_aabb: 1
+[component_container_mt-1] visualize_esdf: 0
+[component_container_mt-1] aabb_min_m: [-0.37, -3.81, 3.48],
+[component_container_mt-1] aabb_size_m: [3.00, 3.00, 3.00]
+[component_container_mt-1] [INFO] [1788755475.712343026] [nvblox_node]: Successfully wrote requested ESDF to MultiArrayMsg.
+[component_container_mt-1] [INFO] [1788755476.004913009] [nvblox_node]: 
+[component_container_mt-1] Received request for ESDF with:
+[component_container_mt-1] update_esdf: 1
+[component_container_mt-1] use_aabb: 1
+[component_container_mt-1] visualize_esdf: 0
+[component_container_mt-1] aabb_min_m: [-0.39, -3.86, 3.50],
+[component_container_mt-1] aabb_size_m: [3.00, 3.00, 3.00]
+[component_container_mt-1] [INFO] [1788755476.012059427] [nvblox_node]: Successfully wrote requested ESDF to MultiArrayMsg.
+[component_container_mt-1] [INFO] [1788755476.305011426] [nvblox_node]: 
+[component_container_mt-1] Received request for ESDF with:
+[component_container_mt-1] update_esdf: 1
+[component_container_mt-1] use_aabb: 1
+[component_container_mt-1] visualize_esdf: 0
+[component_container_mt-1] aabb_min_m: [-0.42, -3.93, 3.52],
+[component_container_mt-1] aabb_size_m: [3.00, 3.00, 3.00]
+[component_container_mt-1] [INFO] [1788755476.309697449] [nvblox_node]: Successfully wrote requested ESDF to MultiArrayMsg.
+[component_container_mt-1] [INFO] [1788755476.605092169] [nvblox_node]: 
+[component_container_mt-1] Received request for ESDF with:
+[component_container_mt-1] update_esdf: 1
+[component_container_mt-1] use_aabb: 1
+[component_container_mt-1] visualize_esdf: 0
+[component_container_mt-1] aabb_min_m: [-0.44, -3.99, 3.54],
+[component_container_mt-1] aabb_size_m: [3.00, 3.00, 3.00]
+[component_container_mt-1] [INFO] [1788755476.611747907] [nvblox_node]: Successfully wrote requested ESDF to MultiArrayMsg.
+[component_container_mt-1] [INFO] [1788755476.905593209] [nvblox_node]: 
+[component_container_mt-1] Received request for ESDF with:
+[component_container_mt-1] update_esdf: 1
+[component_container_mt-1] use_aabb: 1
+[component_container_mt-1] visualize_esdf: 0
+[component_container_mt-1] aabb_min_m: [-0.46, -4.05, 3.56],
+[component_container_mt-1] aabb_size_m: [3.00, 3.00, 3.00]
+[component_container_mt-1] [INFO] [1788755476.913150245] [nvblox_node]: Successfully wrote requested ESDF to MultiArrayMsg.
+[component_container_mt-1] [INFO] [1788755477.204975068] [nvblox_node]: 
+[component_container_mt-1] Received request for ESDF with:
+[component_container_mt-1] update_esdf: 1
+[component_container_mt-1] use_aabb: 1
+[component_container_mt-1] visualize_esdf: 0
+[component_container_mt-1] aabb_min_m: [-0.48, -4.11, 3.58],
+[component_container_mt-1] aabb_size_m: [3.00, 3.00, 3.00]
+[component_container_mt-1] [INFO] [1788755477.211942006] [nvblox_node]: Successfully wrote requested ESDF to MultiArrayMsg.
+[component_container_mt-1] [INFO] [1788755477.504802703] [nvblox_node]: 
+[component_container_mt-1] Received request for ESDF with:
+[component_container_mt-1] update_esdf: 1
+[component_container_mt-1] use_aabb: 1
+[component_container_mt-1] visualize_esdf: 0
+[component_container_mt-1] aabb_min_m: [-0.50, -4.18, 3.61],
+[component_container_mt-1] aabb_size_m: [3.00, 3.00, 3.00]
+[component_container_mt-1] [INFO] [1788755477.512773173] [nvblox_node]: Successfully wrote requested ESDF to MultiArrayMsg.
+[component_container_mt-1] [INFO] [1788755477.692474676] [nvblox_node]: 
+[component_container_mt-1] Received request for ESDF with:
+[component_container_mt-1] update_esdf: 1
+[component_container_mt-1] use_aabb: 1
+[component_container_mt-1] visualize_esdf: 0
+[component_container_mt-1] aabb_min_m: [-2.21, -5.91, 1.92],
+[component_container_mt-1] aabb_size_m: [6.40, 6.40, 6.40]
+[component_container_mt-1] [INFO] [1788755477.700770704] [nvblox_node]: Successfully wrote requested ESDF to MultiArrayMsg.
+[component_container_mt-1] [INFO] [1788755477.805199837] [nvblox_node]: 
+[component_container_mt-1] Received request for ESDF with:
+[component_container_mt-1] update_esdf: 1
+[component_container_mt-1] use_aabb: 1
+[component_container_mt-1] visualize_esdf: 0
+[component_container_mt-1] aabb_min_m: [-0.52, -4.23, 3.63],
+[component_container_mt-1] aabb_size_m: [3.00, 3.00, 3.00]
+[component_container_mt-1] [INFO] [1788755477.812188446] [nvblox_node]: Successfully wrote requested ESDF to MultiArrayMsg.
+[component_container_mt-1] [INFO] [1788755478.104901624] [nvblox_node]: 
+[component_container_mt-1] Received request for ESDF with:
+[component_container_mt-1] update_esdf: 1
+[component_container_mt-1] use_aabb: 1
+[component_container_mt-1] visualize_esdf: 0
+[component_container_mt-1] aabb_min_m: [-0.54, -4.29, 3.64],
+[component_container_mt-1] aabb_size_m: [3.00, 3.00, 3.00]
+[component_container_mt-1] [INFO] [1788755478.112507824] [nvblox_node]: Successfully wrote requested ESDF to MultiArrayMsg.
+[component_container_mt-1] [INFO] [1788755478.404947324] [nvblox_node]: 
+[component_container_mt-1] Received request for ESDF with:
+[component_container_mt-1] update_esdf: 1
+[component_container_mt-1] use_aabb: 1
+[component_container_mt-1] visualize_esdf: 0
+[component_container_mt-1] aabb_min_m: [-0.56, -4.35, 3.65],
+[component_container_mt-1] aabb_size_m: [3.00, 3.00, 3.00]
+[component_container_mt-1] [INFO] [1788755478.413837878] [nvblox_node]: Successfully wrote requested ESDF to MultiArrayMsg.
+[component_container_mt-1] [INFO] [1788755478.705639289] [nvblox_node]: 
+[component_container_mt-1] Received request for ESDF with:
+[component_container_mt-1] update_esdf: 1
+[component_container_mt-1] use_aabb: 1
+[component_container_mt-1] visualize_esdf: 0
+[component_container_mt-1] aabb_min_m: [-0.59, -4.40, 3.66],
+[component_container_mt-1] aabb_size_m: [3.00, 3.00, 3.00]
+[component_container_mt-1] [INFO] [1788755478.711796221] [nvblox_node]: Successfully wrote requested ESDF to MultiArrayMsg.
+[component_container_mt-1] [INFO] [1788755479.005100641] [nvblox_node]: 
+[component_container_mt-1] Received request for ESDF with:
+[component_container_mt-1] update_esdf: 1
+[component_container_mt-1] use_aabb: 1
+[component_container_mt-1] visualize_esdf: 0
+[component_container_mt-1] aabb_min_m: [-0.63, -4.45, 3.68],
+[component_container_mt-1] aabb_size_m: [3.00, 3.00, 3.00]
+[component_container_mt-1] [INFO] [1788755479.012838080] [nvblox_node]: Successfully wrote requested ESDF to MultiArrayMsg.
+[component_container_mt-1] [INFO] [1788755479.305299192] [nvblox_node]: 
+[component_container_mt-1] Received request for ESDF with:
+[component_container_mt-1] update_esdf: 1
+[component_container_mt-1] use_aabb: 1
+[component_container_mt-1] visualize_esdf: 0
+[component_container_mt-1] aabb_min_m: [-0.67, -4.51, 3.69],
+[component_container_mt-1] aabb_size_m: [3.00, 3.00, 3.00]
+[component_container_mt-1] [INFO] [1788755479.313158371] [nvblox_node]: Successfully wrote requested ESDF to MultiArrayMsg.
+[component_container_mt-1] [INFO] [1788755479.605750603] [nvblox_node]: 
+[component_container_mt-1] Received request for ESDF with:
+[component_container_mt-1] update_esdf: 1
+[component_container_mt-1] use_aabb: 1
+[component_container_mt-1] visualize_esdf: 0
+[component_container_mt-1] aabb_min_m: [-0.70, -4.56, 3.71],
+[component_container_mt-1] aabb_size_m: [3.00, 3.00, 3.00]
+[component_container_mt-1] [INFO] [1788755479.612658068] [nvblox_node]: Successfully wrote requested ESDF to MultiArrayMsg.
+[component_container_mt-1] [INFO] [1788755479.905461169] [nvblox_node]: 
+[component_container_mt-1] Received request for ESDF with:
+[component_container_mt-1] update_esdf: 1
+[component_container_mt-1] use_aabb: 1
+[component_container_mt-1] visualize_esdf: 0
+[component_container_mt-1] aabb_min_m: [-0.74, -4.61, 3.72],
+[component_container_mt-1] aabb_size_m: [3.00, 3.00, 3.00]
+[component_container_mt-1] [INFO] [1788755479.909535162] [nvblox_node]: Successfully wrote requested ESDF to MultiArrayMsg.
+[component_container_mt-1] [INFO] [1788755480.204989300] [nvblox_node]: 
+[component_container_mt-1] Received request for ESDF with:
+[component_container_mt-1] update_esdf: 1
+[component_container_mt-1] use_aabb: 1
+[component_container_mt-1] visualize_esdf: 0
+[component_container_mt-1] aabb_min_m: [-0.77, -4.67, 3.74],
+[component_container_mt-1] aabb_size_m: [3.00, 3.00, 3.00]
+[component_container_mt-1] [INFO] [1788755480.211709961] [nvblox_node]: Successfully wrote requested ESDF to MultiArrayMsg.
+[component_container_mt-1] [INFO] [1788755480.504916478] [nvblox_node]: 
+[component_container_mt-1] Received request for ESDF with:
+[component_container_mt-1] update_esdf: 1
+[component_container_mt-1] use_aabb: 1
+[component_container_mt-1] visualize_esdf: 0
+[component_container_mt-1] aabb_min_m: [-0.80, -4.71, 3.75],
+[component_container_mt-1] aabb_size_m: [3.00, 3.00, 3.00]
+[component_container_mt-1] [INFO] [1788755480.513149516] [nvblox_node]: Successfully wrote requested ESDF to MultiArrayMsg.
+[component_container_mt-1] [INFO] [1788755480.805125871] [nvblox_node]: 
+[component_container_mt-1] Received request for ESDF with:
+[component_container_mt-1] update_esdf: 1
+[component_container_mt-1] use_aabb: 1
+[component_container_mt-1] visualize_esdf: 0
+[component_container_mt-1] aabb_min_m: [-0.80, -4.76, 3.76],
+[component_container_mt-1] aabb_size_m: [3.00, 3.00, 3.00]
+[component_container_mt-1] [INFO] [1788755480.812041853] [nvblox_node]: Successfully wrote requested ESDF to MultiArrayMsg.
+[component_container_mt-1] [INFO] [1788755481.105240365] [nvblox_node]: 
+[component_container_mt-1] Received request for ESDF with:
+[component_container_mt-1] update_esdf: 1
+[component_container_mt-1] use_aabb: 1
+[component_container_mt-1] visualize_esdf: 0
+[component_container_mt-1] aabb_min_m: [-0.78, -4.81, 3.77],
+[component_container_mt-1] aabb_size_m: [3.00, 3.00, 3.00]
+[component_container_mt-1] [INFO] [1788755481.112919463] [nvblox_node]: Successfully wrote requested ESDF to MultiArrayMsg.
+[component_container_mt-1] [INFO] [1788755481.405248388] [nvblox_node]: 
+[component_container_mt-1] Received request for ESDF with:
+[component_container_mt-1] update_esdf: 1
+[component_container_mt-1] use_aabb: 1
+[component_container_mt-1] visualize_esdf: 0
+[component_container_mt-1] aabb_min_m: [-0.75, -4.85, 3.77],
+[component_container_mt-1] aabb_size_m: [3.00, 3.00, 3.00]
+[component_container_mt-1] [INFO] [1788755481.412128381] [nvblox_node]: Successfully wrote requested ESDF to MultiArrayMsg.
+[component_container_mt-1] [INFO] [1788755481.692705678] [nvblox_node]: 
+[component_container_mt-1] Received request for ESDF with:
+[component_container_mt-1] update_esdf: 1
+[component_container_mt-1] use_aabb: 1
+[component_container_mt-1] visualize_esdf: 0
+[component_container_mt-1] aabb_min_m: [-2.42, -6.60, 2.07],
+[component_container_mt-1] aabb_size_m: [6.40, 6.40, 6.40]
+[component_container_mt-1] [INFO] [1788755481.705606615] [nvblox_node]: Successfully wrote requested ESDF to MultiArrayMsg.
+[component_container_mt-1] [INFO] [1788755481.709500126] [nvblox_node]: 
+[component_container_mt-1] Received request for ESDF with:
+[component_container_mt-1] update_esdf: 1
+[component_container_mt-1] use_aabb: 1
+[component_container_mt-1] visualize_esdf: 0
+[component_container_mt-1] aabb_min_m: [-0.72, -4.90, 3.77],
+[component_container_mt-1] aabb_size_m: [3.00, 3.00, 3.00]
+[component_container_mt-1] [INFO] [1788755481.719594283] [nvblox_node]: Successfully wrote requested ESDF to MultiArrayMsg.
+[component_container_mt-1] [INFO] [1788755482.004963915] [nvblox_node]: 
+[component_container_mt-1] Received request for ESDF with:
+[component_container_mt-1] update_esdf: 1
+[component_container_mt-1] use_aabb: 1
+[component_container_mt-1] visualize_esdf: 0
+[component_container_mt-1] aabb_min_m: [-0.69, -4.95, 3.78],
+[component_container_mt-1] aabb_size_m: [3.00, 3.00, 3.00]
+[component_container_mt-1] [INFO] [1788755482.011757063] [nvblox_node]: Successfully wrote requested ESDF to MultiArrayMsg.
+[component_container_mt-1] [INFO] [1788755482.305393268] [nvblox_node]: 
+[component_container_mt-1] Received request for ESDF with:
+[component_container_mt-1] update_esdf: 1
+[component_container_mt-1] use_aabb: 1
+[component_container_mt-1] visualize_esdf: 0
+[component_container_mt-1] aabb_min_m: [-0.66, -4.99, 3.79],
+[component_container_mt-1] aabb_size_m: [3.00, 3.00, 3.00]
+[component_container_mt-1] [INFO] [1788755482.311565359] [nvblox_node]: Successfully wrote requested ESDF to MultiArrayMsg.
+[component_container_mt-1] [INFO] [1788755482.604894261] [nvblox_node]: 
+[component_container_mt-1] Received request for ESDF with:
+[component_container_mt-1] update_esdf: 1
+[component_container_mt-1] use_aabb: 1
+[component_container_mt-1] visualize_esdf: 0
+[component_container_mt-1] aabb_min_m: [-0.63, -5.04, 3.79],
+[component_container_mt-1] aabb_size_m: [3.00, 3.00, 3.00]
+[component_container_mt-1] [INFO] [1788755482.612683378] [nvblox_node]: Successfully wrote requested ESDF to MultiArrayMsg.
+[component_container_mt-1] [INFO] [1788755482.905545455] [nvblox_node]: 
+[component_container_mt-1] Received request for ESDF with:
+[component_container_mt-1] update_esdf: 1
+[component_container_mt-1] use_aabb: 1
+[component_container_mt-1] visualize_esdf: 0
+[component_container_mt-1] aabb_min_m: [-0.60, -5.09, 3.80],
+[component_container_mt-1] aabb_size_m: [3.00, 3.00, 3.00]
+[component_container_mt-1] [INFO] [1788755482.912626760] [nvblox_node]: Successfully wrote requested ESDF to MultiArrayMsg.
+[component_container_mt-1] [INFO] [1788755483.204865446] [nvblox_node]: 
+[component_container_mt-1] Received request for ESDF with:
+[component_container_mt-1] update_esdf: 1
+[component_container_mt-1] use_aabb: 1
+[component_container_mt-1] visualize_esdf: 0
+[component_container_mt-1] aabb_min_m: [-0.56, -5.14, 3.81],
+[component_container_mt-1] aabb_size_m: [3.00, 3.00, 3.00]
+[component_container_mt-1] [INFO] [1788755483.212385814] [nvblox_node]: Successfully wrote requested ESDF to MultiArrayMsg.
+[component_container_mt-1] [INFO] [1788755483.505266558] [nvblox_node]: 
+[component_container_mt-1] Received request for ESDF with:
+[component_container_mt-1] update_esdf: 1
+[component_container_mt-1] use_aabb: 1
+[component_container_mt-1] visualize_esdf: 0
+[component_container_mt-1] aabb_min_m: [-0.53, -5.18, 3.82],
+[component_container_mt-1] aabb_size_m: [3.00, 3.00, 3.00]
+[component_container_mt-1] [INFO] [1788755483.511987540] [nvblox_node]: Successfully wrote requested ESDF to MultiArrayMsg.
+[component_container_mt-1] [INFO] [1788755483.804911315] [nvblox_node]: 
+[component_container_mt-1] Received request for ESDF with:
+[component_container_mt-1] update_esdf: 1
+[component_container_mt-1] use_aabb: 1
+[component_container_mt-1] visualize_esdf: 0
+[component_container_mt-1] aabb_min_m: [-0.50, -5.24, 3.84],
+[component_container_mt-1] aabb_size_m: [3.00, 3.00, 3.00]
+[component_container_mt-1] [INFO] [1788755483.812222386] [nvblox_node]: Successfully wrote requested ESDF to MultiArrayMsg.
+[component_container_mt-1] [INFO] [1788755484.104859969] [nvblox_node]: 
+[component_container_mt-1] Received request for ESDF with:
+[component_container_mt-1] update_esdf: 1
+[component_container_mt-1] use_aabb: 1
+[component_container_mt-1] visualize_esdf: 0
+[component_container_mt-1] aabb_min_m: [-0.46, -5.28, 3.84],
+[component_container_mt-1] aabb_size_m: [3.00, 3.00, 3.00]
+[component_container_mt-1] [INFO] [1788755484.111538851] [nvblox_node]: Successfully wrote requested ESDF to MultiArrayMsg.
+[component_container_mt-1] [INFO] [1788755484.405262445] [nvblox_node]: 
+[component_container_mt-1] Received request for ESDF with:
+[component_container_mt-1] update_esdf: 1
+[component_container_mt-1] use_aabb: 1
+[component_container_mt-1] visualize_esdf: 0
+[component_container_mt-1] aabb_min_m: [-0.43, -5.33, 3.82],
+[component_container_mt-1] aabb_size_m: [3.00, 3.00, 3.00]
+[component_container_mt-1] [INFO] [1788755484.412203504] [nvblox_node]: Successfully wrote requested ESDF to MultiArrayMsg.
+[component_container_mt-1] [INFO] [1788755484.704846529] [nvblox_node]: 
+[component_container_mt-1] Received request for ESDF with:
+[component_container_mt-1] update_esdf: 1
+[component_container_mt-1] use_aabb: 1
+[component_container_mt-1] visualize_esdf: 0
+[component_container_mt-1] aabb_min_m: [-0.40, -5.37, 3.83],
+[component_container_mt-1] aabb_size_m: [3.00, 3.00, 3.00]
+[component_container_mt-1] [INFO] [1788755484.712592353] [nvblox_node]: Successfully wrote requested ESDF to MultiArrayMsg.
+[component_container_mt-1] [INFO] [1788755485.004760679] [nvblox_node]: 
+[component_container_mt-1] Received request for ESDF with:
+[component_container_mt-1] update_esdf: 1
+[component_container_mt-1] use_aabb: 1
+[component_container_mt-1] visualize_esdf: 0
+[component_container_mt-1] aabb_min_m: [-0.36, -5.43, 3.85],
+[component_container_mt-1] aabb_size_m: [3.00, 3.00, 3.00]
+[component_container_mt-1] [INFO] [1788755485.011821605] [nvblox_node]: Successfully wrote requested ESDF to MultiArrayMsg.
+[component_container_mt-1] [INFO] [1788755485.305056634] [nvblox_node]: 
+[component_container_mt-1] Received request for ESDF with:
+[component_container_mt-1] update_esdf: 1
+[component_container_mt-1] use_aabb: 1
+[component_container_mt-1] visualize_esdf: 0
+[component_container_mt-1] aabb_min_m: [-0.33, -5.48, 3.86],
+[component_container_mt-1] aabb_size_m: [3.00, 3.00, 3.00]
+[component_container_mt-1] [INFO] [1788755485.311902722] [nvblox_node]: Successfully wrote requested ESDF to MultiArrayMsg.
+[component_container_mt-1] [INFO] [1788755485.605065054] [nvblox_node]: 
+[component_container_mt-1] Received request for ESDF with:
+[component_container_mt-1] update_esdf: 1
+[component_container_mt-1] use_aabb: 1
+[component_container_mt-1] visualize_esdf: 0
+[component_container_mt-1] aabb_min_m: [-0.30, -5.53, 3.88],
+[component_container_mt-1] aabb_size_m: [3.00, 3.00, 3.00]
+[component_container_mt-1] [INFO] [1788755485.611797567] [nvblox_node]: Successfully wrote requested ESDF to MultiArrayMsg.
+[component_container_mt-1] [INFO] [1788755485.692725862] [nvblox_node]: 
+[component_container_mt-1] Received request for ESDF with:
+[component_container_mt-1] update_esdf: 1
+[component_container_mt-1] use_aabb: 1
+[component_container_mt-1] visualize_esdf: 0
+[component_container_mt-1] aabb_min_m: [-1.99, -7.24, 2.18],
+[component_container_mt-1] aabb_size_m: [6.40, 6.40, 6.40]
+[component_container_mt-1] [INFO] [1788755485.705672647] [nvblox_node]: Successfully wrote requested ESDF to MultiArrayMsg.
+[component_container_mt-1] [INFO] [1788755485.905607756] [nvblox_node]: 
+[component_container_mt-1] Received request for ESDF with:
+[component_container_mt-1] update_esdf: 1
+[component_container_mt-1] use_aabb: 1
+[component_container_mt-1] visualize_esdf: 0
+[component_container_mt-1] aabb_min_m: [-0.27, -5.58, 3.89],
+[component_container_mt-1] aabb_size_m: [3.00, 3.00, 3.00]
+[component_container_mt-1] [INFO] [1788755485.911779767] [nvblox_node]: Successfully wrote requested ESDF to MultiArrayMsg.
+[component_container_mt-1] [INFO] [1788755486.205291632] [nvblox_node]: 
+[component_container_mt-1] Received request for ESDF with:
+[component_container_mt-1] update_esdf: 1
+[component_container_mt-1] use_aabb: 1
+[component_container_mt-1] visualize_esdf: 0
+[component_container_mt-1] aabb_min_m: [-0.23, -5.63, 3.91],
+[component_container_mt-1] aabb_size_m: [3.00, 3.00, 3.00]
+[component_container_mt-1] [INFO] [1788755486.212847687] [nvblox_node]: Successfully wrote requested ESDF to MultiArrayMsg.
+[component_container_mt-1] [INFO] [1788755486.505043237] [nvblox_node]: 
+[component_container_mt-1] Received request for ESDF with:
+[component_container_mt-1] update_esdf: 1
+[component_container_mt-1] use_aabb: 1
+[component_container_mt-1] visualize_esdf: 0
+[component_container_mt-1] aabb_min_m: [-0.19, -5.68, 3.92],
+[component_container_mt-1] aabb_size_m: [3.00, 3.00, 3.00]
+[component_container_mt-1] [INFO] [1788755486.512305815] [nvblox_node]: Successfully wrote requested ESDF to MultiArrayMsg.
+[component_container_mt-1] [INFO] [1788755486.805366886] [nvblox_node]: 
+[component_container_mt-1] Received request for ESDF with:
+[component_container_mt-1] update_esdf: 1
+[component_container_mt-1] use_aabb: 1
+[component_container_mt-1] visualize_esdf: 0
+[component_container_mt-1] aabb_min_m: [-0.15, -5.73, 3.94],
+[component_container_mt-1] aabb_size_m: [3.00, 3.00, 3.00]
+[component_container_mt-1] [INFO] [1788755486.810044423] [nvblox_node]: Successfully wrote requested ESDF to MultiArrayMsg.
+[component_container_mt-1] [INFO] [1788755487.104960521] [nvblox_node]: 
+[component_container_mt-1] Received request for ESDF with:
+[component_container_mt-1] update_esdf: 1
+[component_container_mt-1] use_aabb: 1
+[component_container_mt-1] visualize_esdf: 0
+[component_container_mt-1] aabb_min_m: [-0.12, -5.77, 3.95],
+[component_container_mt-1] aabb_size_m: [3.00, 3.00, 3.00]
+[component_container_mt-1] [INFO] [1788755487.113167270] [nvblox_node]: Successfully wrote requested ESDF to MultiArrayMsg.
+[component_container_mt-1] [INFO] [1788755487.404906957] [nvblox_node]: 
+[component_container_mt-1] Received request for ESDF with:
+[component_container_mt-1] update_esdf: 1
+[component_container_mt-1] use_aabb: 1
+[component_container_mt-1] visualize_esdf: 0
+[component_container_mt-1] aabb_min_m: [-0.08, -5.82, 3.97],
+[component_container_mt-1] aabb_size_m: [3.00, 3.00, 3.00]
+[component_container_mt-1] [INFO] [1788755487.413062849] [nvblox_node]: Successfully wrote requested ESDF to MultiArrayMsg.
+[component_container_mt-1] [INFO] [1788755487.705470562] [nvblox_node]: 
+[component_container_mt-1] Received request for ESDF with:
+[component_container_mt-1] update_esdf: 1
+[component_container_mt-1] use_aabb: 1
+[component_container_mt-1] visualize_esdf: 0
+[component_container_mt-1] aabb_min_m: [-0.04, -5.87, 3.98],
+[component_container_mt-1] aabb_size_m: [3.00, 3.00, 3.00]
+[component_container_mt-1] [INFO] [1788755487.713126507] [nvblox_node]: Successfully wrote requested ESDF to MultiArrayMsg.
+[component_container_mt-1] [INFO] [1788755488.005008293] [nvblox_node]: 
+[component_container_mt-1] Received request for ESDF with:
+[component_container_mt-1] update_esdf: 1
+[component_container_mt-1] use_aabb: 1
+[component_container_mt-1] visualize_esdf: 0
+[component_container_mt-1] aabb_min_m: [-0.00, -5.91, 4.00],
+[component_container_mt-1] aabb_size_m: [3.00, 3.00, 3.00]
+[component_container_mt-1] [INFO] [1788755488.012676100] [nvblox_node]: Successfully wrote requested ESDF to MultiArrayMsg.
+[component_container_mt-1] [INFO] [1788755488.305116817] [nvblox_node]: 
+[component_container_mt-1] Received request for ESDF with:
+[component_container_mt-1] update_esdf: 1
+[component_container_mt-1] use_aabb: 1
+[component_container_mt-1] visualize_esdf: 0
+[component_container_mt-1] aabb_min_m: [0.03, -5.96, 4.01],
+[component_container_mt-1] aabb_size_m: [3.00, 3.00, 3.00]
+[component_container_mt-1] [INFO] [1788755488.312167514] [nvblox_node]: Successfully wrote requested ESDF to MultiArrayMsg.

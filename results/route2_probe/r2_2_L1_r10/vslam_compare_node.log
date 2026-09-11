@@ -1,0 +1,43 @@
+[INFO] [1788752142.688341801] [vslam_compare]: vslam_compare: logging per-message CSV to /workspaces/isaac_ros-dev/results/route2_probe/r2_2_L1_r10/vslam_compare.csv (exp_id='r2_2_L1_r10')
+[INFO] [1788752142.707341462] [vslam_compare]: vslam_compare ready -- watching /visual_slam/tracking/odometry vs /ground_truth/odom
+[INFO] [1788752142.714160636] [vslam_compare]: Ground truth origin set: (0.012675105594098568, 0.008556841872632504, -0.0034862905740737915)
+[WARN] [1788752143.707768598] [vslam_compare]: No /visual_slam/tracking/odometry data yet -- cuVSLAM not tracking (or not launched).
+[WARN] [1788752148.707837205] [vslam_compare]: No /visual_slam/tracking/odometry data yet -- cuVSLAM not tracking (or not launched).
+[WARN] [1788752153.708015309] [vslam_compare]: No /visual_slam/tracking/odometry data yet -- cuVSLAM not tracking (or not launched).
+[WARN] [1788752159.707677893] [vslam_compare]: No /visual_slam/tracking/odometry data yet -- cuVSLAM not tracking (or not launched).
+[WARN] [1788752164.707946559] [vslam_compare]: No /visual_slam/tracking/odometry data yet -- cuVSLAM not tracking (or not launched).
+[WARN] [1788752169.708059301] [vslam_compare]: No /visual_slam/tracking/odometry data yet -- cuVSLAM not tracking (or not launched).
+[WARN] [1788752175.707598547] [vslam_compare]: No /visual_slam/tracking/odometry data yet -- cuVSLAM not tracking (or not launched).
+[WARN] [1788752180.707858466] [vslam_compare]: No /visual_slam/tracking/odometry data yet -- cuVSLAM not tracking (or not launched).
+[WARN] [1788752186.707926649] [vslam_compare]: No /visual_slam/tracking/odometry data yet -- cuVSLAM not tracking (or not launched).
+[WARN] [1788752192.707618052] [vslam_compare]: No /visual_slam/tracking/odometry data yet -- cuVSLAM not tracking (or not launched).
+[WARN] [1788752197.707963481] [vslam_compare]: No /visual_slam/tracking/odometry data yet -- cuVSLAM not tracking (or not launched).
+Traceback (most recent call last):
+  File "/workspaces/isaac_ros-dev/ros2_ws/install/px4_vslam_bridge/lib/python3.10/site-packages/px4_vslam_bridge/vslam_compare.py", line 194, in main
+    rclpy.spin(node)
+  File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/__init__.py", line 229, in spin
+    executor.spin_once()
+  File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/executors.py", line 808, in spin_once
+    self._spin_once_impl(timeout_sec)
+  File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/executors.py", line 797, in _spin_once_impl
+    handler, entity, node = self.wait_for_ready_callbacks(timeout_sec=timeout_sec)
+  File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/executors.py", line 780, in wait_for_ready_callbacks
+    return next(self._cb_iter)
+  File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/executors.py", line 681, in _wait_for_ready_callbacks
+    raise ExternalShutdownException()
+rclpy.executors.ExternalShutdownException
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/workspaces/isaac_ros-dev/ros2_ws/install/px4_vslam_bridge/lib/px4_vslam_bridge/vslam_compare", line 33, in <module>
+    sys.exit(load_entry_point('px4-vslam-bridge==0.1.0', 'console_scripts', 'vslam_compare')())
+  File "/workspaces/isaac_ros-dev/ros2_ws/install/px4_vslam_bridge/lib/python3.10/site-packages/px4_vslam_bridge/vslam_compare.py", line 199, in main
+    rclpy.shutdown()
+  File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/__init__.py", line 130, in shutdown
+    _shutdown(context=context)
+  File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/utilities.py", line 58, in shutdown
+    return context.shutdown()
+  File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/context.py", line 102, in shutdown
+    self.__context.shutdown()
+rclpy._rclpy_pybind11.RCLError: failed to shutdown: rcl_shutdown already called on the given context, at ./src/rcl/init.c:241

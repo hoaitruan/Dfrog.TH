@@ -1,0 +1,18 @@
+stdin is not a terminal device. Keyboard handling disabled.[INFO] [1788752831.516383902] [rosbag2_recorder]: Press SPACE for pausing/resuming
+[INFO] [1788752831.517848492] [rosbag2_storage]: Opened database '/workspaces/isaac_ros-dev/results/route2_probe/r2_2_L2_r02/rosbag/rosbag_0.db3' for READ_WRITE.
+[INFO] [1788752831.518441214] [rosbag2_recorder]: Listening for topics...
+[INFO] [1788752831.518454299] [rosbag2_recorder]: Event publisher thread: Starting
+[INFO] [1788752831.518587143] [rosbag2_recorder]: Recording...
+[INFO] [1788752832.323484064] [rosbag2_recorder]: Subscribed to topic '/fmu/out/estimator_aid_src_ev_hgt'
+[INFO] [1788752832.324053172] [rosbag2_recorder]: Subscribed to topic '/fmu/out/estimator_aid_src_ev_pos'
+[INFO] [1788752832.324459669] [rosbag2_recorder]: Subscribed to topic '/fmu/out/estimator_aid_src_ev_yaw'
+[INFO] [1788752832.325068302] [rosbag2_recorder]: Subscribed to topic '/fmu/out/vehicle_local_position_v1'
+[INFO] [1788752832.325671555] [rosbag2_recorder]: Subscribed to topic '/fmu/out/vehicle_status_v4'
+[INFO] [1788752832.631619598] [rosbag2_recorder]: Subscribed to topic '/ground_truth/odom'
+[INFO] [1788752834.977920773] [rosbag2_recorder]: Subscribed to topic '/visual_slam/status'
+[INFO] [1788752834.978920093] [rosbag2_recorder]: Subscribed to topic '/visual_slam/tracking/odometry'
+[INFO] [1788752834.980288648] [rosbag2_recorder]: Subscribed to topic '/visual_slam/vis/observations_cloud'
+[INFO] [1788752834.980309398] [rosbag2_recorder]: All requested topics are subscribed. Stopping discovery...
+[INFO] [1788752891.397210734] [rosbag2_cpp]: Writing remaining messages from cache to the bag. It may take a while
+[INFO] [1788752891.398241965] [rosbag2_recorder]: Event publisher thread: Exiting
+[INFO] [1788752891.398299064] [rosbag2_recorder]: Recording stopped

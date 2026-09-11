@@ -1,0 +1,43 @@
+[INFO] [1788712375.225438311] [visual_odometry_bridge]: visual_odometry_bridge ready: /visual_slam/tracking/odometry -> /fmu/in/vehicle_visual_odometry
+[INFO] [1788712379.836273918] [visual_odometry_bridge]: published 100 vehicle_visual_odometry samples (last NED pos=(0.00,0.00,-0.00))
+[WARN] [1788712383.984075891] [visual_odometry_bridge]: Rejected cuVSLAM update: implied speed 14.6 m/s (jumped 0.53m in 36ms) -- holding last known-good position, not forwarding to EKF2. (1 rejected total)
+[WARN] [1788712388.348338697] [visual_odometry_bridge]: Rejected cuVSLAM update: implied speed 234.0 m/s (jumped 7.49m in 32ms) -- holding last known-good position, not forwarding to EKF2. (2 rejected total)
+[WARN] [1788712389.385557690] [visual_odometry_bridge]: Rejected cuVSLAM update: implied speed 37.7 m/s (jumped 27.28m in 724ms) -- holding last known-good position, not forwarding to EKF2. (23 rejected total)
+[WARN] [1788712390.430104700] [visual_odometry_bridge]: Rejected cuVSLAM update: implied speed 17.3 m/s (jumped 25.19m in 1452ms) -- holding last known-good position, not forwarding to EKF2. (45 rejected total)
+[WARN] [1788712391.436316759] [visual_odometry_bridge]: Rejected cuVSLAM update: implied speed 11.6 m/s (jumped 25.23m in 2176ms) -- holding last known-good position, not forwarding to EKF2. (67 rejected total)
+[WARN] [1788712392.460644526] [visual_odometry_bridge]: Rejected cuVSLAM update: implied speed 8.5 m/s (jumped 24.55m in 2904ms) -- holding last known-good position, not forwarding to EKF2. (89 rejected total)
+[WARN] [1788712393.565297114] [visual_odometry_bridge]: Rejected cuVSLAM update: implied speed 10.1 m/s (jumped 0.32m in 32ms) -- holding last known-good position, not forwarding to EKF2. (95 rejected total)
+[INFO] [1788712393.699796968] [visual_odometry_bridge]: published 300 vehicle_visual_odometry samples (last NED pos=(-0.36,-24.57,-1.64))
+[WARN] [1788712395.766368634] [visual_odometry_bridge]: Rejected cuVSLAM update: implied speed 38.1 m/s (jumped 1.22m in 32ms) -- holding last known-good position, not forwarding to EKF2. (96 rejected total)
+[WARN] [1788712400.437423570] [visual_odometry_bridge]: Rejected cuVSLAM update: implied speed 25.0 m/s (jumped 0.80m in 32ms) -- holding last known-good position, not forwarding to EKF2. (101 rejected total)
+[WARN] [1788712402.958475724] [visual_odometry_bridge]: Rejected cuVSLAM update: implied speed 30.6 m/s (jumped 0.98m in 32ms) -- holding last known-good position, not forwarding to EKF2. (103 rejected total)
+[INFO] [1788712403.420154475] [visual_odometry_bridge]: published 500 vehicle_visual_odometry samples (last NED pos=(-2.03,-24.37,-0.96))
+Traceback (most recent call last):
+  File "/workspaces/isaac_ros-dev/ros2_ws/install/px4_vslam_bridge/lib/python3.10/site-packages/px4_vslam_bridge/visual_odometry_bridge.py", line 160, in main
+    rclpy.spin(node)
+  File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/__init__.py", line 229, in spin
+    executor.spin_once()
+  File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/executors.py", line 808, in spin_once
+    self._spin_once_impl(timeout_sec)
+  File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/executors.py", line 797, in _spin_once_impl
+    handler, entity, node = self.wait_for_ready_callbacks(timeout_sec=timeout_sec)
+  File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/executors.py", line 780, in wait_for_ready_callbacks
+    return next(self._cb_iter)
+  File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/executors.py", line 681, in _wait_for_ready_callbacks
+    raise ExternalShutdownException()
+rclpy.executors.ExternalShutdownException
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/workspaces/isaac_ros-dev/ros2_ws/install/px4_vslam_bridge/lib/px4_vslam_bridge/visual_odometry_bridge", line 33, in <module>
+    sys.exit(load_entry_point('px4-vslam-bridge==0.1.0', 'console_scripts', 'visual_odometry_bridge')())
+  File "/workspaces/isaac_ros-dev/ros2_ws/install/px4_vslam_bridge/lib/python3.10/site-packages/px4_vslam_bridge/visual_odometry_bridge.py", line 165, in main
+    rclpy.shutdown()
+  File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/__init__.py", line 130, in shutdown
+    _shutdown(context=context)
+  File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/utilities.py", line 58, in shutdown
+    return context.shutdown()
+  File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/context.py", line 102, in shutdown
+    self.__context.shutdown()
+rclpy._rclpy_pybind11.RCLError: failed to shutdown: rcl_shutdown already called on the given context, at ./src/rcl/init.c:241
