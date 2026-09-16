@@ -1,0 +1,1 @@
+t_wall,t_sim,exp_id,gt_x,gt_y,gt_z,gt_dyaw_deg,vslam_x,vslam_y,vslam_z,vslam_dyaw_deg,pos_error_m,yaw_error_deg,vo_state,feature_count,msg_age_s

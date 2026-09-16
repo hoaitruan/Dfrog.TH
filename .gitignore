@@ -13,11 +13,19 @@
 /ros2_ws/install/
 /ros2_ws/log/
 
-# Recorded bags and ad-hoc debug/session logs (not source)
+# Recorded bags and ad-hoc debug/session logs (not source). Individual
+# rosbags run 175MB-881MB (feasibility_gate/ros2_ws) -- past GitHub's
+# 100MB hard file limit and not worth a Git LFS setup (tried 2026-09-11:
+# ~14GB at measured upload speed would take ~10h and exceed the free
+# 1GB/month LFS quota). Per-run CSVs/logs/reports ARE committed --
+# regenerable rosbags stay local only; see results/feasibility_gate/README.md
+# and results/route2_probe/README.md.
 /ros2_ws/rosbags/
 /ros2_ws/run_logs/
 /ros2_ws/run_logs_flight1_backup_*/
 /ros2_ws/*.log
+/results/feasibility_gate/*/rosbag/
+/results/route2_probe/*/rosbag/
 
 # Python
 __pycache__/

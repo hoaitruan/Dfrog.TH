@@ -1,0 +1,84 @@
+[INFO] [1788752974.601726700] [reactive_esdf_avoidance]: reactive_esdf_avoidance ready -- climb to (0.0, 0.0, -5.0) NED, then reactively fly to goal (7.0, 0.0, 5.0) ENU
+[INFO] [1788752974.602171300] [reactive_esdf_avoidance]: >>> Press ENTER to arm and fly (or set OFFBOARD_AUTO_START=1) <<<
+[WARN] [1788752976.570518380] [reactive_esdf_avoidance]: [tick 40] No data on /fmu/out/vehicle_local_position_v1.
+[INFO] [1788752979.870403042] [reactive_esdf_avoidance]: OFFBOARD + ARMED confirmed -- climbing.
+[INFO] [1788752980.570472075] [reactive_esdf_avoidance]: [CLIMBING] pos_ned=(0.02,0.03,-0.07) dist=4.93m
+[INFO] [1788752981.570575722] [reactive_esdf_avoidance]: [CLIMBING] pos_ned=(0.01,0.03,-0.07) dist=4.93m
+[INFO] [1788752982.570485040] [reactive_esdf_avoidance]: [CLIMBING] pos_ned=(-0.00,0.03,-0.07) dist=4.93m
+[INFO] [1788752983.570744047] [reactive_esdf_avoidance]: [CLIMBING] pos_ned=(-0.01,0.03,-0.07) dist=4.93m
+[INFO] [1788752984.570440460] [reactive_esdf_avoidance]: [CLIMBING] pos_ned=(0.00,0.11,-0.12) dist=4.88m
+[INFO] [1788752985.570877190] [reactive_esdf_avoidance]: [CLIMBING] pos_ned=(-0.01,0.11,-1.11) dist=3.89m
+[INFO] [1788752986.570675481] [reactive_esdf_avoidance]: [CLIMBING] pos_ned=(-0.05,0.02,-2.91) dist=2.09m
+[INFO] [1788752987.570709243] [reactive_esdf_avoidance]: [CLIMBING] pos_ned=(-0.04,-0.08,-3.98) dist=1.02m
+[INFO] [1788752988.570827328] [reactive_esdf_avoidance]: [CLIMBING] pos_ned=(-0.01,-0.12,-4.50) dist=0.51m
+[INFO] [1788752989.420800025] [reactive_esdf_avoidance]: Climb complete (dist=0.30m) -- starting reactive avoidance.
+[INFO] [1788752989.570456269] [reactive_esdf_avoidance]: [REACTIVE NAV] pos_enu=(-0.09,0.03,4.75) goal_dist=7.09m nearest_obstacle=none seen
+[INFO] [1788752990.570809647] [reactive_esdf_avoidance]: [REACTIVE NAV] pos_enu=(-0.02,0.04,4.88) goal_dist=7.02m nearest_obstacle=0.39m
+[INFO] [1788752991.570557157] [reactive_esdf_avoidance]: [REACTIVE NAV] pos_enu=(0.14,-0.08,4.93) goal_dist=6.86m nearest_obstacle=0.50m
+[INFO] [1788752992.571045375] [reactive_esdf_avoidance]: [REACTIVE NAV] pos_enu=(0.26,-0.17,5.13) goal_dist=6.74m nearest_obstacle=0.64m
+[INFO] [1788752993.570658932] [reactive_esdf_avoidance]: [REACTIVE NAV] pos_enu=(0.33,-0.28,5.23) goal_dist=6.68m nearest_obstacle=0.43m
+[INFO] [1788752994.570856988] [reactive_esdf_avoidance]: [REACTIVE NAV] pos_enu=(0.27,-0.47,5.23) goal_dist=6.75m nearest_obstacle=0.65m
+[INFO] [1788752995.570438898] [reactive_esdf_avoidance]: [REACTIVE NAV] pos_enu=(0.22,-0.74,5.10) goal_dist=6.82m nearest_obstacle=0.92m
+[INFO] [1788752996.570457784] [reactive_esdf_avoidance]: [REACTIVE NAV] pos_enu=(0.17,-0.97,5.10) goal_dist=6.90m nearest_obstacle=1.19m
+[INFO] [1788752997.570817163] [reactive_esdf_avoidance]: [REACTIVE NAV] pos_enu=(0.16,-1.16,5.10) goal_dist=6.94m nearest_obstacle=1.27m
+[INFO] [1788752998.570599450] [reactive_esdf_avoidance]: [REACTIVE NAV] pos_enu=(0.18,-1.35,5.02) goal_dist=6.95m nearest_obstacle=1.43m
+[INFO] [1788752999.570509632] [reactive_esdf_avoidance]: [REACTIVE NAV] pos_enu=(0.25,-1.52,5.03) goal_dist=6.92m nearest_obstacle=1.62m
+[INFO] [1788753000.570452008] [reactive_esdf_avoidance]: [REACTIVE NAV] pos_enu=(0.34,-1.63,5.02) goal_dist=6.86m nearest_obstacle=1.69m
+[INFO] [1788753001.570656996] [reactive_esdf_avoidance]: [REACTIVE NAV] pos_enu=(0.44,-1.72,5.02) goal_dist=6.78m nearest_obstacle=1.70m
+[INFO] [1788753002.570806320] [reactive_esdf_avoidance]: [REACTIVE NAV] pos_enu=(0.54,-1.83,4.96) goal_dist=6.71m nearest_obstacle=1.83m
+[INFO] [1788753003.570911882] [reactive_esdf_avoidance]: [REACTIVE NAV] pos_enu=(0.64,-1.90,4.97) goal_dist=6.64m nearest_obstacle=1.87m
+[INFO] [1788753004.570874722] [reactive_esdf_avoidance]: [REACTIVE NAV] pos_enu=(0.74,-1.95,5.01) goal_dist=6.56m nearest_obstacle=1.90m
+[INFO] [1788753005.570800051] [reactive_esdf_avoidance]: [REACTIVE NAV] pos_enu=(0.87,-1.99,5.06) goal_dist=6.45m nearest_obstacle=1.92m
+[INFO] [1788753006.570717447] [reactive_esdf_avoidance]: [REACTIVE NAV] pos_enu=(0.99,-2.02,5.07) goal_dist=6.34m nearest_obstacle=1.97m
+[INFO] [1788753007.570653750] [reactive_esdf_avoidance]: [REACTIVE NAV] pos_enu=(1.09,-2.09,5.02) goal_dist=6.27m nearest_obstacle=0.57m
+[INFO] [1788753008.570462160] [reactive_esdf_avoidance]: [REACTIVE NAV] pos_enu=(1.04,-2.25,5.07) goal_dist=6.38m nearest_obstacle=0.61m
+[INFO] [1788753009.570694091] [reactive_esdf_avoidance]: [REACTIVE NAV] pos_enu=(0.97,-2.43,5.13) goal_dist=6.50m nearest_obstacle=0.68m
+[INFO] [1788753010.570710311] [reactive_esdf_avoidance]: [REACTIVE NAV] pos_enu=(0.92,-2.61,5.20) goal_dist=6.62m nearest_obstacle=0.90m
+[INFO] [1788753011.570447830] [reactive_esdf_avoidance]: [REACTIVE NAV] pos_enu=(0.86,-2.79,5.24) goal_dist=6.75m nearest_obstacle=0.00m
+[INFO] [1788753012.570633407] [reactive_esdf_avoidance]: [REACTIVE NAV] pos_enu=(0.79,-2.96,5.26) goal_dist=6.88m nearest_obstacle=0.00m
+[INFO] [1788753013.570720536] [reactive_esdf_avoidance]: [REACTIVE NAV] pos_enu=(0.68,-3.13,5.32) goal_dist=7.06m nearest_obstacle=0.00m
+[INFO] [1788753014.570555826] [reactive_esdf_avoidance]: [REACTIVE NAV] pos_enu=(0.68,-3.31,5.34) goal_dist=7.14m nearest_obstacle=0.00m
+[INFO] [1788753015.570677965] [reactive_esdf_avoidance]: [REACTIVE NAV] pos_enu=(0.79,-3.48,5.36) goal_dist=7.13m nearest_obstacle=0.00m
+[INFO] [1788753016.570716385] [reactive_esdf_avoidance]: [REACTIVE NAV] pos_enu=(0.90,-3.65,5.39) goal_dist=7.12m nearest_obstacle=0.00m
+[INFO] [1788753017.570885627] [reactive_esdf_avoidance]: [REACTIVE NAV] pos_enu=(1.01,-3.80,5.44) goal_dist=7.11m nearest_obstacle=0.00m
+[INFO] [1788753018.570499268] [reactive_esdf_avoidance]: [REACTIVE NAV] pos_enu=(1.14,-3.95,5.50) goal_dist=7.09m nearest_obstacle=0.00m
+[INFO] [1788753019.570649416] [reactive_esdf_avoidance]: [REACTIVE NAV] pos_enu=(1.26,-4.11,5.55) goal_dist=7.08m nearest_obstacle=0.00m
+[INFO] [1788753020.570726205] [reactive_esdf_avoidance]: [REACTIVE NAV] pos_enu=(1.37,-4.26,5.58) goal_dist=7.09m nearest_obstacle=0.00m
+[INFO] [1788753021.570909730] [reactive_esdf_avoidance]: [REACTIVE NAV] pos_enu=(1.41,-4.34,5.59) goal_dist=7.11m nearest_obstacle=0.00m
+[INFO] [1788753022.570657863] [reactive_esdf_avoidance]: [REACTIVE NAV] pos_enu=(1.40,-4.34,5.60) goal_dist=7.11m nearest_obstacle=0.00m
+[INFO] [1788753023.570654813] [reactive_esdf_avoidance]: [REACTIVE NAV] pos_enu=(1.37,-4.31,5.60) goal_dist=7.11m nearest_obstacle=0.00m
+[INFO] [1788753024.570872347] [reactive_esdf_avoidance]: [REACTIVE NAV] pos_enu=(1.39,-4.30,5.60) goal_dist=7.09m nearest_obstacle=0.00m
+[INFO] [1788753025.570769940] [reactive_esdf_avoidance]: [REACTIVE NAV] pos_enu=(1.41,-4.29,5.60) goal_dist=7.07m nearest_obstacle=0.00m
+[INFO] [1788753026.570696179] [reactive_esdf_avoidance]: [REACTIVE NAV] pos_enu=(1.39,-4.26,5.61) goal_dist=7.07m nearest_obstacle=0.00m
+[INFO] [1788753027.570647697] [reactive_esdf_avoidance]: [REACTIVE NAV] pos_enu=(1.37,-4.25,5.60) goal_dist=7.07m nearest_obstacle=0.00m
+[INFO] [1788753028.571079345] [reactive_esdf_avoidance]: [REACTIVE NAV] pos_enu=(1.38,-4.26,5.60) goal_dist=7.08m nearest_obstacle=0.00m
+[INFO] [1788753029.570797170] [reactive_esdf_avoidance]: [REACTIVE NAV] pos_enu=(1.38,-4.28,5.60) goal_dist=7.09m nearest_obstacle=0.00m
+Traceback (most recent call last):
+  File "/workspaces/isaac_ros-dev/ros2_ws/install/px4_vslam_bridge/lib/python3.10/site-packages/px4_vslam_bridge/reactive_esdf_avoidance.py", line 393, in main
+    rclpy.spin(node)
+  File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/__init__.py", line 229, in spin
+    executor.spin_once()
+  File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/executors.py", line 808, in spin_once
+    self._spin_once_impl(timeout_sec)
+  File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/executors.py", line 797, in _spin_once_impl
+    handler, entity, node = self.wait_for_ready_callbacks(timeout_sec=timeout_sec)
+  File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/executors.py", line 780, in wait_for_ready_callbacks
+    return next(self._cb_iter)
+  File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/executors.py", line 681, in _wait_for_ready_callbacks
+    raise ExternalShutdownException()
+rclpy.executors.ExternalShutdownException
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/workspaces/isaac_ros-dev/ros2_ws/install/px4_vslam_bridge/lib/px4_vslam_bridge/reactive_esdf_avoidance", line 33, in <module>
+    sys.exit(load_entry_point('px4-vslam-bridge==0.1.0', 'console_scripts', 'reactive_esdf_avoidance')())
+  File "/workspaces/isaac_ros-dev/ros2_ws/install/px4_vslam_bridge/lib/python3.10/site-packages/px4_vslam_bridge/reactive_esdf_avoidance.py", line 398, in main
+    rclpy.shutdown()
+  File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/__init__.py", line 130, in shutdown
+    _shutdown(context=context)
+  File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/utilities.py", line 58, in shutdown
+    return context.shutdown()
+  File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/context.py", line 102, in shutdown
+    self.__context.shutdown()
+rclpy._rclpy_pybind11.RCLError: failed to shutdown: rcl_shutdown already called on the given context, at ./src/rcl/init.c:241

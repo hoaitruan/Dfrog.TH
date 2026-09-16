@@ -1,0 +1,77 @@
+[INFO] [1788689311.197004172] [vslam_compare]: vslam_compare: logging per-message CSV to /workspaces/isaac_ros-dev/results/feasibility_gate/gate_sweep_poor_none_r12/vslam_compare.csv (exp_id='gate_sweep_poor_none_r12')
+[INFO] [1788689311.216215509] [vslam_compare]: vslam_compare ready -- watching /visual_slam/tracking/odometry vs /ground_truth/odom
+[INFO] [1788689311.217581079] [vslam_compare]: Ground truth origin set: (-0.0167723149061203, -0.019754543900489807, 0.041094496846199036)
+[INFO] [1788689311.240376216] [vslam_compare]: cuVSLAM origin set: (0.0, 0.0, 0.0) -- tracking initialized
+[INFO] [1788689312.216320879] [vslam_compare]: gt=(-0.0, 0.0, -0.0) vslam=(0.0, 0.0, 0.0) error=0.005m max_error=0.005m (n=1)
+[INFO] [1788689313.217017143] [vslam_compare]: gt=(0.01, 0.01, -0.0) vslam=(0.0, 0.0, 0.0) error=0.013m max_error=0.013m (n=2)
+[INFO] [1788689314.216512752] [vslam_compare]: gt=(0.02, 0.0, 0.0) vslam=(0.0, 0.0, 0.0) error=0.020m max_error=0.020m (n=3)
+[INFO] [1788689315.216756349] [vslam_compare]: gt=(0.02, -0.01, -0.01) vslam=(0.0, 0.0, 0.0) error=0.022m max_error=0.022m (n=4)
+[INFO] [1788689316.216676535] [vslam_compare]: gt=(-0.0, -0.01, -0.02) vslam=(0.0, 0.0, 0.0) error=0.021m max_error=0.022m (n=5)
+[INFO] [1788689317.216427279] [vslam_compare]: gt=(0.0, -0.01, -0.04) vslam=(0.0, 0.0, 0.0) error=0.041m max_error=0.041m (n=6)
+[INFO] [1788689318.216428539] [vslam_compare]: gt=(0.0, -0.0, -0.04) vslam=(0.0, 0.0, 0.0) error=0.042m max_error=0.042m (n=7)
+[INFO] [1788689319.216457687] [vslam_compare]: gt=(0.0, 0.03, -0.05) vslam=(0.0, 0.0, 0.0) error=0.055m max_error=0.055m (n=8)
+[INFO] [1788689320.216772466] [vslam_compare]: gt=(-0.0, 0.03, -0.04) vslam=(0.0, 0.0, 0.0) error=0.046m max_error=0.055m (n=9)
+[INFO] [1788689321.216702189] [vslam_compare]: gt=(0.01, 0.02, -0.04) vslam=(0.0, 0.0, 0.0) error=0.039m max_error=0.055m (n=10)
+[INFO] [1788689322.216636857] [vslam_compare]: gt=(0.01, -0.0, -0.03) vslam=(0.0, 0.0, 0.0) error=0.033m max_error=0.055m (n=11)
+[INFO] [1788689323.216557404] [vslam_compare]: gt=(0.03, -0.02, -0.03) vslam=(0.0, -0.01, -0.05) error=0.039m max_error=0.055m (n=12)
+[INFO] [1788689324.216699672] [vslam_compare]: gt=(0.14, 0.01, 0.05) vslam=(0.31, -0.04, 0.02) error=0.173m max_error=0.173m (n=13)
+[INFO] [1788689325.216797894] [vslam_compare]: gt=(0.07, 0.01, 1.18) vslam=(0.34, -0.17, 0.89) error=0.439m max_error=0.439m (n=14)
+[INFO] [1788689326.216660820] [vslam_compare]: gt=(-0.03, -0.08, 3.07) vslam=(0.13, -0.68, 2.72) error=0.711m max_error=0.711m (n=15)
+[INFO] [1788689327.216516298] [vslam_compare]: gt=(-0.05, -0.05, 3.97) vslam=(0.01, -0.6, 3.76) error=0.597m max_error=0.711m (n=16)
+[INFO] [1788689328.216692423] [vslam_compare]: gt=(-0.05, 0.06, 4.35) vslam=(-0.02, -0.44, 4.06) error=0.581m max_error=0.711m (n=17)
+[INFO] [1788689329.216335784] [vslam_compare]: gt=(-0.04, 0.09, 4.57) vslam=(0.03, -0.82, 3.87) error=1.151m max_error=1.151m (n=18)
+[INFO] [1788689330.216318237] [vslam_compare]: gt=(-0.01, 0.08, 4.68) vslam=(-0.17, -1.43, 3.74) error=1.783m max_error=1.783m (n=19)
+[INFO] [1788689331.216657694] [vslam_compare]: gt=(0.01, 0.09, 4.56) vslam=(-0.15, -1.51, 3.46) error=1.952m max_error=1.952m (n=20)
+[INFO] [1788689332.216646761] [vslam_compare]: gt=(-0.03, 0.12, 4.57) vslam=(-0.31, -1.81, 3.33) error=2.316m max_error=2.316m (n=21)
+[INFO] [1788689333.217120993] [vslam_compare]: gt=(-0.18, 0.34, 4.6) vslam=(-0.35, -1.7, 3.26) error=2.452m max_error=2.452m (n=22)
+[INFO] [1788689334.216549990] [vslam_compare]: gt=(-0.48, 0.92, 4.64) vslam=(-0.61, -1.18, 3.34) error=2.481m max_error=2.481m (n=23)
+[INFO] [1788689335.216695416] [vslam_compare]: gt=(-0.74, 1.74, 4.69) vslam=(-0.92, -0.46, 3.07) error=2.743m max_error=2.743m (n=24)
+[INFO] [1788689336.216460906] [vslam_compare]: gt=(-0.9, 2.58, 4.72) vslam=(-1.11, 0.38, 2.9) error=2.867m max_error=2.867m (n=25)
+[INFO] [1788689337.216892961] [vslam_compare]: gt=(-0.87, 3.2, 4.74) vslam=(-0.95, 1.38, 2.55) error=2.845m max_error=2.867m (n=26)
+[INFO] [1788689338.216444129] [vslam_compare]: gt=(-1.13, 3.42, 4.76) vslam=(-1.29, 2.32, 2.24) error=2.751m max_error=2.867m (n=27)
+[INFO] [1788689339.216688253] [vslam_compare]: gt=(-1.75, 3.74, 4.77) vslam=(-1.97, 2.36, 1.25) error=3.795m max_error=3.795m (n=28)
+[INFO] [1788689340.216476948] [vslam_compare]: gt=(-2.24, 4.07, 4.81) vslam=(-1.45, 2.08, 1.06) error=4.322m max_error=4.322m (n=29)
+[INFO] [1788689341.216350287] [vslam_compare]: gt=(-2.44, 4.32, 4.85) vslam=(-1.17, 1.32, 0.79) error=5.207m max_error=5.207m (n=30)
+[INFO] [1788689342.216657676] [vslam_compare]: gt=(-2.7, 4.86, 4.89) vslam=(-1.12, 0.98, 0.33) error=6.202m max_error=6.202m (n=31)
+[INFO] [1788689343.216838783] [vslam_compare]: gt=(-3.12, 5.61, 4.92) vslam=(-1.08, 1.03, 0.09) error=6.962m max_error=6.962m (n=32)
+[INFO] [1788689344.216379906] [vslam_compare]: gt=(-3.46, 6.38, 4.95) vslam=(-0.94, -4.72, -1.7) error=13.175m max_error=13.175m (n=33)
+[INFO] [1788689345.216816143] [vslam_compare]: gt=(-3.63, 7.09, 4.93) vslam=(-24.14, -37.32, -22.3) error=55.985m max_error=55.985m (n=34)
+[INFO] [1788689346.216557822] [vslam_compare]: gt=(-3.48, 7.6, 4.93) vslam=(-24.83, -90.19, -49.47) error=113.923m max_error=113.923m (n=35)
+[INFO] [1788689347.216575305] [vslam_compare]: gt=(-3.28, 7.81, 4.92) vslam=(-41.5, -61.95, -37.19) error=90.004m max_error=113.923m (n=36)
+[INFO] [1788689348.216372389] [vslam_compare]: gt=(-3.25, 7.87, 4.93) vslam=(-43.48, -63.97, -38.56) error=93.111m max_error=113.923m (n=37)
+[INFO] [1788689349.216665619] [vslam_compare]: gt=(-2.95, 8.41, 4.93) vslam=(-48.5, -51.56, -31.88) error=83.824m max_error=113.923m (n=38)
+[INFO] [1788689350.216834021] [vslam_compare]: gt=(-2.55, 9.26, 4.92) vslam=(-53.51, -44.46, -28.55) error=81.265m max_error=113.923m (n=39)
+[INFO] [1788689351.216971831] [vslam_compare]: gt=(-2.17, 9.78, 4.94) vslam=(-52.02, -55.05, -33.55) error=90.387m max_error=113.923m (n=40)
+[INFO] [1788689352.216778054] [vslam_compare]: gt=(-1.61, 9.86, 4.98) vslam=(-41.48, -78.11, -41.77) error=107.307m max_error=113.923m (n=41)
+[INFO] [1788689353.216541803] [vslam_compare]: gt=(-1.48, 9.9, 4.95) vslam=(-46.7, -93.03, -50.42) error=125.320m max_error=125.320m (n=42)
+[INFO] [1788689354.216559894] [vslam_compare]: gt=(-1.62, 9.7, 4.88) vslam=(-67.27, -109.57, -61.06) error=151.278m max_error=151.278m (n=43)
+[INFO] [1788689355.216365813] [vslam_compare]: gt=(-1.39, 9.49, 4.82) vslam=(-67.05, -109.65, -61.09) error=151.159m max_error=151.278m (n=44)
+Traceback (most recent call last):
+  File "/workspaces/isaac_ros-dev/ros2_ws/install/px4_vslam_bridge/lib/python3.10/site-packages/px4_vslam_bridge/vslam_compare.py", line 194, in main
+    rclpy.spin(node)
+  File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/__init__.py", line 229, in spin
+    executor.spin_once()
+  File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/executors.py", line 808, in spin_once
+    self._spin_once_impl(timeout_sec)
+  File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/executors.py", line 797, in _spin_once_impl
+    handler, entity, node = self.wait_for_ready_callbacks(timeout_sec=timeout_sec)
+  File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/executors.py", line 780, in wait_for_ready_callbacks
+    return next(self._cb_iter)
+  File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/executors.py", line 681, in _wait_for_ready_callbacks
+    raise ExternalShutdownException()
+rclpy.executors.ExternalShutdownException
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/workspaces/isaac_ros-dev/ros2_ws/install/px4_vslam_bridge/lib/px4_vslam_bridge/vslam_compare", line 33, in <module>
+    sys.exit(load_entry_point('px4-vslam-bridge==0.1.0', 'console_scripts', 'vslam_compare')())
+  File "/workspaces/isaac_ros-dev/ros2_ws/install/px4_vslam_bridge/lib/python3.10/site-packages/px4_vslam_bridge/vslam_compare.py", line 199, in main
+    rclpy.shutdown()
+  File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/__init__.py", line 130, in shutdown
+    _shutdown(context=context)
+  File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/utilities.py", line 58, in shutdown
+    return context.shutdown()
+  File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/context.py", line 102, in shutdown
+    self.__context.shutdown()
+rclpy._rclpy_pybind11.RCLError: failed to shutdown: rcl_shutdown already called on the given context, at ./src/rcl/init.c:241

@@ -137,12 +137,22 @@ def check_spawn_near_origin(node: Node) -> None:
 
 
 def main() -> None:
+    # --skip-esdf: for the Route 2 closed-loop probe's obstacle-free world
+    # (flight_test_log.html) only -- an empty ESDF there is the CORRECT
+    # sensor state (nothing nearby to map), not a sign of a broken nvblox
+    # wiring, so the check itself is inapplicable, not weakened. Default
+    # (flag absent) is unchanged: every other caller still requires a
+    # non-empty ESDF.
+    skip_esdf = "--skip-esdf" in sys.argv
     rclpy.init()
     node = Node("health_check")
-    print("Running pre-flight health check...")
+    print("Running pre-flight health check..." + (" (ESDF check skipped)" if skip_esdf else ""))
     check_admin_processes()
     check_fmu_topics(node)
-    check_esdf_nonempty(node)
+    if skip_esdf:
+        print("  [3/4] ESDF non-empty: SKIPPED (--skip-esdf)")
+    else:
+        check_esdf_nonempty(node)
     check_spawn_near_origin(node)
     print("HEALTH CHECK: PASS")
     node.destroy_node()

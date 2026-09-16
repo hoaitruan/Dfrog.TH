@@ -1,0 +1,21 @@
+[INFO] [1788755714.052269683] [r2_killswitch]: r2_killswitch armed: ALTITUDE_LIMIT_M=8.0 HORIZONTAL_LIMIT_M=15.0 ALTITUDE_LOWER_LIMIT_M=-0.5 DESCENT_RATE_LIMIT_MPS=1.5 DIVERGENCE_LIMIT_M=10.0 (bridge-kill-before-disarm, pattern='fast_planner_bridge', breach_file=/workspaces/isaac_ros-dev/results/route2_probe/r2_2_L2_r12/runaway_event.json)
+[ERROR] [1788755768.969558963] [r2_killswitch]: BREACH DETECTED: descent_rate=1.524m/s > limit=1.5m/s (altitude=4.614m, divergence=0.05494959972741623) -- killing bridge before disarm
+[WARN] [1788755769.003167005] [r2_killswitch]: no fast_planner_bridge process found -- proceeding straight to disarm.
+[WARN] [1788755769.003968075] [r2_killswitch]: force-disarm published, breach->sent latency = 34.5 ms
+[WARN] [1788755769.019540945] [r2_killswitch]: CUTOFF CONFIRMED: arming_state==DISARMED. latency = 49.9 ms
+Traceback (most recent call last):
+  File "/workspaces/isaac_ros-dev/tools/route2_probe/r2_killswitch.py", line 236, in <module>
+    main()
+  File "/workspaces/isaac_ros-dev/tools/route2_probe/r2_killswitch.py", line 228, in main
+    rclpy.spin(node)
+  File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/__init__.py", line 229, in spin
+    executor.spin_once()
+  File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/executors.py", line 808, in spin_once
+    self._spin_once_impl(timeout_sec)
+  File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/executors.py", line 797, in _spin_once_impl
+    handler, entity, node = self.wait_for_ready_callbacks(timeout_sec=timeout_sec)
+  File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/executors.py", line 780, in wait_for_ready_callbacks
+    return next(self._cb_iter)
+  File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/executors.py", line 653, in _wait_for_ready_callbacks
+    wait_set = _rclpy.WaitSet(
+rclpy._rclpy_pybind11.RCLError: failed to initialize wait set: the given context is not valid, either rcl_init() was not called or rcl_shutdown() was called., at ./src/rcl/wait.c:130

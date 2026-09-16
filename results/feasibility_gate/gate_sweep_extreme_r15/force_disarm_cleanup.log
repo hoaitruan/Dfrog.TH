@@ -1,0 +1,2 @@
+[WARN] [1788596543.809656859] [force_disarm]: still not confirmed disarmed (last arming_state=None) -- resending disarm command
+[INFO] [1788596544.411905469] [force_disarm]: force-disarm CONFIRMED (arming_state=DISARMED) after 2.2s
