@@ -19,6 +19,7 @@ Usage: churn_logger.py --out <csv> [--radius 2.0] [--period 1.0]
 import argparse
 import csv
 import math
+import sys
 
 import rclpy
 from rclpy.node import Node
@@ -127,7 +128,7 @@ def main() -> None:
     ap.add_argument("--out", required=True)
     ap.add_argument("--radius", type=float, default=2.0)
     ap.add_argument("--period", type=float, default=1.0)
-    args = ap.parse_args()
+    args = ap.parse_args(rclpy.utilities.remove_ros_args(sys.argv)[1:])
 
     rclpy.init()
     node = ChurnLogger(args.out, args.radius, args.period)

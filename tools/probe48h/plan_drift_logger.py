@@ -27,6 +27,7 @@ import argparse
 import bisect
 import csv
 import math
+import sys
 
 import rclpy
 from rclpy.node import Node
@@ -76,7 +77,7 @@ class PlanDriftLogger(Node):
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--out", required=True)
-    args = ap.parse_args()
+    args = ap.parse_args(rclpy.utilities.remove_ros_args(sys.argv)[1:])
 
     rclpy.init()
     node = PlanDriftLogger(args.out)

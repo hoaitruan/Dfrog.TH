@@ -24,6 +24,7 @@ Usage: depth_fault_injector.py [--enabled] [--corner top-left|top-right|
 """
 import argparse
 import struct
+import sys
 
 import rclpy
 from rclpy.node import Node
@@ -92,7 +93,7 @@ def main() -> None:
     ap.add_argument("--block-frac", type=float, default=0.25)
     ap.add_argument("--in", dest="in_topic", default="/depth_camera")
     ap.add_argument("--out", default="/depth_camera/faulted")
-    args = ap.parse_args()
+    args = ap.parse_args(rclpy.utilities.remove_ros_args(sys.argv)[1:])
 
     rclpy.init()
     node = DepthFaultInjector(args)
