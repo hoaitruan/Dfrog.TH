@@ -76,6 +76,13 @@ NVBLOX_BASE_CONFIG = "/opt/ros/humble/share/nvblox_examples_bringup/config/nvblo
 DEFAULT_INTEGRATE_DEPTH_RATE_HZ = "40.0"
 DEFAULT_UPDATE_ESDF_RATE_HZ = "10.0"
 
+# probe-48h addition: input depth topic exposed as a launch argument so
+# H3's depth-fault injection (tools/probe48h/depth_fault_injector.py) can
+# point nvblox at the injector's republished, corrupted topic instead of
+# the raw one, without touching cuVSLAM (separate stereo input, unaffected
+# either way) or nvblox_ros/core. Default reproduces prior behavior exactly.
+DEFAULT_DEPTH_TOPIC = "/depth_camera"
+
 
 def generate_launch_description() -> launch.LaunchDescription:
     integrate_depth_rate_hz_arg = DeclareLaunchArgument(
@@ -85,6 +92,10 @@ def generate_launch_description() -> launch.LaunchDescription:
     update_esdf_rate_hz_arg = DeclareLaunchArgument(
         "update_esdf_rate_hz", default_value=DEFAULT_UPDATE_ESDF_RATE_HZ,
         description="feasibility-gate contention knob -- see module docstring.",
+    )
+    depth_topic_arg = DeclareLaunchArgument(
+        "depth_topic", default_value=DEFAULT_DEPTH_TOPIC,
+        description="probe-48h H3 depth-fault-injection knob -- see module docstring.",
     )
 
     nvblox_node = ComposableNode(
@@ -135,7 +146,7 @@ def generate_launch_description() -> launch.LaunchDescription:
             },
         ],
         remappings=[
-            ("camera_0/depth/image", "/depth_camera"),
+            ("camera_0/depth/image", LaunchConfiguration("depth_topic")),
             ("camera_0/depth/camera_info", "/camera_info"),
         ],
     )
@@ -172,5 +183,6 @@ def generate_launch_description() -> launch.LaunchDescription:
     return launch.LaunchDescription([
         integrate_depth_rate_hz_arg,
         update_esdf_rate_hz_arg,
+        depth_topic_arg,
         container,
     ])
