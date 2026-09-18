@@ -29,11 +29,26 @@ tightly.
 """
 
 import launch
+from launch.actions import DeclareLaunchArgument
+from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import Node
+from launch_ros.descriptions import ParameterValue
+
+# probe-48h H4 existence gate addition: waypoint0 exposed as launch args
+# (defaulting to the values below, unchanged) so the probe can fly the
+# ~15m obstacle-field path Phase C needs without touching the hardcoded
+# values used by every other flight in this project.
+DEFAULT_WAYPOINT0_X = "0.0"
+DEFAULT_WAYPOINT0_Y = "8.0"
+DEFAULT_WAYPOINT0_Z = "5.0"
 
 
 def generate_launch_description() -> launch.LaunchDescription:
     odom_topic = "/ground_truth/odom"
+
+    waypoint0_x_arg = DeclareLaunchArgument("waypoint0_x", default_value=DEFAULT_WAYPOINT0_X)
+    waypoint0_y_arg = DeclareLaunchArgument("waypoint0_y", default_value=DEFAULT_WAYPOINT0_Y)
+    waypoint0_z_arg = DeclareLaunchArgument("waypoint0_z", default_value=DEFAULT_WAYPOINT0_Z)
 
     traj_server = Node(
         package="plan_manage",
@@ -76,9 +91,9 @@ def generate_launch_description() -> launch.LaunchDescription:
                 # the original bug this whole milestone exists to fix), now
                 # being retried under receding-horizon planning: plan to the
                 # observed frontier, fly, reveal more, replan, repeat.
-                "fsm/waypoint0_x": 0.0,
-                "fsm/waypoint0_y": 8.0,
-                "fsm/waypoint0_z": 5.0,
+                "fsm/waypoint0_x": ParameterValue(LaunchConfiguration("waypoint0_x"), value_type=float),
+                "fsm/waypoint0_y": ParameterValue(LaunchConfiguration("waypoint0_y"), value_type=float),
+                "fsm/waypoint0_z": ParameterValue(LaunchConfiguration("waypoint0_z"), value_type=float),
                 # sdf_map
                 "sdf_map/resolution": 0.1,
                 "sdf_map/map_size_x": 20.0,
@@ -286,4 +301,7 @@ def generate_launch_description() -> launch.LaunchDescription:
         ],
     )
 
-    return launch.LaunchDescription([traj_server, fast_planner_node])
+    return launch.LaunchDescription([
+        waypoint0_x_arg, waypoint0_y_arg, waypoint0_z_arg,
+        traj_server, fast_planner_node,
+    ])

@@ -83,6 +83,22 @@ DEFAULT_UPDATE_ESDF_RATE_HZ = "10.0"
 # either way) or nvblox_ros/core. Default reproduces prior behavior exactly.
 DEFAULT_DEPTH_TOPIC = "/depth_camera"
 
+# probe-48h H4 gate addition (docs/probe48h/GATE12.md, Phase C): exposed
+# after discovering nvblox_base.yaml's own default (7.0m) silently erases
+# map blocks more than this far from the CURRENT tracked position, at
+# clear_map_outside_radius_rate_hz (1Hz). Arm S's "build the whole ~13m
+# corridor once, save_map, freeze" recipe is broken by this default: by
+# the time the drone reaches the far goal, everything near the start
+# (11m+ away) has already been cleared, so save_map only captures a
+# bubble around wherever the drone ended up -- not the corridor Fast-
+# Planner actually needs. Set to a large value (or <0.0 per the yaml's
+# own "no map clearing if < 0.0" comment) for the map-building pass AND
+# for Arm S's frozen runs (clearing is a separate rate from
+# integrate_depth_rate_hz/update_esdf_rate_hz -- zeroing those two does
+# NOT stop clearing). Default here reproduces nvblox_base.yaml's own
+# 7.0m unchanged for every other caller.
+DEFAULT_MAP_CLEARING_RADIUS_M = "7.0"
+
 
 def generate_launch_description() -> launch.LaunchDescription:
     integrate_depth_rate_hz_arg = DeclareLaunchArgument(
@@ -96,6 +112,10 @@ def generate_launch_description() -> launch.LaunchDescription:
     depth_topic_arg = DeclareLaunchArgument(
         "depth_topic", default_value=DEFAULT_DEPTH_TOPIC,
         description="probe-48h H3 depth-fault-injection knob -- see module docstring.",
+    )
+    map_clearing_radius_m_arg = DeclareLaunchArgument(
+        "map_clearing_radius_m", default_value=DEFAULT_MAP_CLEARING_RADIUS_M,
+        description="probe-48h H4 gate knob -- see module docstring.",
     )
 
     nvblox_node = ComposableNode(
@@ -143,6 +163,9 @@ def generate_launch_description() -> launch.LaunchDescription:
                 "update_esdf_rate_hz": ParameterValue(
                     LaunchConfiguration("update_esdf_rate_hz"), value_type=float
                 ),
+                "map_clearing_radius_m": ParameterValue(
+                    LaunchConfiguration("map_clearing_radius_m"), value_type=float
+                ),
             },
         ],
         remappings=[
@@ -184,5 +207,6 @@ def generate_launch_description() -> launch.LaunchDescription:
         integrate_depth_rate_hz_arg,
         update_esdf_rate_hz_arg,
         depth_topic_arg,
+        map_clearing_radius_m_arg,
         container,
     ])
