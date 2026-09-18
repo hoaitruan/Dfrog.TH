@@ -14,7 +14,14 @@ radius r of the drone's CURRENT (time t) ground-truth position that were
 also present in the t-1 grid. Voxels are matched by rounded (x,y,z)
 center across polls (voxel_size is constant within one run).
 
+probe-48h gate fix (docs/probe48h/GATE12.md A2): position now sourced
+from gz-sim's SceneBroadcaster (/world/$GZ_WORLD_NAME/dynamic_pose/info,
+tf2_msgs/TFMessage), filtered by child_frame_id==GZ_MODEL_FRAME -- true
+physics-engine pose, not /ground_truth/odom (EKF2-derived, per run.sh's
+own comment). Same fix, same reasoning as dmin_logger.py.
+
 Usage: churn_logger.py --out <csv> [--radius 2.0] [--period 1.0]
+       [--gz-world vio_test] [--gz-model x500_depth_stereo_0]
 """
 import argparse
 import csv
@@ -24,7 +31,7 @@ import sys
 import rclpy
 from rclpy.node import Node
 from geometry_msgs.msg import Point, Vector3
-from nav_msgs.msg import Odometry
+from tf2_msgs.msg import TFMessage
 from nvblox_msgs.srv import EsdfAndGradients
 
 UNOBSERVED_SENTINEL = -999.0
@@ -32,11 +39,14 @@ AABB_MARGIN = 1.0  # extra margin beyond radius so the sphere isn't AABB-clipped
 
 
 class ChurnLogger(Node):
-    def __init__(self, out_path: str, radius: float, period: float) -> None:
+    def __init__(self, out_path: str, radius: float, period: float, gz_world: str, gz_model: str) -> None:
         super().__init__("churn_logger")
         self.radius = radius
+        self.gz_model = gz_model
         self.cli = self.create_client(EsdfAndGradients, "/nvblox_node/get_esdf_and_gradient")
-        self.create_subscription(Odometry, "/ground_truth/odom", self._gt_cb, 10)
+        self.create_subscription(
+            TFMessage, f"/world/{gz_world}/dynamic_pose/info", self._gt_cb, 50
+        )
         self.pos = None
         self.prev_grid = None  # {(x,y,z): distance}
         self.in_flight = False
@@ -46,9 +56,12 @@ class ChurnLogger(Node):
         self.csv_file.flush()
         self.timer = self.create_timer(period, self.tick)
 
-    def _gt_cb(self, msg: Odometry) -> None:
-        p = msg.pose.pose.position
-        self.pos = (p.x, p.y, p.z)
+    def _gt_cb(self, msg: TFMessage) -> None:
+        for tr in msg.transforms:
+            if tr.child_frame_id == self.gz_model:
+                p = tr.transform.translation
+                self.pos = (p.x, p.y, p.z)
+                return
 
     def tick(self) -> None:
         if self.in_flight or self.pos is None or not self.cli.service_is_ready():
@@ -128,10 +141,12 @@ def main() -> None:
     ap.add_argument("--out", required=True)
     ap.add_argument("--radius", type=float, default=2.0)
     ap.add_argument("--period", type=float, default=1.0)
+    ap.add_argument("--gz-world", default="vio_test")
+    ap.add_argument("--gz-model", default="x500_depth_stereo_0")
     args = ap.parse_args(rclpy.utilities.remove_ros_args(sys.argv)[1:])
 
     rclpy.init()
-    node = ChurnLogger(args.out, args.radius, args.period)
+    node = ChurnLogger(args.out, args.radius, args.period, args.gz_world, args.gz_model)
     try:
         rclpy.spin(node)
     finally:

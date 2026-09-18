@@ -2,12 +2,21 @@
 """
 H3: continuous d_min(t) logger, Gazebo GROUND TRUTH (not the map).
 
+probe-48h gate fix (docs/probe48h/GATE12.md A2): now sources position from
+gz-sim's SceneBroadcaster (/world/$GZ_WORLD_NAME/dynamic_pose/info,
+tf2_msgs/TFMessage), filtered by child_frame_id==GZ_MODEL_FRAME -- true
+physics-engine pose, no PX4/EKF2 involved. Previously subscribed
+/ground_truth/odom, which run.sh's own comment says explicitly is
+EKF2-derived (GPS+baro+IMU fused), not literal simulator truth despite the
+name. Same source/filter position_logger.py already uses, confirmed live
+in this project's history (see GATE12.md A2) -- not a new, untested path.
+
 Obstacle geometry copied verbatim from tools/route2_probe/analyze_r2_2.py
 (extracted from vio_test.sdf, already verified there) -- same source of
 truth, not re-derived. Logs a continuous distribution, not a binary
 crash/no-crash flag, per this probe's own instruction.
 
-Usage: dmin_logger.py --out <csv>
+Usage: dmin_logger.py --out <csv> [--gz-world vio_test] [--gz-model x500_depth_stereo_0]
 """
 import argparse
 import csv
@@ -16,7 +25,7 @@ import sys
 
 import rclpy
 from rclpy.node import Node
-from nav_msgs.msg import Odometry
+from tf2_msgs.msg import TFMessage
 
 OBSTACLES = [
     ("marker_01", 4, 0, 1, "box", (0.5, 0.5, 2)),
@@ -74,28 +83,37 @@ def min_clearance(px, py, pz):
 
 
 class DminLogger(Node):
-    def __init__(self, out_path: str) -> None:
+    def __init__(self, out_path: str, gz_world: str, gz_model: str) -> None:
         super().__init__("dmin_logger")
+        self.gz_model = gz_model
         self.csv_file = open(out_path, "w", newline="")
         self.writer = csv.writer(self.csv_file)
         self.writer.writerow(["t", "x", "y", "z", "d_min"])
-        self.create_subscription(Odometry, "/ground_truth/odom", self._cb, 10)
+        self.create_subscription(
+            TFMessage, f"/world/{gz_world}/dynamic_pose/info", self._cb, 50
+        )
 
-    def _cb(self, msg: Odometry) -> None:
-        t = self.get_clock().now().nanoseconds / 1e9
-        p = msg.pose.pose.position
-        d = min_clearance(p.x, p.y, p.z)
-        self.writer.writerow([t, p.x, p.y, p.z, f"{d:.4f}"])
-        self.csv_file.flush()
+    def _cb(self, msg: TFMessage) -> None:
+        for tr in msg.transforms:
+            if tr.child_frame_id != self.gz_model:
+                continue
+            t = self.get_clock().now().nanoseconds / 1e9
+            p = tr.transform.translation
+            d = min_clearance(p.x, p.y, p.z)
+            self.writer.writerow([t, p.x, p.y, p.z, f"{d:.4f}"])
+            self.csv_file.flush()
+            return
 
 
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--out", required=True)
+    ap.add_argument("--gz-world", default="vio_test")
+    ap.add_argument("--gz-model", default="x500_depth_stereo_0")
     args = ap.parse_args(rclpy.utilities.remove_ros_args(sys.argv)[1:])
 
     rclpy.init()
-    node = DminLogger(args.out)
+    node = DminLogger(args.out, args.gz_world, args.gz_model)
     try:
         rclpy.spin(node)
     finally:

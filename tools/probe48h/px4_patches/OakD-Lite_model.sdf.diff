@@ -1,0 +1,28 @@
+--- /home/redwine/Drone/isaac_ros-dev/tools/probe48h/px4_patches/OakD-Lite_model.sdf.orig	2026-09-18 18:28:30.648402207 +0700
++++ /home/redwine/Drone/isaac_ros-dev/tools/probe48h/px4_patches/OakD-Lite_model.sdf.patched	2026-09-18 18:28:53.448466958 +0700
+@@ -79,6 +79,25 @@
+             <near>0.2</near>
+             <far>19.1</far>
+           </clip>
++          <!-- probe-48h H4 gate fix (docs/probe48h/GATE12.md A1): this
++               sensor had NO noise at all, making a churn-from-sensor-noise
++               effect structurally impossible to observe regardless of any
++               other config. sdformat's camera <noise> element only
++               supports a single, UNIFORM mean/stddev (checked against
++               /usr/share/sdformat14/1.9/camera.sdf's own schema -- three
++               sub-elements: type/mean/stddev, nothing range-dependent) --
++               true stddev-grows-as-z^2 (approximating a RealSense D435i's
++               real per-range accuracy curve) is NOT expressible in plain
++               SDF and would need a custom sensor plugin, which is out of
++               scope (algorithm-core territory) for this config-only fix.
++               0.02m is the upper end of the "close range" 0.01-0.02m band
++               given in the task -- a single representative value, not a
++               range-accurate model; this simplification is disclosed, not
++               hidden. See tools/probe48h/px4_patches/README.md. -->
++          <noise type="gaussian">
++            <mean>0.0</mean>
++            <stddev>0.02</stddev>
++          </noise>
+         </camera>
+         <always_on>1</always_on>
+         <update_rate>30</update_rate>
